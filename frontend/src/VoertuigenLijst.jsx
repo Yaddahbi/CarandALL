@@ -5,7 +5,7 @@ import { fetchFilteredVoertuigen } from "./api";
 const VoertuigenLijst = () => {
   const [voertuigen, setVoertuigen] = useState([]);
   const [filters, setFilters] = useState({
-    type: "",
+    soort: "",
     kleur: "",
     vanafAanschafjaar: "",
     totAanschafjaar: "",
@@ -33,8 +33,8 @@ const VoertuigenLijst = () => {
     <div>
       <h2>Filter Voertuigen</h2>
       <div>
-        <label>Type: </label>
-        <select name="type" onChange={handleFilterChange}>
+        <label>Soort: </label>
+        <select name="soort" onChange={handleFilterChange}>
           <option value="">Alle</option>
           <option value="Auto">Auto</option>
           <option value="Camper">Camper</option>
@@ -71,9 +71,9 @@ const VoertuigenLijst = () => {
             <div key={voertuig.voertuigId}>
               <p>
                 <strong>
-                  {voertuig.merk} {voertuig.type}
+                  {voertuig.merk} {voertuig.type} ({voertuig.soort})
                 </strong>{" "}
-                ({voertuig.kleur}) - {voertuig.aanschafjaar}
+                - {voertuig.kleur}, {voertuig.aanschafjaar}
               </p>
             </div>
           ))

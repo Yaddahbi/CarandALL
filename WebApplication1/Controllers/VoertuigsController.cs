@@ -44,15 +44,15 @@ namespace WebApplication1.Controllers
         // GET: api/Voertuigs/filter
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<Voertuig>>> GetFilteredVoertuigen(
-        [FromQuery] string? type = null,
+        [FromQuery] string? soort = null,
         [FromQuery] string? kleur = null,
         [FromQuery] int? vanafAanschafjaar = null,
         [FromQuery] int? totAanschafjaar = null)
         {
             var query = _context.Voertuigen.AsQueryable();
 
-            if (!string.IsNullOrEmpty(type))
-                query = query.Where(v => v.Type == type);
+            if (!string.IsNullOrEmpty(soort))
+                query = query.Where(v => v.Soort == soort);
 
             if (!string.IsNullOrEmpty(kleur))
                 query = query.Where(v => v.Kleur == kleur);

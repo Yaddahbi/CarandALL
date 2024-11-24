@@ -7,10 +7,13 @@ namespace WebApplication1.Models
         public int VoertuigId { get; set; }
 
         [Required]
+        public string Soort { get; set; } 
+
+        [Required]
         public string Merk { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public string Type { get; set; } 
 
         [RegularExpression(@"^[A-Z]{2}-\d{3}-[A-Z]{2}$", ErrorMessage = "Ongeldig kenteken")]
         public string Kenteken { get; set; }
@@ -24,13 +27,14 @@ namespace WebApplication1.Models
         [Required]
         [EnumDataType(typeof(StatusType))]
         public string Status { get; set; } // "Beschikbaar", "In Reparatie", "Verhuurd"
-        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>(); 
+
+        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
     }
+
     public enum StatusType
     {
         Beschikbaar,
         InReparatie,
         Verhuurd
     }
-
 }
