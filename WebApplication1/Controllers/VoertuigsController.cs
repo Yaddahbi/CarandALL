@@ -44,19 +44,28 @@ namespace WebApplication1.Controllers
         // GET: api/Voertuigs/filter
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<Voertuig>>> GetFilteredVoertuigen(
-            [FromQuery] string? type = null,
-            [FromQuery] string? status = null)
+        [FromQuery] string? type = null,
+        [FromQuery] string? kleur = null,
+        [FromQuery] int? vanafAanschafjaar = null,
+        [FromQuery] int? totAanschafjaar = null)
         {
             var query = _context.Voertuigen.AsQueryable();
 
             if (!string.IsNullOrEmpty(type))
                 query = query.Where(v => v.Type == type);
 
-            if (!string.IsNullOrEmpty(status))
-                query = query.Where(v => v.Status == status);
+            if (!string.IsNullOrEmpty(kleur))
+                query = query.Where(v => v.Kleur == kleur);
+
+            if (vanafAanschafjaar.HasValue)
+                query = query.Where(v => v.Aanschafjaar >= vanafAanschafjaar.Value);
+
+            if (totAanschafjaar.HasValue)
+                query = query.Where(v => v.Aanschafjaar <= totAanschafjaar.Value);
 
             return await query.ToListAsync();
         }
+
 
         // PUT: api/Voertuigs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -115,6 +124,7 @@ namespace WebApplication1.Controllers
 
             return NoContent();
         }
+
 
         private bool VoertuigExists(int id)
         {

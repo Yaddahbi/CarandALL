@@ -1,37 +1,40 @@
 using Microsoft.EntityFrameworkCore;
-namespace WebApplication1
+using WebApplication1;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add CORS policy
+builder.Services.AddCors(options =>
 {
-    public class Program
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        policy.WithOrigins("http://localhost:58899") // frontend 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
-            // Add services to the container.
-            builder.Services.AddDbContext<DatabaseContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Existing configurations...
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+var app = builder.Build();
 
-            app.UseHttpsRedirection();
+// Use CORS
+app.UseCors("AllowFrontend");
 
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+// Existing middleware...
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
