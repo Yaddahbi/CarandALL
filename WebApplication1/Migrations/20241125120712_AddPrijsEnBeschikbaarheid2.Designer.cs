@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1;
 
@@ -11,9 +12,11 @@ using WebApplication1;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241125120712_AddPrijsEnBeschikbaarheid2")]
+    partial class AddPrijsEnBeschikbaarheid2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,6 +221,10 @@ namespace WebApplication1.Migrations
                     b.Property<int>("Aanschafjaar")
                         .HasColumnType("int");
 
+                    b.PrimitiveCollection<string>("BeschikbareDatums")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Kenteken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -230,8 +237,8 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Prijs")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<decimal>("PrijsPerDag")
+                        .HasColumnType("decimal(10, 2)");
 
                     b.Property<string>("Soort")
                         .IsRequired()

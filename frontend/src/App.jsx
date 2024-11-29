@@ -1,11 +1,11 @@
 // App.jsx
-import VoertuigenLijst from "./VoertuigenLijst";
+import VoertuigenPagina from "./components/VoertuigenPagina";
 
 const App = () => {
   return (
     <div>
       <h1>CarAndAll Voertuigen</h1>
-      <VoertuigenLijst />
+      <VoertuigenPagina />
     </div>
   );
 };

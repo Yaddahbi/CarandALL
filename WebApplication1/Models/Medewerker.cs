@@ -4,9 +4,9 @@
     {
         public int MedewerkerId { get; set; }
         public string Naam { get; set; }
-        public string Rol { get; set; } // "Backoffice", "Frontoffice"
+        public string Rol { get; set; } 
         public string Email { get; set; }
-        public string Wachtwoord { get; set; } // Nog versleutelen
+        public string Wachtwoord { get; set; } 
     }
 
 }

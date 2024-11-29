@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
 {
@@ -26,7 +27,12 @@ namespace WebApplication1.Models
 
         [Required]
         [EnumDataType(typeof(StatusType))]
-        public string Status { get; set; } // "Beschikbaar", "In Reparatie", "Verhuurd"
+        public string Status { get; set; } 
+
+        [Required]
+        [Column(TypeName = "decimal(18, 2)")] 
+        [Range(0, double.MaxValue, ErrorMessage = "Ongeldige prijs")]
+        public decimal Prijs { get; set; }
 
         public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
     }

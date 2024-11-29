@@ -44,27 +44,38 @@ namespace WebApplication1.Controllers
         // GET: api/Voertuigs/filter
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<Voertuig>>> GetFilteredVoertuigen(
-        [FromQuery] string? soort = null,
-        [FromQuery] string? kleur = null,
-        [FromQuery] int? vanafAanschafjaar = null,
-        [FromQuery] int? totAanschafjaar = null)
+            [FromQuery] string? soort = null,
+            [FromQuery] DateTime? startDatum = null,
+            [FromQuery] DateTime? eindDatum = null,
+            [FromQuery] string? sorteerOp = null)
         {
             var query = _context.Voertuigen.AsQueryable();
 
             if (!string.IsNullOrEmpty(soort))
                 query = query.Where(v => v.Soort == soort);
 
-            if (!string.IsNullOrEmpty(kleur))
-                query = query.Where(v => v.Kleur == kleur);
+            if (startDatum.HasValue && eindDatum.HasValue)
+                query = query.Where(v => !_context.Huurverzoeken.Any(h =>
+                    h.VoertuigId == v.VoertuigId &&
+                    ((h.StartDatum <= eindDatum && h.EindDatum >= startDatum))));
 
-            if (vanafAanschafjaar.HasValue)
-                query = query.Where(v => v.Aanschafjaar >= vanafAanschafjaar.Value);
-
-            if (totAanschafjaar.HasValue)
-                query = query.Where(v => v.Aanschafjaar <= totAanschafjaar.Value);
+            switch (sorteerOp)
+            {
+                case "prijs":
+                    query = query.OrderBy(v => v.Prijs);
+                    break;
+                case "merk":
+                    query = query.OrderBy(v => v.Merk);
+                    break;
+                case "beschikbaarheid":
+                    query = query.OrderBy(v => v.Status);
+                    break;
+            }
 
             return await query.ToListAsync();
         }
+
+
 
 
         // PUT: api/Voertuigs/5
