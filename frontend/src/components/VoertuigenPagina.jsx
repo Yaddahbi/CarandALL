@@ -63,7 +63,7 @@ const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
               <option value="Caravan">Caravan</option>
             </>
           )}
-          {isZakelijk && <option value="Auto">Auto</option>} {/* Alleen auto voor zakelijke huurders */}
+          {isZakelijk && <option value="Auto">Auto</option>}
         </select>
       </div>
 
