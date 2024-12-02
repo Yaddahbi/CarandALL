@@ -5,7 +5,7 @@ import "../voertuigenPagina.css";
 const VoertuigenPagina = ({ isZakelijk }) => {
   const [voertuigen, setVoertuigen] = useState([]);
   const [filters, setFilters] = useState({
-    soort: isZakelijk ? "Auto" : "", // Zakelijke huurders kunnen alleen auto’s zien
+    soort: isZakelijk ? "Auto" : "", 
     startDatum: "",
     eindDatum: "",
     sorteerOp: "",
