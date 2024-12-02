@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
 {
@@ -7,10 +8,13 @@ namespace WebApplication1.Models
         public int VoertuigId { get; set; }
 
         [Required]
+        public string Soort { get; set; } 
+
+        [Required]
         public string Merk { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public string Type { get; set; } 
 
         [RegularExpression(@"^[A-Z]{2}-\d{3}-[A-Z]{2}$", ErrorMessage = "Ongeldig kenteken")]
         public string Kenteken { get; set; }
@@ -23,14 +27,20 @@ namespace WebApplication1.Models
 
         [Required]
         [EnumDataType(typeof(StatusType))]
-        public string Status { get; set; } // "Beschikbaar", "In Reparatie", "Verhuurd"
-        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>(); 
+        public string Status { get; set; } 
+
+        [Required]
+        [Column(TypeName = "decimal(18, 2)")] 
+        [Range(0, double.MaxValue, ErrorMessage = "Ongeldige prijs")]
+        public decimal Prijs { get; set; }
+
+        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
     }
+
     public enum StatusType
     {
         Beschikbaar,
         InReparatie,
         Verhuurd
     }
-
 }
