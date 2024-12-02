@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { fetchFilteredVoertuigen } from "../api.js";
 import "../voertuigenPagina.css";
 
-const VoertuigenPagina = () => {
+const VoertuigenPagina = ({ isZakelijk }) => {
   const [voertuigen, setVoertuigen] = useState([]);
   const [filters, setFilters] = useState({
-    soort: "",
+    soort: isZakelijk ? "Auto" : "", // Zakelijke huurders kunnen alleen auto’s zien
     startDatum: "",
     eindDatum: "",
     sorteerOp: "",
@@ -26,15 +26,19 @@ const VoertuigenPagina = () => {
 
   return (
     <div className="voertuigen-pagina">
-      <h2>Filter Voertuigen</h2>
-      <VoertuigFilter filters={filters} setFilters={setFilters} />
+      <h2>{isZakelijk ? "Filter Auto's voor Zakelijke Huurder" : "Filter Voertuigen"}</h2>
+      <VoertuigFilter
+        filters={filters}
+        setFilters={setFilters}
+        isZakelijk={isZakelijk}
+      />
       {error && <p style={{ color: "red" }}>{error}</p>}
       <VoertuigWeergave voertuigen={voertuigen} />
     </div>
   );
 };
 
-const VoertuigFilter = ({ filters, setFilters }) => {
+const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
@@ -42,17 +46,24 @@ const VoertuigFilter = ({ filters, setFilters }) => {
 
   return (
     <div className="voertuigen-filters">
+      {/* Soort is alleen auto voor zakelijke huurders */}
       <div>
         <label>Soort:</label>
         <select
           name="soort"
           value={filters.soort}
           onChange={handleFilterChange}
+          disabled={isZakelijk} // Zakelijke huurders kunnen niet wijzigen
         >
-          <option value="">Alle</option>
-          <option value="Auto">Auto</option>
-          <option value="Camper">Camper</option>
-          <option value="Caravan">Caravan</option>
+          {!isZakelijk && (
+            <>
+              <option value="">Alle</option>
+              <option value="Auto">Auto</option>
+              <option value="Camper">Camper</option>
+              <option value="Caravan">Caravan</option>
+            </>
+          )}
+          {isZakelijk && <option value="Auto">Auto</option>} {/* Alleen auto voor zakelijke huurders */}
         </select>
       </div>
 
