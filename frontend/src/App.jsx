@@ -2,7 +2,7 @@
 import VoertuigenPagina from "./components/VoertuigenPagina";
 
 const App = () => {
-  const isZakelijk = true ;
+  const isZakelijk = false ;
 
   return (
     <div>
