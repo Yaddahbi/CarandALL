@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 namespace WebApplication1
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<User>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -19,6 +20,7 @@ namespace WebApplication1
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Bedrijf>()
                 .HasOne(b => b.Abonnement)
