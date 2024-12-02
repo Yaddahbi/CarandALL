@@ -6,8 +6,8 @@ const App = () => {
 
   return (
     <div>
-      <h1>CarAndAll</h1>
-      <VoertuigenPagina isZakelijk={isZakelijk} />
+      <h1>CarAndAll Voertuigen</h1>
+      <VoertuigenLijst />
     </div>
   );
 };
