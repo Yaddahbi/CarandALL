@@ -4,6 +4,12 @@
   padding: 2rem;
   text-align: center;
 }
+.app-header {
+  background-color: #222222; 
+  color: white;
+  padding: 20px;
+  text-align: left;
+}
 
 .logo {
   height: 6em;

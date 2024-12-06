@@ -28,7 +28,9 @@ const VoertuigenPagina = ({ isZakelijk }) => {
 
   return (
     <div className="voertuigen-pagina">
-      <h2>{isZakelijk ? "Filter Auto's voor Zakelijke Huurder" : "Filter Voertuigen"}</h2>
+      <header className="page-header">
+        <h2>{isZakelijk ? "Filter Auto's voor Zakelijke Huurder" : "Filter Voertuigen"}</h2>
+      </header>
       <VoertuigFilter filters={filters} setFilters={setFilters} isZakelijk={isZakelijk} />
       {error && <p style={{ color: "red" }}>{error}</p>}
       <VoertuigWeergave voertuigen={voertuigen} />
