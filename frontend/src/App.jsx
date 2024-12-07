@@ -1,8 +1,9 @@
 // App.jsx
 import VoertuigenPagina from "./components/VoertuigenPagina";
+import SchadePagina from "./SchadePagina";
 
 const App = () => {
-  const isZakelijk = false;
+  const isZakelijk = false; // hardcode
 
   return (
     <div>
@@ -10,6 +11,7 @@ const App = () => {
         <h1>CarAndAll Voertuigen</h1>
       </header>
       <VoertuigenPagina isZakelijk={isZakelijk}/>
+      <SchadePagina /> 
     </div>
   );
 };

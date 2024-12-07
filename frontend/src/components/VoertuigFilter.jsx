@@ -3,7 +3,7 @@ import checkDatum from './Datumcheck';
 
 const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
   
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e) => { // line 6-10 via chatgpt, om de weten hoe onthouden gekozen filter state
     console.log(e);
     const { name, value } = e.target;
     setFilters((prevFilters) => {
