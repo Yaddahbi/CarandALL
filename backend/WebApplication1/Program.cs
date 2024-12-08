@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1;
-using WebApplication1.Models;
+using CarAndAll;
+using CarAndAll.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
