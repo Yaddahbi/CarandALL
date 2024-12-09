@@ -6,6 +6,10 @@ import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
 
 
+const Login = () => <h1>Login Page</h1>;
+const Register = () => <h1>Register Page</h1>;
+
+
 const App = () => {
     const isZakelijk = false; // hardcode
     return (
@@ -17,6 +21,8 @@ const App = () => {
                     <Route path="/aanvragen" element={<Verhuuraanvragen />} />
                     <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                 </Routes>
             </div>
         </Router>
