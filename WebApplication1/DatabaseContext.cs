@@ -17,6 +17,7 @@ namespace WebApplication1
         public DbSet<Schade> Schades { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
 
+         public DbSet<Gebruiker> Gebruikers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
