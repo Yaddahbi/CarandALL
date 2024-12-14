@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Verhuuraanvragen from './components/Verhuuraanvragen';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
+import GebruikerAanmaken from './GebruikerAanmaken';
 
 
 const Login = () => <h1>Login Page</h1>;
@@ -22,7 +23,7 @@ const App = () => {
                     <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/register" element={<GebruikerAanmaken />} />
                 </Routes>
             </div>
         </Router>
