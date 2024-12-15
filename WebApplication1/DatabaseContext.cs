@@ -51,6 +51,7 @@ namespace WebApplication1
         }
 
 
+         public DbSet<Gebruiker> Gebruikers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

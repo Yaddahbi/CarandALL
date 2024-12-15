@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 
 namespace WebApplication1.Models
 {
@@ -34,6 +36,7 @@ namespace WebApplication1.Models
         [Range(0, double.MaxValue, ErrorMessage = "Ongeldige prijs")]
         public decimal Prijs { get; set; }
 
+        [JsonIgnore]
         public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
     }
 
