@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
 
             if (huurverzoek == null)
             {
-                return NotFound();
+                return NotFound("Huurverzoek niet gevonden.");
             }
 
             return huurverzoek;

@@ -1,0 +1,213 @@
+* {
+    margin: auto;
+    box-sizing: border-box;
+  
+}
+
+/* General body styling */
+body, html {
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 16px;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Navbar styling */
+.navbar {
+    height: 64px;
+    background-color: transparent;
+    padding: 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.navbar-brand .brand-link {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+
+
+/* Responsive navbar for small screens */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+        .navbar a {
+            margin: 5px 0;
+        }
+}
+
+/* Hero section styling */
+.hero {
+   
+    position: relative;
+    height: 685px;
+    text-align: center;
+    background-image: url('../images/Background.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    padding: 64px 20px 0;
+}
+
+    .hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+
+.hero .container {
+    width: 70%;
+    height: 289px;
+    margin-top: 0;
+    padding:50px 24px;
+    color: black;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+}
+
+  
+    .search-bar {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+    .search-bar input, .search-bar button {
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid rgb(201, 201, 207);
+        font-size: 18px;
+        font-family: HelveticaNow, Helvetica, Roboto, Arial, sans-serif;
+        background: none;
+        box-sizing: border-box;
+        height: 3.125rem;
+        
+    }
+
+    .search-bar .Ophaallocatie {
+        width: 45%;
+    }
+
+    .search-bar .Ophaaldatum, .Inleverdatum {
+        width: 15%;
+    }
+
+    .search-bar button {
+        background-color: #ff5f00;
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: 17%;
+    }
+
+        .search-bar button:hover {
+            background-color: #e54d00;
+        }
+
+/* Features section styling */
+.features {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-left: 12%;
+    margin-right: 12%;
+    margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    flex: 1 1 30%;
+    margin: 25px;
+    padding: 20px;
+    position: relative; 
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+    color: white;
+}
+
+    .feature::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
+        z-index: 0;
+        border-radius: 8px;
+    }
+
+    .feature h3,
+    .feature p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+    .feature h3 {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    .feature p {
+        font-size: 16px;
+        padding-bottom: 10px;
+    }
+        .feature.Premium {
+        background-image: url('../images/Premium-Auto.png');
+    }
+
+    .feature.Carvan {
+        background-image: url('../images/Campers-and-Carvans.png');
+    }
+
+    .feature.Betaalbare {
+        background-image: url('../images/Betaalbare.png');
+    }
+
+
+

@@ -38,15 +38,15 @@ const Verhuuraanvragen = () => {
                 </thead>
                 <tbody>
                     {aanvragen.map(aanvraag => (
-                        <tr key={aanvraag.HuurverzoekID}>
-                            <td>{aanvraag.HuurverzoekID}</td>
+                        <tr key={aanvraag.HuurverzoekId}>
+                            <td>{aanvraag.HuurverzoekId}</td>
                             <td>{new Date(aanvraag.Startdatum).toLocaleDateString()}</td>
                             <td>{new Date(aanvraag.Einddatum).toLocaleDateString()}</td>
                             <td>{aanvraag.HuurStatus}</td>
                             <td>
                                 <button
                                     className="btn btn-success"
-                                    onClick={() => handelBijwerken(aanvraag.HuurverzoekID, "Goedgekeurd", "")}
+                                    onClick={() => handelBijwerken(aanvraag.HuurverzoekId, "Goedgekeurd", "")}
                                 >
                                     Goedkeuren
                                 </button>
@@ -54,7 +54,7 @@ const Verhuuraanvragen = () => {
                                     className="btn btn-danger"
                                     onClick={() => {
                                         const reden = prompt("Geef een reden voor afwijzing:");
-                                        handelBijwerken(aanvraag.HuurverzoekID, "Afgewezen", reden);
+                                        handelBijwerken(aanvraag.HuurverzoekId, "Afgewezen", reden);
                                     }}
                                 >
                                     Afwijzen
