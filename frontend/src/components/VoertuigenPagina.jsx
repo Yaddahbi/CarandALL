@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchFilteredVoertuigen } from "../api";
-import "../voertuigenPagina.css";
+import "../style/voertuigenPagina.css";
 import VoertuigFilter from "./VoertuigFilter";
 import VoertuigWeergave from "./VoertuigWeergave";
 
