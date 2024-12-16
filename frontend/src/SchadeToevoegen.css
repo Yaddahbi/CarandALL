@@ -1,0 +1,84 @@
+/* Schadetoevoegen formulier container */
+.schadetoevoegen {
+    padding: 40px;
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Titel voor het formulier */
+.schadetoevoegen h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Formulier elementen */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Inputvelden */
+input, select {
+    padding: 12px;
+    font-size: 1.1em;
+    width: 100%;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Label voor invoervelden */
+label {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Submit-knop */
+button {
+    padding: 15px;
+    font-size: 1.2em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Hover-effect voor de submit-knop */
+button:hover {
+    background-color: #45a049;
+}
+
+/* Bericht na succesvol toevoegen of foutmelding */
+.schadetoevoegen p {
+    font-size: 1.2em;
+    color: #ff5722;
+    margin-top: 20px;
+}
+/* Zorg ervoor dat de pagina's goed weergeven op mobiele apparaten */
+@media (max-width: 768px) {
+    .options {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .options button {
+        width: 100%;
+        font-size: 1.2em;
+    }
+
+    /* Verklein de formuliervelden op kleinere schermen */
+    input, select {
+        font-size: 1em;
+    }
+
+    /* Verklein de knoppen op kleinere schermen */
+    button {
+        font-size: 1.1em;
+    }
+}

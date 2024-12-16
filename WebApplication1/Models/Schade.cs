@@ -6,9 +6,9 @@
         private string _beschrijving;
         private DateTime _datum;
         private double _kosten;
-        private string _status = "Open";
+        private string _status;
 
-        public Schade(int voertuigId, string beschrijving, DateTime datum, double kosten)
+        public Schade(int voertuigId, string beschrijving, DateTime datum, double kosten, string status = "Open")
         {
             if (string.IsNullOrWhiteSpace(beschrijving))
                 throw new ArgumentException("Beschrijving mag niet leeg zijn.");
@@ -18,11 +18,16 @@
 
             if (datum > DateTime.Now)
                 throw new ArgumentException("Datum mag niet in de toekomst liggen.");
+            
+            var allowedStatuses = new[] { "Open", "In behandeling", "Afgehandeld" };
+            if (!allowedStatuses.Contains(status))
+                throw new ArgumentException("Status moet 'Open', 'In behandeling' of 'Afgehandeld' zijn.");
 
             VoertuigId = voertuigId;
             Beschrijving = beschrijving;
             Datum = datum;
             Kosten = kosten;
+            Status = status;
         }
 
         public int SchadeId
