@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
-import Abonnementen from './components/Abonnementen'; 
+import Abonnementen from './components/Abonnementen';
+import GebruikerAanmaken from './GebruikerAanmaken';
 
 
 
@@ -64,7 +65,7 @@ const App = () => {
                     <Route path="/abonnementen" element={<Abonnementen />} />
 
                     <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/register" element={<GebruikerAanmaken />} />
                 </Routes>
             </div>
         </Router>

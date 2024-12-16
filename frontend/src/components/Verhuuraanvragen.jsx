@@ -1,26 +1,37 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import "../Verhuuraanvragen.css"
 
 const Verhuuraanvragen = () => {
     const [aanvragen, setAanvragen] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/huurverzoeken')
+        fetch('https://localhost:7040/api/Huurverzoeken')
             .then(response => response.json())
-            .then(data => setAanvragen(data));
+            .then(data => setAanvragen(data))
+            .catch(error => console.error('Fout bij ophalen aanvragen:', error));
     }, []);
 
-    const handelBijwerken = (id, status, reden) => {
-        fetch(`http://localhost:5000/api/huurverzoeken/${id}`, {
+    const handelBijwerken = (id, status, reden = "") => {
+        fetch(`https://localhost:7040/api/Huurverzoeken/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ HuurStatus: status, Afwijzingsreden: reden })
+            body: JSON.stringify({
+                huurStatus: status,
+                afwijzingsreden: reden
+            })
         })
-            .then(response => response.json())
-            .then(bijgewerktVerzoek => {
-                setAanvragen(aanvragen.map(aanvraag =>
-                    aanvraag.HuurverzoekID === id ? bijgewerktVerzoek : aanvraag
-                ));
-            });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Fout bij bijwerken aanvraag");
+            }
+            return response.json();
+        })
+        .then(bijgewerktVerzoek => {
+            // Verwijder het goedgekeurde of afgewezen verzoek uit de lijst
+            setAanvragen(aanvragen.filter(aanvraag => aanvraag.huurverzoekId !== id));
+            alert(`Aanvraag ${status === "Goedgekeurd" ? "goedgekeurd" : "afgewezen"}!`);
+        })
+        .catch(error => console.error('Fout bij bijwerken aanvraag:', error));
     };
 
     return (
@@ -29,7 +40,8 @@ const Verhuuraanvragen = () => {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Huurder</th>
+                        <th>Voertuig</th>
                         <th>Startdatum</th>
                         <th>Einddatum</th>
                         <th>Status</th>
@@ -38,27 +50,37 @@ const Verhuuraanvragen = () => {
                 </thead>
                 <tbody>
                     {aanvragen.map(aanvraag => (
-                        <tr key={aanvraag.HuurverzoekId}>
-                            <td>{aanvraag.HuurverzoekId}</td>
-                            <td>{new Date(aanvraag.Startdatum).toLocaleDateString()}</td>
-                            <td>{new Date(aanvraag.Einddatum).toLocaleDateString()}</td>
-                            <td>{aanvraag.HuurStatus}</td>
+                        <tr
+                            key={aanvraag.huurverzoekId}
+                            className={aanvraag.status === "Afgewezen" ? "table-danger" : ""}
+                        >
+                            <td>{aanvraag.huurderNaam}</td> 
+                            <td>{aanvraag.voertuigMerk} {aanvraag.voertuigType}</td> 
+                            <td>{new Date(aanvraag.startDatum).toLocaleDateString('nl-NL')}</td>
+                            <td>{new Date(aanvraag.eindDatum).toLocaleDateString('nl-NL')}</td>
+                            <td>{aanvraag.status}</td>
                             <td>
-                                <button
-                                    className="btn btn-success"
-                                    onClick={() => handelBijwerken(aanvraag.HuurverzoekId, "Goedgekeurd", "")}
-                                >
-                                    Goedkeuren
-                                </button>
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => {
-                                        const reden = prompt("Geef een reden voor afwijzing:");
-                                        handelBijwerken(aanvraag.HuurverzoekId, "Afgewezen", reden);
-                                    }}
-                                >
-                                    Afwijzen
-                                </button>
+                                {aanvraag.status !== "Goedgekeurd" && aanvraag.status !== "Afgewezen" && (
+                                    <>
+                                        <button
+                                            className="btn btn-success"
+                                            onClick={() => handelBijwerken(aanvraag.huurverzoekId, "Goedgekeurd")}
+                                        >
+                                            Goedkeuren
+                                        </button>
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => {
+                                                const reden = prompt("Geef een reden voor afwijzing:");
+                                                if (reden) {
+                                                    handelBijwerken(aanvraag.huurverzoekId, "Afgewezen", reden);
+                                                }
+                                            }}
+                                        >
+                                            Afwijzen
+                                        </button>
+                                    </>
+                                )}
                             </td>
                         </tr>
                     ))}
