@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Dto_s;
 
 namespace WebApplication1.Controllers
 {
@@ -67,7 +68,47 @@ namespace WebApplication1.Controllers
 
             return NoContent();
         }
-    
+
+        [HttpGet("geschiedenis/{huurderId}")]
+        public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis(int huurderId, [FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
+        {
+            var query = _context.Huurverzoeken
+                .Include(h => h.Voertuig)
+                .Where(h => h.HuurderId == huurderId);
+
+            if (startDatum.HasValue)
+                query = query.Where(h => h.StartDatum >= startDatum);
+
+            if (eindDatum.HasValue)
+                query = query.Where(h => h.EindDatum <= eindDatum);
+
+            if (!string.IsNullOrEmpty(voertuigType))
+                query = query.Where(h => h.Voertuig.Soort.Contains(voertuigType));
+
+            var huurGeschiedenis = await query
+                .Select(h => new HuurGeschiedenisDto
+                {
+                    HuurverzoekId = h.HuurverzoekId,
+                    StartDatum = h.StartDatum,
+                    EindDatum = h.EindDatum,
+                    VoertuigMerk = h.Voertuig.Merk,
+                    VoertuigType = h.Voertuig.Type,
+                    Kosten = h.Voertuig.Prijs * ((h.EindDatum - h.StartDatum).Days + 1),
+                    Status = h.Status,
+                    FactuurUrl = $"/facturen/{h.HuurverzoekId}.pdf"
+                })
+                .ToListAsync();
+
+            // Groepeer de verzoeken op basis van de status
+            var verzoekenGroupedByStatus = huurGeschiedenis
+                .GroupBy(h => h.Status)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            return Ok(verzoekenGroupedByStatus);
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> PostHuurverzoek(HuurverzoekDTO huurverzoekDto)
         {
