@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { voegSchadetoe } from "../api";
 import '../Schadetoevoegen.css';
 
 const SchadeToevoegen = ({ onSchadeToevoegen }) => {
@@ -14,7 +13,7 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
         const schadeData = { beschrijving, datum, kosten, status };
 
         try {
-            const newSchade = await voegSchadeToe(schadeData);
+            const newSchade = await voegSchadetoe(schadeData);
             console.log("Nieuwe schade toegevoegd:", newSchade);
             onSchadeToevoegen(newSchade); 
             setBeschrijving("");
