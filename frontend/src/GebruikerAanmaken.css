@@ -1,0 +1,77 @@
+/* Algemene container styling voor de GebruikerAanmaken-pagina */
+.container {
+    max-width: 1300px; /* Zorg ervoor dat de pagina dezelfde breedte heeft als de voertuigen-pagina */
+    margin: 0 auto; /* Center de container */
+    padding: 20px;
+    background-color: #ffffff; /* Zelfde achtergrondkleur als voertuigen-pagina */
+    color: #222222; /* Zelfde kleur als voertuigen-pagina */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Voeg wat schaduw toe zoals de voertuigen-kaart */
+    border-radius: 8px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px; /* Grootte consistent met voertuigen-pagina h2 */
+    font-weight: bold; /* Duidelijkere tekst */
+    color: #333;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%; /* Zorg ervoor dat de inputs de volle breedte van de container gebruiken */
+}
+
+    .input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+    }
+
+.button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; /* Iets grotere tekst voor de button */
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
+.success {
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+}
+

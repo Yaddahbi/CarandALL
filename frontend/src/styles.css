@@ -41,5 +41,9 @@ body {
 /* Main content area styling */
 .container {
     padding: 20px;
-      margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+    max-width: 1300px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    color: #222222;
 }

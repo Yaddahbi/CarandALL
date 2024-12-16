@@ -29,7 +29,7 @@ namespace WebApplication1.Models
 
         [Required]
         [EnumDataType(typeof(StatusType))]
-        public string Status { get; set; } 
+        public string Status { get; set; } // Beschikbaar, Verhuurd, Teruggebracht, Met Schade
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")] 
@@ -44,6 +44,6 @@ namespace WebApplication1.Models
     {
         Beschikbaar,
         InReparatie,
-        Verhuurd
+        Verhuurd,
     }
 }

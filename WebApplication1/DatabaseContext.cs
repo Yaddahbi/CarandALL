@@ -17,8 +17,8 @@ namespace WebApplication1
         public DbSet<Huurverzoek> Huurverzoeken { get; set; }
         public DbSet<Schade> Schades { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
-
-         public DbSet<Gebruiker> Gebruikers { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Gebruiker> Gebruikers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

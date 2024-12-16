@@ -3,26 +3,32 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schades";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
+const API_BASE_URL = "https://localhost:7040/api/User/register"
+const BASE_URL = "https://localhost:7040/api";
 
 export const voegGebruikerToe = async (gebruikerData) => {
-  try {
-    const response = await fetch(API_BASE_URL, {
-      method: "POST", // We gebruiken de POST-methode om nieuwe gegevens toe te voegen
-      headers: {
-        "Content-Type": "application/json", // Zorg ervoor dat de content als JSON wordt verzonden
-      },
-      body: JSON.stringify(gebruikerData), // Gegevens worden verstuurd als JSON
-    });
+    try {
+        const response = await fetch(API_BASE_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(gebruikerData),
+        });
 
-    if (!response.ok) {
-      throw new Error("Fout bij het toevoegen van een gebruiker");
+        if (!response.ok) {
+            const errorMessage = await response.text(); // Haal de tekst foutmelding op
+            throw new Error(errorMessage);
+        }
+
+        const data = await response.json(); // Verwerk JSON-response
+        return data; // Retourneer de JSON data van de API
+    } catch (error) {
+        console.error("Fout bij het versturen van gebruiker:", error);
+        throw error;
     }
-    return await response.json(); // Retourneer de response in JSON-formaat
-  } catch (error) {
-    console.error("Fout bij het versturen van gebruiker:", error);
-    throw error; // Gooi de fout opnieuw om de frontend te laten weten dat er iets mis ging
-  }
 };
+
 
 // Functie om gebruikers op te halen (optioneel gefilterd op rol)
 export const fetchGebruikers = async (filters = {}) => {
@@ -92,5 +98,32 @@ export const createHuurverzoek = async (huurverzoek) => {
   }
 
   return response.json();
+};
+
+
+export const fetchHuurgeschiedenis = async (huurderId, filters) => {
+    try {
+        const params = new URLSearchParams();
+
+        // Voeg alleen filters toe als ze een waarde hebben
+        if (filters.startDatum) params.append('startDatum', filters.startDatum);
+        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+        // Voeg voertuigType alleen toe als het niet leeg is
+        if (filters.voertuigType && filters.voertuigType !== '') {
+            params.append('voertuigType', filters.voertuigType);
+        }
+
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${huurderId}?${params.toString()}`);
+
+        if (!response.ok) {
+            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 };
 
