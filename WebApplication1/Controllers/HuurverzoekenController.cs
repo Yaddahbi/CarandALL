@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using WebApplication1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Controllers
 {
@@ -15,6 +16,23 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetAllHuurverzoeken()
+        {
+            var huurverzoeken = await _context.Huurverzoeken
+                .Include(h => h.Huurder)
+                .Include(h => h.Voertuig)
+                .ToListAsync();
+
+            if (huurverzoeken == null || huurverzoeken.Count == 0)
+            {
+                return NotFound("Geen huurverzoeken gevonden.");
+            }
+
+            return Ok(huurverzoeken);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Huurverzoek>> GetHuurverzoek(int id)
@@ -30,6 +48,26 @@ namespace WebApplication1.Controllers
         }
 
 
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateHuurverzoek(int id, [FromBody] HuurverzoekUpdateDto updateDto)
+        {
+            var huurverzoek = await _context.Huurverzoeken.FindAsync(id);
+            if (huurverzoek == null)
+            {
+                return NotFound("Huurverzoek niet gevonden.");
+            }
+            huurverzoek.Status = updateDto.Status;
+            if (updateDto.Status == "Afgewezen" && !string.IsNullOrEmpty(updateDto.Reason))
+            {
+                huurverzoek.Reason = updateDto.Reason;
+            }
+            _context.Huurverzoeken.Update(huurverzoek);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+    
         [HttpPost]
         public async Task<IActionResult> PostHuurverzoek(HuurverzoekDTO huurverzoekDto)
         {
@@ -63,6 +101,12 @@ namespace WebApplication1.Controllers
 
             return Ok(huurverzoek);
         }
-
     }
+
+    public class HuurverzoekUpdateDto
+    {
+        public string Status { get; set; }
+        public string Reden  { get; set; }
+    }
+
 }
