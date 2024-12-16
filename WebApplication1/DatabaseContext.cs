@@ -19,6 +19,9 @@ namespace WebApplication1
         public DbSet<Medewerker> Medewerkers { get; set; }
 
          public DbSet<Gebruiker> Gebruikers { get; set; }
+         public DbSet<Uitgifte> Uitgiftes { get; set; }  
+         public DbSet<Inname> Innames { get; set; } 
+         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -42,6 +45,29 @@ namespace WebApplication1
                 .HasOne(hv => hv.Voertuig)
                 .WithMany(v => v.Huurverzoeken)
                 .HasForeignKey(hv => hv.VoertuigId);
+            
+            modelBuilder.Entity<Uitgifte>()
+                .HasOne(u => u.Voertuig)
+                .WithMany(v => v.Uitgiftes)
+                .HasForeignKey(u => u.VoertuigId);
+
+            // Relatie tussen Uitgifte en Huurder
+            modelBuilder.Entity<Uitgifte>()
+                .HasOne(u => u.Huurder)
+                .WithMany(h => h.Uitgiftes)
+                .HasForeignKey(u => u.HuurderId);
+
+            // Relatie tussen Inname en Voertuig
+            modelBuilder.Entity<Inname>()
+                .HasOne(i => i.Voertuig)
+                .WithMany(v => v.Innames)
+                .HasForeignKey(i => i.VoertuigId);
+
+            // Relatie tussen Inname en Huurder
+            modelBuilder.Entity<Inname>()
+                .HasOne(i => i.Huurder)
+                .WithMany(h => h.Innames)
+                .HasForeignKey(i => i.HuurderId);
         }
     }
 }
