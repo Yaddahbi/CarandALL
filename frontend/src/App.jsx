@@ -27,9 +27,9 @@ const App = () => {
                     <Route path="/abonnementen" element={<Abonnementen />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<GebruikerAanmaken />} />
-                    <Route path="/schades" element={<SchadeLijst />} /> {/* Lijst van schades */}
-                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> {/* Schade toevoegen */}
-                    <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
+                    <Route path="/schades" element={<SchadePagina />} />
+                    <Route path="/schades/lijst" element={<SchadeLijst />} /> 
+                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> 
                 </Routes>
             </div>
         </Router>
