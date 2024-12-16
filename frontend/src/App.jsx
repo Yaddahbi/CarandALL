@@ -8,6 +8,7 @@ import GebruikerAanmaken from './GebruikerAanmaken';
 import SchadeLijst from './components/SchadeLijst';  
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
+import Huurgeschiedenis from './components/Huurgeschiedenis';
 
 
 
@@ -48,6 +49,7 @@ const FeaturesSection = () => (
 
 const App = () => {
     const isZakelijk = false; // hardcode
+    const huurderId = 1; // harcode
     return (
         <Router>
             <Navbar />
@@ -63,6 +65,7 @@ const App = () => {
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
                   
                     <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
+                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis huurderId={huurderId} />} />
 
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />

@@ -15,6 +15,7 @@ const Navbar = () => {
                     <div className="dropdown-content">
                         <Link to="/aanvraag-beheer">Aanvraag Beheer</Link>
                         <Link to="/voertuigen">Voertuigen</Link>
+                        <Link to="/Huurgeschiedenis">Huurgeschiedenis</Link>
                         <Link to="/abonnementen">Abonnementen</Link>
                         <Link to="/schades">Schades</Link>
                     </div>
