@@ -1,0 +1,35 @@
+.form-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 30px;
+    background: #fdfdfe;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    color: #495057;
+    margin-bottom: 20px;
+}
+
+button {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 12px;
+    background: #17a2b8;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: #138496;
+    transform: scale(1.05);
+}
