@@ -49,15 +49,18 @@ namespace WebApplication1.Controllers
             [FromQuery] DateTime? eindDatum = null,
             [FromQuery] string? sorteerOp = null)
         {
+            if (!startDatum.HasValue || !eindDatum.HasValue)
+            {
+                return BadRequest("Startdatum en einddatum zijn verplicht.");
+            }
+
             var query = _context.Voertuigen.AsQueryable();
 
             if (!string.IsNullOrEmpty(soort))
                 query = query.Where(v => v.Soort == soort);
 
-            if (startDatum.HasValue && eindDatum.HasValue)
-                query = query.Where(v => !_context.Huurverzoeken.Any(h =>
-                    h.VoertuigId == v.VoertuigId &&
-                    ((h.StartDatum <= eindDatum && h.EindDatum >= startDatum))));
+            query = query.Where(v => !v.Huurverzoeken.Any(h =>
+                h.StartDatum <= eindDatum && h.EindDatum >= startDatum));
 
             switch (sorteerOp)
             {
@@ -74,6 +77,7 @@ namespace WebApplication1.Controllers
 
             return await query.ToListAsync();
         }
+
 
         // PUT: api/Voertuigs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
