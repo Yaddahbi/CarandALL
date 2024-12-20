@@ -6,7 +6,7 @@ const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
 
 export const voegGebruikerToe = async (gebruikerData) => {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(USER_REGISTER_URL, {
       method: "POST", // We gebruiken de POST-methode om nieuwe gegevens toe te voegen
       headers: {
         "Content-Type": "application/json", // Zorg ervoor dat de content als JSON wordt verzonden
