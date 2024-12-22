@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
-using WebApplication1.Dto_s;
 using WebApplication1.Models;
+using Microsoft.EntityFrameworkCore;
+using WebApplication1.Dto_s;
 
 namespace WebApplication1.Controllers
 {
@@ -18,26 +18,18 @@ namespace WebApplication1.Controllers
             _context = context;
         }
 
-        // GET: api/Huurverzoeken
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HuurverzoekDto2>>> GetHuurverzoeken()
+        public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetAllHuurverzoeken()
         {
             var huurverzoeken = await _context.Huurverzoeken
                 .Include(h => h.Huurder)
                 .Include(h => h.Voertuig)
-                .Select(h => new HuurverzoekDto2
-                {
-                    HuurderId = h.HuurderId,
-                    VoertuigId = h.VoertuigId,
-                    StartDatum = h.StartDatum,
-                    EindDatum = h.EindDatum,
-                    HuurverzoekId = h.HuurverzoekId,
-                    HuurderNaam = h.Huurder.Naam,
-                    VoertuigMerk = h.Voertuig.Merk,
-                    VoertuigType = h.Voertuig.Type,
-                    Status = h.Status
-                })
                 .ToListAsync();
+
+            if (huurverzoeken == null || huurverzoeken.Count == 0)
+            {
+                return NotFound("Geen huurverzoeken gevonden.");
+            }
 
             return Ok(huurverzoeken);
         }
@@ -50,11 +42,71 @@ namespace WebApplication1.Controllers
 
             if (huurverzoek == null)
             {
-                return NotFound();
+                return NotFound("Huurverzoek niet gevonden.");
             }
 
             return huurverzoek;
         }
+
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateHuurverzoek(int id, [FromBody] HuurverzoekUpdateDto updateDto)
+        {
+            var huurverzoek = await _context.Huurverzoeken.FindAsync(id);
+            if (huurverzoek == null)
+            {
+                return NotFound("Huurverzoek niet gevonden.");
+            }
+            huurverzoek.Status = updateDto.Status;
+            if (updateDto.Status == "Afgewezen" && !string.IsNullOrEmpty(updateDto.Reden))
+            {
+                huurverzoek.Afwijzingsreden = updateDto.Reden;
+            }
+            _context.Huurverzoeken.Update(huurverzoek);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpGet("geschiedenis/{huurderId}")]
+        public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis(int huurderId, [FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
+        {
+            var query = _context.Huurverzoeken
+                .Include(h => h.Voertuig)
+                .Where(h => h.HuurderId == huurderId);
+
+            if (startDatum.HasValue)
+                query = query.Where(h => h.StartDatum >= startDatum);
+
+            if (eindDatum.HasValue)
+                query = query.Where(h => h.EindDatum <= eindDatum);
+
+            if (!string.IsNullOrEmpty(voertuigType))
+                query = query.Where(h => h.Voertuig.Soort.Contains(voertuigType));
+
+            var huurGeschiedenis = await query
+                .Select(h => new HuurGeschiedenisDto
+                {
+                    HuurverzoekId = h.HuurverzoekId,
+                    StartDatum = h.StartDatum,
+                    EindDatum = h.EindDatum,
+                    VoertuigMerk = h.Voertuig.Merk,
+                    VoertuigType = h.Voertuig.Type,
+                    Kosten = h.Voertuig.Prijs * ((h.EindDatum - h.StartDatum).Days + 1),
+                    Status = h.Status,
+                    FactuurUrl = $"/facturen/{h.HuurverzoekId}.pdf"
+                })
+                .ToListAsync();
+
+            // Groepeer de verzoeken op basis van de status
+            var verzoekenGroupedByStatus = huurGeschiedenis
+                .GroupBy(h => h.Status)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            return Ok(verzoekenGroupedByStatus);
+        }
+
 
 
         [HttpPost]
@@ -90,28 +142,12 @@ namespace WebApplication1.Controllers
 
             return Ok(huurverzoek);
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHuurverzoek(int id, [FromBody] UpdateHuurverzoekDto dto)
-        {
-            var huurverzoek = await _context.Huurverzoeken
-                .FirstOrDefaultAsync(h => h.HuurverzoekId == id);
-
-            if (huurverzoek == null)
-            {
-                return NotFound("Huurverzoek niet gevonden.");
-            }
-
-            huurverzoek.Status = dto.HuurStatus;
-
-            if (dto.HuurStatus == "Afgewezen" && !string.IsNullOrEmpty(dto.Afwijzingsreden))
-            {
-                huurverzoek.Afwijzingsreden = dto.Afwijzingsreden;
-            }
-
-            await _context.SaveChangesAsync();
-            return Ok(huurverzoek);
-        }
-
     }
+
+    public class HuurverzoekUpdateDto
+    {
+        public string Status { get; set; }
+        public string Reden  { get; set; }
+    }
+
 }

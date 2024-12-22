@@ -1,0 +1,63 @@
+/* Schadelijst container */
+.schadelijst {
+    padding: 20px;
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Titel voor de Schadelijst */
+.schadelijst h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Stijl voor de lijst van schades */
+.schadelijst ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.schadelijst li {
+    background-color: #f9f9f9;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Stijlen voor de tekst in de schade-items */
+.schadelijst li p {
+    font-size: 1.1em;
+    color: #333;
+}
+
+/* Foutmeldingen */
+.schadelijst div {
+    color: red;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+/* Zorg ervoor dat de pagina's goed weergeven op mobiele apparaten */
+@media (max-width: 768px) {
+    .options {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .options button {
+        width: 100%;
+        font-size: 1.2em;
+    }
+
+    /* Verklein de formuliervelden op kleinere schermen */
+    input, select {
+        font-size: 1em;
+    }
+
+    /* Verklein de knoppen op kleinere schermen */
+    button {
+        font-size: 1.1em;
+    }
+}
