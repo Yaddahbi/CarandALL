@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
-import GebruikerAanmaken from './GebruikerAanmaken';
 import SchadeLijst from './components/SchadeLijst';  
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
@@ -16,10 +15,6 @@ import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk';  
   
 
-
-
-const Login = () => <h1>Login Page</h1>;
-const Register = () => <h1>Register Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 const HeroSection = () => (
     <section className="hero">
