@@ -17,6 +17,7 @@ namespace WebApplication1
         public DbSet<Huurverzoek> Huurverzoeken { get; set; }
         public DbSet<Schade> Schades { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
+        public DbSet<User> Users { get; set; }
         
         public List<Schade> GetAllSchades()
         {

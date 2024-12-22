@@ -27,7 +27,7 @@ const Navbar = () => {
 
             <div className="navbar-right">
                 <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
+                <Link to="/kies-account-type">Register</Link>
             </div>
         </nav>
     );

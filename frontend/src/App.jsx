@@ -9,6 +9,12 @@ import SchadeLijst from './components/SchadeLijst';
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
+import KiesAccountType from './components/KiesAccountType';
+import Login from './components/Login';
+import RegistreerMedewerker from './components/RegistreerMedewerker';
+import RegistreerParticulier from './components/RegistreerParticulier';
+import RegistreerZakelijk from './components/RegistreerZakelijk';  
+  
 
 
 
@@ -50,12 +56,12 @@ const FeaturesSection = () => (
 const App = () => {
     const isZakelijk = false; // hardcode
     const huurderId = 1; // harcode
+  
     return (
         <Router>
             <Navbar />
             <div className="container mt-4">
                 <Routes>
-
                     <Route path="/" element={<>
                         <HeroSection />
                         <FeaturesSection />
@@ -70,15 +76,19 @@ const App = () => {
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
 
+                    {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<GebruikerAanmaken />} />
+                    <Route path="/kies-account-type" element={<KiesAccountType />} />
+                    <Route path="/registreer-particulier" element={<RegistreerParticulier />} />
+                    <Route path="/registreer-zakelijk" element={<RegistreerZakelijk />} />
+                    <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
+
                     <Route path="/schades" element={<SchadeLijst />} /> {/* Lijst van schades */}
                     <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> {/* Schade toevoegen */}
                     <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
                 </Routes>
             </div>
         </Router>
-
     );
 };
 
