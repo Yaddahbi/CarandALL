@@ -10,7 +10,6 @@ function KiesAccountType() {
             <h2>Kies een accounttype</h2>
             <button onClick={() => navigate("/registreer-particulier")}>Particulier</button>
             <button onClick={() => navigate("/registreer-zakelijk")}>Zakelijk</button>
-            <button onClick={() => navigate("/registreer-medewerker")}>Medewerker</button>
         </div>
     );
 }

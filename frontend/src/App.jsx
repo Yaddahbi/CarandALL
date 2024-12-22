@@ -8,7 +8,6 @@ import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk';
 import Verhuuraanvragen from './components/Verhuuraanvragen';
 import VoertuigenPagina from './components/VoertuigenPagina';
-import GebruikerAanmaken from './GebruikerAanmaken';
 import './styles.css';
 
 const App = () => {
@@ -24,7 +23,6 @@ const App = () => {
                     <Route path="/aanvragen" element={<Verhuuraanvragen />} />
                     <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
-                    <Route path="/register" element={<GebruikerAanmaken />} />
 
                     {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />

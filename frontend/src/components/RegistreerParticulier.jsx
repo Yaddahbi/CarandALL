@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 import "../styles/RegistreerParticulier.css";
 
 function RegistreerParticulier() {
-    const [formData, setFormData] = useState({ email: "", wachtwoord: "", volledigeNaam: "", adres: "" });
+    const [formData, setFormData] = useState({
+        rol: "Particulier",
+        naam: "",
+        email: "",
+        wachtwoord: "",
+        adres: "",
+        telefoonnummer: "",
+    });
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -13,7 +20,7 @@ function RegistreerParticulier() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("/api/account/registreer-particulier", {
+        const response = await fetch("https://localhost:7040/api/User/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -23,9 +30,15 @@ function RegistreerParticulier() {
             alert("Account succesvol aangemaakt!");
             navigate("/login");
         } else {
-            alert("Er is iets fout gegaan.");
+            const data = await response.json();
+            if (data.errors) {
+                alert(`Fouten: ${data.errors.join(", ")}`);
+            } else {
+                alert("Er is iets fout gegaan.");
+            }
         }
     };
+
 
     return (
         <div className="form-container">
@@ -38,10 +51,13 @@ function RegistreerParticulier() {
                 <input type="password" name="wachtwoord" onChange={handleChange} required />
 
                 <label>Volledige Naam:</label>
-                <input type="text" name="volledigeNaam" onChange={handleChange} required />
+                <input type="text" name="naam" onChange={handleChange} required />
 
                 <label>Adres:</label>
                 <input type="text" name="adres" onChange={handleChange} required />
+
+                <label>Telefoonnummer:</label>
+                <input type="text" name="telefoonnummer" onChange={handleChange} required />
 
                 <button type="submit">Account aanmaken</button>
             </form>
