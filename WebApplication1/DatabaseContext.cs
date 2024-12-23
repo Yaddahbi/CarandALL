@@ -10,7 +10,7 @@ namespace WebApplication1
             : base(options)
         {
         }
-        public DbSet<Huurder> Huurders { get; set; }
+        //public DbSet<Huurder> Huurders { get; set; }
         public DbSet<Bedrijf> Bedrijven { get; set; }
         public DbSet<Voertuig> Voertuigen { get; set; }
         public DbSet<Abonnement> Abonnementen { get; set; }
@@ -65,15 +65,15 @@ namespace WebApplication1
                 .WithOne(a => a.Bedrijf)
                 .HasForeignKey<Abonnement>(a => a.BedrijfId);
 
-            modelBuilder.Entity<Huurder>()
-                .HasOne(h => h.Bedrijf)
-                .WithMany(b => b.Werknemers)
-                .HasForeignKey(h => h.BedrijfId);
+            //modelBuilder.Entity<Huurder>()
+              //  .HasOne(h => h.Bedrijf)
+               // .WithMany(b => b.Werknemers)
+               // .HasForeignKey(h => h.BedrijfId);
 
             modelBuilder.Entity<Huurverzoek>()
-                .HasOne(hv => hv.Huurder)
+                .HasOne(hv => hv.User)
                 .WithMany(h => h.Huurverzoeken)
-                .HasForeignKey(hv => hv.HuurderId);
+                .HasForeignKey(hv => hv.UserId);
 
             modelBuilder.Entity<Huurverzoek>()
                 .HasOne(hv => hv.Voertuig)

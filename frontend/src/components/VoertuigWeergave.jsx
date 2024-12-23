@@ -20,11 +20,12 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
 
     const handleHuurverzoek = async (huurverzoekData) => {
         try {
-            await createHuurverzoek({ ...huurverzoekData, huurderId: 1 });
+            await createHuurverzoek({ ...huurverzoekData, userId: "642f2dac-615f-4700-b088-10990e8d1d39" });
             alert("Huurverzoek succesvol aangemaakt!");
             setGeselecteerdVoertuig(null);
         } catch (err) {
-            alert("Voertuig is niet beschikbaar in deze periode.");
+            console.error("Fout bij maken huurverzoek:", err);
+            alert(`Er ging iets fout: ${err.message}`);
             setError(err.message);
         }
     };

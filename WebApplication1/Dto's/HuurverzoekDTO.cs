@@ -2,7 +2,7 @@
 {
     public class HuurverzoekDTO
     {
-        public int HuurderId { get; set; }
+        public string UserId { get; set; }
         public int VoertuigId { get; set; }
         public DateTime StartDatum { get; set; }
         public DateTime EindDatum { get; set; }

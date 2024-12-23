@@ -146,7 +146,7 @@ export const createHuurverzoek = async (huurverzoek) => {
   return response.json();
 };
 
-export const fetchHuurgeschiedenis = async (huurderId, filters) => {
+export const fetchHuurgeschiedenis = async (userId, filters) => {
     try {
         const params = new URLSearchParams();
 
@@ -159,7 +159,7 @@ export const fetchHuurgeschiedenis = async (huurderId, filters) => {
             params.append('voertuigType', filters.voertuigType);
         }
 
-        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${huurderId}?${params.toString()}`);
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${userId}?${params.toString()}`);
 
         if (!response.ok) {
             throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);

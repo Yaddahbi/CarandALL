@@ -22,7 +22,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetAllHuurverzoeken()
         {
             var huurverzoeken = await _context.Huurverzoeken
-                .Include(h => h.Huurder)
+                .Include(h => h.User)
                 .Include(h => h.Voertuig)
                 .ToListAsync();
 
@@ -69,12 +69,12 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        [HttpGet("geschiedenis/{huurderId}")]
-        public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis(int huurderId, [FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
+        [HttpGet("geschiedenis/{userId}")]
+        public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis(string userId, [FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
         {
             var query = _context.Huurverzoeken
                 .Include(h => h.Voertuig)
-                .Where(h => h.HuurderId == huurderId);
+                .Where(h => h.UserId.Equals(userId));
 
             if (startDatum.HasValue)
                 query = query.Where(h => h.StartDatum >= startDatum);
@@ -130,7 +130,7 @@ namespace WebApplication1.Controllers
 
             var huurverzoek = new Huurverzoek
             {
-                HuurderId = huurverzoekDto.HuurderId,
+                UserId = huurverzoekDto.UserId,
                 VoertuigId = huurverzoekDto.VoertuigId,
                 StartDatum = huurverzoekDto.StartDatum,
                 EindDatum = huurverzoekDto.EindDatum,

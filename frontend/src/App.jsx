@@ -50,7 +50,7 @@ const FeaturesSection = () => (
 
 const App = () => {
     const isZakelijk = false; // hardcode
-    const huurderId = 1; // harcode
+    const huurderId = "642f2dac-615f-4700-b088-10990e8d1d39"; // harcode
   
     return (
         <Router>
