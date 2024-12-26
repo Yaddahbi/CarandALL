@@ -3,8 +3,12 @@ import { fetchFilteredVoertuigen } from "../api";
 import "../style/voertuigenPagina.css";
 import VoertuigFilter from "./VoertuigFilter";
 import VoertuigWeergave from "./VoertuigWeergave";
+import { useAuth } from "../AuthContext";
 
-const VoertuigenPagina = ({ isZakelijk }) => {
+
+const VoertuigenPagina = () => {
+    const { user } = useAuth();
+    const isZakelijk = user?.role === "Zakelijk";
     const [voertuigen, setVoertuigen] = useState([]);
     const [filters, setFilters] = useState({
         soort: isZakelijk ? "Auto" : "",

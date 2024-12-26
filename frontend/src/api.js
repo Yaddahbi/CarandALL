@@ -130,24 +130,35 @@ export const deleteSchade = async (id) => {
 };
 
 export const createHuurverzoek = async (huurverzoek) => {
-  const response = await fetch(HUURVERZOEK_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(huurverzoek),
-  });
+    const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+    if (!token) {
+        throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+    }
+    const response = await fetch(HUURVERZOEK_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Voeg het token toe in de header
+        },
+        body: JSON.stringify(huurverzoek),
+    });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
-  }
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error);
+    }
 
-  return response.json();
+    return response.json();
 };
 
-export const fetchHuurgeschiedenis = async (userId, filters) => {
+
+export const fetchHuurgeschiedenis = async (filters) => {
     try {
+        const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+        if (!token) {
+            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+        }
+
         const params = new URLSearchParams();
 
         // Voeg alleen filters toe als ze een waarde hebben
@@ -159,7 +170,12 @@ export const fetchHuurgeschiedenis = async (userId, filters) => {
             params.append('voertuigType', filters.voertuigType);
         }
 
-        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${userId}?${params.toString()}`);
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${token}`, // Voeg het JWT-token toe in de header
+            },
+        });
 
         if (!response.ok) {
             throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
@@ -171,4 +187,5 @@ export const fetchHuurgeschiedenis = async (userId, filters) => {
         throw error;
     }
 };
+
 

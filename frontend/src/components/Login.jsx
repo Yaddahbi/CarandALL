@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import { useAuth } from "../AuthContext";
 
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
@@ -21,7 +23,10 @@ function Login() {
         });
 
         if (response.ok) {
+            const data = await response.json();
+            login({ email: formData.email, role: data.role });
             alert("Inloggen succesvol!");
+            localStorage.setItem('jwtToken', data.token);
             navigate("/");
         } else {
             const errorData = await response.json();
