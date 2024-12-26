@@ -1,10 +1,13 @@
 import { useState } from "react";
 import VoertuigFormulier from "./VoertuigFormulier";
 import { createHuurverzoek } from "../api";
+import { useAuth } from "../AuthContext";
 
 const VoertuigWeergave = ({ voertuigen, filters }) => {
     const [geselecteerdVoertuig, setGeselecteerdVoertuig] = useState(null);
     const [error, setError] = useState(null);
+    const { user } = useAuth();
+    const userId = user?.id;
 
     const handleVoertuigKlik = (voertuig) => {
         setGeselecteerdVoertuig({
@@ -20,17 +23,18 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
 
     const handleHuurverzoek = async (huurverzoekData) => {
         try {
-            await createHuurverzoek({ ...huurverzoekData, huurderId: 1 });
+            await createHuurverzoek({ ...huurverzoekData, userId: {userId} });
             alert("Huurverzoek succesvol aangemaakt!");
             setGeselecteerdVoertuig(null);
         } catch (err) {
-            alert("Voertuig is niet beschikbaar in deze periode.");
+            console.error("Fout bij maken huurverzoek:", err);
+            alert(`Er ging iets fout: ${err.message}`);
             setError(err.message);
         }
     };
 
     if (!voertuigen.length) {
-        return <p>Geen voertuigen gevonden</p>;
+        return <p>Voertuigen worden geladen...</p>;
     }
 
     return (

@@ -1,7 +1,12 @@
 ﻿
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using WebApplication1.Dto_s;
 using WebApplication1.Models;
@@ -83,11 +88,6 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(new { errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)) });
-        }
-
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
         if (user == null)
         {
@@ -95,12 +95,45 @@ public class UserController : ControllerBase
         }
 
         var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
-        if (result.Succeeded)
+        if (!result.Succeeded)
         {
-            return Ok(new { message = "Inloggen succesvol." });
+            return Unauthorized(new { error = "Ongeldige inloggegevens." });
         }
 
-        return Unauthorized(new { error = "Ongeldige inloggegevens." });
+        // Claims voor JWT-token
+        var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id), // Gebruikers ID
+        new Claim(ClaimTypes.Role, user.Rol) // Rol van de gebruiker
+    };
+
+        // Secret key en JWT-instellingen
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JouwGeheimeSleutelVoorDeWebsiteProject123")); // Gebruik een geheime sleutel
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        // Maak een JWT-token aan
+        var token = new JwtSecurityToken(
+            issuer: "your_issuer", // Zet een geldige issuer in
+            audience: "your_audience", // Zet een geldige audience in
+            claims: claims,
+            expires: DateTime.Now.AddHours(1), // Geldigheidstijd
+            signingCredentials: creds
+        );
+
+        // Genereer de token als string
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+        // Return de token naar de frontend
+        return Ok(new { message = "Inloggen succesvol.", token = tokenString, role = user.Rol });
     }
+
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync();
+        return Ok(new { message = "Uitloggen succesvol." });
+    }
+
 }
 

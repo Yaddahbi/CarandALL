@@ -13,6 +13,7 @@ import Login from './components/Login';
 import RegistreerMedewerker from './components/RegistreerMedewerker';
 import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk';  
+import { AuthProvider } from "./AuthContext";
   
 
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
@@ -49,10 +50,10 @@ const FeaturesSection = () => (
 );
 
 const App = () => {
-    const isZakelijk = false; // hardcode
-    const huurderId = 1; // harcode
+    
   
     return (
+        <AuthProvider>
         <Router>
             <Navbar />
             <div className="container mt-4">
@@ -65,8 +66,8 @@ const App = () => {
 
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
                   
-                    <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
-                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis huurderId={huurderId} />} />
+                    <Route path="/voertuigen" element={<VoertuigenPagina />} />
+                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis />} />
 
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
@@ -83,7 +84,8 @@ const App = () => {
                     <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
                 </Routes>
             </div>
-        </Router>
+            </Router>
+        </AuthProvider>
     );
 };
 
