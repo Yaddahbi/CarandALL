@@ -28,28 +28,6 @@ const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
     return (
         <div className="voertuigen-filters">
             <div className="filter-item">
-                <label htmlFor="soort">Soort:</label>
-                <select
-                    name="soort"
-                    id="soort"
-                    value={filters.soort}
-                    onChange={handleFilterChange}
-                    disabled={isZakelijk}
-                    aria-label="Kies voertuigsoort"
-                >
-                    {isZakelijk ? (
-                        <option value="Auto">Auto</option>
-                    ) : (
-                        <>
-                            <option value="">Alle</option>
-                            <option value="Auto">Auto</option>
-                            <option value="Camper">Camper</option>
-                            <option value="Caravan">Caravan</option>
-                        </>
-                    )}
-                </select>
-            </div>
-            <div className="filter-item">
                 <label htmlFor="startDatum">Startdatum:</label>
                 <input
                     type="date"
@@ -70,6 +48,28 @@ const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
                     onChange={handleFilterChange}
                     aria-label="Selecteer einddatum"
                 />
+            </div>
+            <div className="filter-item">
+                <label htmlFor="soort">Soort:</label>
+                <select
+                    name="soort"
+                    id="soort"
+                    value={filters.soort}
+                    onChange={handleFilterChange}
+                    disabled={isZakelijk}
+                    aria-label="Kies voertuigsoort"
+                >
+                    {isZakelijk ? (
+                        <option value="Auto">Auto</option>
+                    ) : (
+                        <>
+                            <option value="">Alle</option>
+                            <option value="Auto">Auto</option>
+                            <option value="Camper">Camper</option>
+                            <option value="Caravan">Caravan</option>
+                        </>
+                    )}
+                </select>
             </div>
             <div className="filter-item">
                 <label htmlFor="sorteerOp">Sorteer op:</label>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+    import { useState, useEffect } from "react";
 import '../style/Verhuuraanvraag.css';
 import VerhuuraanvraagLijst from "./VerhuuraanvraagLijst";
 import VerhuuraanvraagDetails from "./VerhuuraanvraagDetails";
@@ -12,7 +12,7 @@ const Verhuuraanvraag = () => {
     useEffect(() => {
         const fetchAanvragen = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/huurverzoeken");
+                const response = await fetch("https://localhost:7040/api/Huurverzoeken");
                 if (response.ok) {
                     const data = await response.json();
                     setAanvragen(data);
@@ -29,7 +29,7 @@ const Verhuuraanvraag = () => {
 
     const updateAanvraag = async (id, actie, reden = '') => {
         try {
-            const response = await fetch(`http://localhost:5000/api/huurverzoeken/${id}`, {
+            const response = await fetch(`https://localhost:7040/api/Huurverzoeken/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

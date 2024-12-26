@@ -51,7 +51,6 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
                         <p>Kleur: {voertuig.kleur}</p>
                         <p>Aanschafjaar: {voertuig.aanschafjaar}</p>
                         <p>Prijs per dag: €{voertuig.prijs}</p>
-                        <p>Status: {voertuig.status}</p>
                         <button className = "huur-button" onClick={() => handleVoertuigKlik(voertuig)}>
                             Huur voertuig
                         </button>
