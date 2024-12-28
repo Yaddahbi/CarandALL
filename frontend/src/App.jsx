@@ -74,14 +74,16 @@ const App = () => {
 
                     {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />
+                   
+                    <Route path="/schades" element={<SchadePagina />} />
+                    <Route path="/schades/lijst" element={<SchadeLijst />} /> 
+                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> 
+
                     <Route path="/kies-account-type" element={<KiesAccountType />} />
                     <Route path="/registreer-particulier" element={<RegistreerParticulier />} />
                     <Route path="/registreer-zakelijk" element={<RegistreerZakelijk />} />
                     <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
-
-                    <Route path="/schades" element={<SchadeLijst />} /> {/* Lijst van schades */}
-                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> {/* Schade toevoegen */}
-                    <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
+                    
                 </Routes>
             </div>
             </Router>
