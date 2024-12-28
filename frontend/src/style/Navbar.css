@@ -1,19 +1,22 @@
-/* Gradient background styling for navbar */
 .navbar {
-    background: linear-gradient(to right, black, grey);
+    width: 100%;
+    background-color: transparent;
+    position: absolute;
+    z-index: 10;
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
-    position: sticky;
     top: 0;
     z-index: 1000;
+      
 }
+
 
 /* Logo styling */
 .logo {
-    
+    margin-right: 10px;
 }
 
 /* Dropdown menu styling */
@@ -58,6 +61,11 @@
     text-decoration: underline;
 }
 
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
 /* Login/Register links styling */
 .navbar-right a {
     color: white;
@@ -79,7 +87,7 @@
     }
 
     .navbar-right a:hover::after {
-        width: 100%; /* Expand the underline on hover */
+        width: 100%; 
     }
 /* Responsive navbar for small screens */
 @media (max-width: 768px) {

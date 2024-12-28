@@ -1,10 +1,11 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
+const BASE_URL = "https://localhost:7040/api";
 
 export const voegGebruikerToe = async (gebruikerData) => {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(USER_REGISTER_URL, {
       method: "POST", // We gebruiken de POST-methode om nieuwe gegevens toe te voegen
       headers: {
         "Content-Type": "application/json", // Zorg ervoor dat de content als JSON wordt verzonden
@@ -129,19 +130,62 @@ export const deleteSchade = async (id) => {
 };
 
 export const createHuurverzoek = async (huurverzoek) => {
-  const response = await fetch(HUURVERZOEK_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(huurverzoek),
-  });
+    const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+    if (!token) {
+        throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+    }
+    const response = await fetch(HUURVERZOEK_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Voeg het token toe in de header
+        },
+        body: JSON.stringify(huurverzoek),
+    });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
-  }
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error);
+    }
 
-  return response.json();
+    return response.json();
 };
+
+
+export const fetchHuurgeschiedenis = async (filters) => {
+    try {
+        const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+        if (!token) {
+            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+        }
+
+        const params = new URLSearchParams();
+
+        // Voeg alleen filters toe als ze een waarde hebben
+        if (filters.startDatum) params.append('startDatum', filters.startDatum);
+        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+        // Voeg voertuigType alleen toe als het niet leeg is
+        if (filters.voertuigType && filters.voertuigType !== '') {
+            params.append('voertuigType', filters.voertuigType);
+        }
+
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${token}`, // Voeg het JWT-token toe in de header
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 

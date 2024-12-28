@@ -1,10 +1,19 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import { Link, useNavigate } from 'react-router-dom';
+import '../style/Navbar.css';
 import { FaBars } from 'react-icons/fa';
+import { useAuth } from "../AuthContext";
 
 const Navbar = () => {
+
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/'); // Navigeer naar de homepagina
+    };
     return (
         <nav className="navbar">
             <div className="navbar-left">
@@ -13,19 +22,45 @@ const Navbar = () => {
                         <FaBars size={20} /> {/* Dropdown menu*/}
                     </button>
                     <div className="dropdown-content">
-                        <Link to="/aanvragen">Aanvragen</Link>
-                        <Link to="/voertuigen">Voertuigen</Link>
-                        <Link to="/abonnementen">Abonnementen</Link>
-                        <Link to="/schades">Schades</Link>
+                        {user && user.role === "FrontOfficeMedewerker" && (
+                            <>
+                                
+                            </>
+                        )}
+                        {user && user.role === "BackOfficeMedewerker" && (
+                            <>
+                                <Link to="/aanvraag-beheer">Aanvragen</Link>
+                                <Link to="/schades">Schades</Link>
+                         
+                            </>
+                        )}
+                        {user && (user.role === "Particulier" || user.role === "Zakelijk") && (
+                            <>
+                                <Link to="/voertuigen">Voertuigen</Link>
+                                <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
+                            </>
+                        )}
+                        {user && user.role === "ZakelijkeKlant" && (
+                            <>
+                                <Link to="/abonnementen">Abonnementen</Link>
+                            </>
+                        )}
                     </div>
                 </div>
-            </div>
             <div className="logo">
-                <Link to="/">Car and All</Link>
+                <Link to="/">Car And All</Link>{/* Logo text */}
+                </div>
             </div>
+
             <div className="navbar-right">
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
+                {!user ? (
+                    <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/kies-account-type">Register</Link>
+                    </>
+                ) : (
+                    <button onClick={handleLogout}>Logout</button>
+                )}
             </div>
         </nav>
     );
