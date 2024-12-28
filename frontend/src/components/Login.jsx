@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import { useAuth } from "../AuthContext";
-
+import { toast } from 'sonner';
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
@@ -25,11 +25,16 @@ function Login() {
         if (response.ok) {
             const data = await response.json();
             login({ email: formData.email, role: data.role });
-            alert("Inloggen succesvol!");
+            toast('Inloggen succesvol!', {
+                type: 'success',
+            })
             localStorage.setItem('jwtToken', data.token);
             navigate("/");
         } else {
             const errorData = await response.json();
+            toast('Ongeldige inloggegevens', {
+                type: 'error',
+            })
             setError(errorData.error || "Ongeldige inloggegevens.");
         }
     };
@@ -58,7 +63,7 @@ function Login() {
 
                 <button type="submit">Inloggen</button>
             </form>
-            {error && <p className="error">{error}</p>}
+            { /*} {error && <p className="error">{error}</p>} { */}
             <p>
                 Nog geen account? <a onClick={() => navigate("/kies-account-type")}>Account aanmaken</a>
             </p>

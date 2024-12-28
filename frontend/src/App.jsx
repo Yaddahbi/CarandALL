@@ -14,6 +14,7 @@ import RegistreerMedewerker from './components/RegistreerMedewerker';
 import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk';  
 import { AuthProvider } from "./AuthContext";
+import { Toaster } from 'sonner';
   
 
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
@@ -55,6 +56,7 @@ const App = () => {
     return (
         <AuthProvider>
         <Router>
+                <Toaster position="top-center" richColors /> 
             <Navbar />
             <div className="container mt-4">
                 <Routes>

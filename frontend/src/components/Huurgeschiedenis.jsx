@@ -44,44 +44,45 @@ const Huurgeschiedenis = () => {
                 <div className="container huurgeschiedenis">
                     <h1>Mijn Huurgeschiedenis</h1>
                     <p>Bekijk en beheer je gehuurde voertuigen en aanvragen.</p>
-                    <div className="huurgeschiedenis-filters">
-                        <label>
-                            Startdatum:
-                            <input
-                                type="date"
-                                name="startDatum"
-                                value={filters.startDatum}
-                                onChange={handleFilterChange}
-                            />
-                        </label>
-                        <label>
-                            Einddatum:
-                            <input
-                                type="date"
-                                name="eindDatum"
-                                value={filters.eindDatum}
-                                onChange={handleFilterChange}
-                            />
-                        </label>
-                        <label>
-                            Voertuigtype:
-                            <select
-                                name="voertuigType"
-                                value={filters.voertuigType}
-                                onChange={handleFilterChange}
-                            >
-                                {voertuigTypen.map((type) => (
-                                    <option key={type} value={type}>
-                                        {type}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                    </div>
+                    
                 </div>
             </section>
 
             {/* Gegevensweergave */}
+            <div className="huurgeschiedenis-filters">
+                <label>
+                    Startdatum:
+                    <input
+                        type="date"
+                        name="startDatum"
+                        value={filters.startDatum}
+                        onChange={handleFilterChange}
+                    />
+                </label>
+                <label>
+                    Einddatum:
+                    <input
+                        type="date"
+                        name="eindDatum"
+                        value={filters.eindDatum}
+                        onChange={handleFilterChange}
+                    />
+                </label>
+                <label>
+                    Voertuigtype:
+                    <select
+                        name="voertuigType"
+                        value={filters.voertuigType}
+                        onChange={handleFilterChange}
+                    >
+                        {voertuigTypen.map((type) => (
+                            <option key={type} value={type}>
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
             <div className="huurgeschiedenis-container">
                 {loading ? (
                     <p>Gegevens worden geladen...</p>
@@ -127,7 +128,55 @@ const Huurgeschiedenis = () => {
                                 </table>
                             </>
                         )}
-                        {/* Overige tabellen */}
+                                {/* In afwachting verzoeken */}
+                                {huurgeschiedenis['In afwachting'] && huurgeschiedenis['In afwachting'].length > 0 && (
+                                    <>
+                                        <h3>In Afwachting Verzoeken</h3>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Huurperiode</th>
+                                                    <th>Voertuig</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {huurgeschiedenis['In afwachting'].map((item) => (
+                                                    <tr key={item.huurverzoekId}>
+                                                        <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
+                                                        <td>{item.voertuigMerk} ({item.voertuigType})</td>
+                                                        <td>{item.status}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </>
+                                )}
+
+                                {/* Afgewezen verzoeken */}
+                                {huurgeschiedenis['Afgewezen'] && huurgeschiedenis['Afgewezen'].length > 0 && (
+                                    <>
+                                        <h3>Afgewezen Verzoeken</h3>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Huurperiode</th>
+                                                    <th>Voertuig</th>
+                                                    <th>Reden van Afwijzing</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {huurgeschiedenis['Afgewezen'].map((item) => (
+                                                    <tr key={item.huurverzoekId}>
+                                                        <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
+                                                        <td>{item.voertuigMerk} ({item.voertuigType})</td>
+                                                        <td>{item.afwijzingsreden}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </>
+                                )}
                     </div>
                 )}
             </div>

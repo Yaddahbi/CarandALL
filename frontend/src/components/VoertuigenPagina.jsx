@@ -38,14 +38,35 @@ const VoertuigenPagina = () => {
             {/* Hero-sectie */}
             <section className="voertuigen-hero">
                 <div className="container voertuigen">
-                    <h1>Voertuigen</h1>
+                    <h1>CarAndAll Voertuigen</h1>
                     <p>Vind en huur het voertuig dat het beste bij je behoeften past.</p>
-                    <VoertuigFilter filters={filters} setFilters={setFilters} isZakelijk={isZakelijk} />
+                    {ontbrekendeDatums && (
+                        <div className="datum-waarschuwing1">
+                            <p>Voer een start- en einddatum in om beschikbare voertuigen te zien.</p>
+                        </div>
+                    )}
+                    <div className="datum-filters">
+                        <VoertuigFilter
+                            filters={filters}
+                            setFilters={setFilters}
+                            isZakelijk={isZakelijk}
+                            filterType="datum"
+                        />
+                    </div>
                 </div>
             </section>
 
             {/* Gegevensweergave */}
             <div className="voertuigen-weergave-container">
+                <div className="overige-filters">
+                    <VoertuigFilter
+                        filters={filters}
+                        setFilters={setFilters}
+                        isZakelijk={isZakelijk}
+                        filterType="overige"
+                    />
+                </div>
+
                 {ontbrekendeDatums && (
                     <div className="datum-waarschuwing">
                         <p>Voer een start- en einddatum in om beschikbare voertuigen te zien.</p>

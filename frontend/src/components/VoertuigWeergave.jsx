@@ -2,6 +2,7 @@ import { useState } from "react";
 import VoertuigFormulier from "./VoertuigFormulier";
 import { createHuurverzoek } from "../api";
 import { useAuth } from "../AuthContext";
+import { toast } from 'sonner';
 
 const VoertuigWeergave = ({ voertuigen, filters }) => {
     const [geselecteerdVoertuig, setGeselecteerdVoertuig] = useState(null);
@@ -24,11 +25,16 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
     const handleHuurverzoek = async (huurverzoekData) => {
         try {
             await createHuurverzoek({ ...huurverzoekData, userId: {userId} });
-            alert("Huurverzoek succesvol aangemaakt!");
+            toast(`Huurverzoek succesvol aangemaakt!`, {
+                description: 'Check de status in uw huurgeschiedenis.',
+                type: 'succes',
+            }) 
             setGeselecteerdVoertuig(null);
         } catch (err) {
             console.error("Fout bij maken huurverzoek:", err);
-            alert(`Er ging iets fout: ${err.message}`);
+            toast(`Er ging iets fout: ${err.message}`, {
+                type: 'error',
+            }) 
             setError(err.message);
         }
     };
@@ -39,7 +45,6 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
 
     return (
         <div className="voertuigen-weergave">
-            <h3>Beschikbare Voertuigen</h3>
             <div className="voertuigen-grid">
                 {voertuigen.map((voertuig) => (
                     <div className="voertuigen-kaart" key={voertuig.voertuigId} role="article">

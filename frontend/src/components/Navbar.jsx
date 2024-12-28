@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../style/Navbar.css';
 import { FaBars } from 'react-icons/fa';
 import { useAuth } from "../AuthContext";
-
+import { toast } from 'sonner';
 const Navbar = () => {
 
     const { user, logout } = useAuth();
@@ -12,6 +12,9 @@ const Navbar = () => {
 
     const handleLogout = () => {
         logout();
+        toast('U bent uitgelogd.', {
+            type: 'info',
+        })
         navigate('/'); // Navigeer naar de homepagina
     };
     return (

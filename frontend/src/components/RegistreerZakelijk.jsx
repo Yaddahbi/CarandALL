@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RegistreerZakelijk.css";
-
+import { toast } from 'sonner';
 function RegistreerZakelijk() {
     const [formData, setFormData] = useState({
         rol: "Zakelijk",
@@ -29,14 +29,21 @@ function RegistreerZakelijk() {
         });
 
         if (response.ok) {
-            alert("Account succesvol aangemaakt!");
+            toast(`Account succesvol aangemaakt!`, {
+                description: 'U kunt nu inloggen.',
+                type: 'succes',
+            }) 
             navigate("/login");
         } else {
             const data = await response.json();
             if (data.errors) {
-                alert(`Fouten: ${data.errors.join(", ")}`);
+                toast(`Fouten: ${data.errors.join(", ")}`, {
+                    type: 'error',
+                })
             } else {
-                alert("Er is iets fout gegaan.");
+                toast(`Er is iets fout gegaan`, {
+                    type: 'error',
+                }) 
             }
         }
     };
