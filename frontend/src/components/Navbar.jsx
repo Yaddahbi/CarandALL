@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../style/Navbar.css';
@@ -62,7 +61,7 @@ const Navbar = () => {
                         <Link to="/kies-account-type">Register</Link>
                     </>
                 ) : (
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className = "button-logout" onClick={handleLogout}>Logout -></button>
                 )}
             </div>
         </nav>

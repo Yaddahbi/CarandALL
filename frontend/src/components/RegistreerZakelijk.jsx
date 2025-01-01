@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RegistreerZakelijk.css";
-import { toast } from 'sonner';
+import { toast } from "sonner";
+
 function RegistreerZakelijk() {
     const [formData, setFormData] = useState({
         rol: "Zakelijk",
@@ -12,7 +13,9 @@ function RegistreerZakelijk() {
         telefoonnummer: "",
         bedrijfsNaam: "",
         kvkNummer: "",
+        abonnementType: "PayAsYouGo", // default waarde
     });
+
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -29,30 +32,29 @@ function RegistreerZakelijk() {
         });
 
         if (response.ok) {
-            toast(`Account succesvol aangemaakt!`, {
-                description: 'U kunt nu inloggen.',
-                type: 'succes',
-            }) 
+            toast(`Bedrijfsaccount succesvol aangemaakt!`, {
+                description: "U kunt nu inloggen.",
+                type: "success",
+            });
             navigate("/login");
         } else {
             const data = await response.json();
             if (data.errors) {
                 toast(`Fouten: ${data.errors.join(", ")}`, {
-                    type: 'error',
-                })
+                    type: "error",
+                });
             } else {
-                toast(`Er is iets fout gegaan`, {
-                    type: 'error',
-                }) 
+                toast("Er is iets fout gegaan", {
+                    type: "error",
+                });
             }
         }
     };
 
-
     return (
         <div className="form-container">
             <h2>Registreer Zakelijk</h2>
-            <form className = "form-display" onSubmit={handleSubmit}>
+            <form className="form-display" onSubmit={handleSubmit}>
                 <label>E-mail:</label>
                 <input type="email" name="email" onChange={handleChange} required />
 
@@ -73,6 +75,12 @@ function RegistreerZakelijk() {
 
                 <label>KVK-nummer:</label>
                 <input type="text" name="kvkNummer" onChange={handleChange} required />
+
+                <label>Abonnementstype:</label>
+                <select name="abonnementType" onChange={handleChange} required>
+                    <option value="PayAsYouGo">Pay-As-You-Go</option>
+                    <option value="Prepaid">Prepaid</option>
+                </select>
 
                 <button type="submit">Account aanmaken</button>
             </form>

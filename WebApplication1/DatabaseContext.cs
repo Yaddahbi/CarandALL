@@ -60,10 +60,10 @@ namespace WebApplication1
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Bedrijf>()
-                .HasOne(b => b.Abonnement)
-                .WithOne(a => a.Bedrijf)
-                .HasForeignKey<Abonnement>(a => a.BedrijfId);
+           // modelBuilder.Entity<Bedrijf>()
+              //  .HasOne(b => b.Abonnement)
+               // .WithOne(a => a.Bedrijf)
+               // .HasForeignKey<Abonnement>(a => a.BedrijfId);
 
             //modelBuilder.Entity<Huurder>()
               //  .HasOne(h => h.Bedrijf)
