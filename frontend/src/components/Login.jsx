@@ -29,6 +29,7 @@ function Login() {
                 type: 'success',
             })
             localStorage.setItem('jwtToken', data.token);
+            localStorage.setItem('userEmail', formData.email); 
             navigate("/");
         } else {
             const errorData = await response.json();
