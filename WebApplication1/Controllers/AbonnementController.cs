@@ -54,6 +54,36 @@ namespace WebApplication1.Controllers
 
             return Ok(medewerkers);
         }
+        [Authorize]
+        [HttpGet("details")]
+        public async Task<IActionResult> GetAbonnementDetails()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var abonnementId = User.FindFirst("AbonnementId")?.Value;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(abonnementId))
+            {
+                return Unauthorized(new { error = "Gebruiker of abonnement niet geauthenticeerd." });
+            }
+
+            var abonnement = await _context.Abonnementen
+                .Where(a => a.Id == int.Parse(abonnementId))
+                .Select(a => new
+                {
+                    a.MaxMedewerkers,
+                    a.AbonnementType,
+                    a.BedrijfsDomein
+                })
+                .FirstOrDefaultAsync();
+
+            if (abonnement == null)
+            {
+                return NotFound(new { message = "Abonnement niet gevonden." });
+            }
+
+            return Ok(abonnement);
+        }
+
 
 
         [HttpPost("create")]
