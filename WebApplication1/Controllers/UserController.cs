@@ -1,6 +1,7 @@
 ﻿
 using Humanizer;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ namespace WebApplication1.Controllers
             // Valideer op basis van de rol
             switch (userDto.Rol)
             {
-                case "Zakelijk":
+                case "ZakelijkeKlant":
                     if (string.IsNullOrWhiteSpace(userDto.BedrijfsNaam) || string.IsNullOrWhiteSpace(userDto.KvkNummer))
                     {
                         return BadRequest(new { errors = new[] { "Zakelijke gebruikers moeten BedrijfsNaam en KvkNummer invullen." } });
@@ -77,7 +78,7 @@ namespace WebApplication1.Controllers
             if (result.Succeeded)
             {
                 // Indien Zakelijk, maak een abonnement aan en koppel het
-                if (userDto.Rol == "Zakelijk")
+                if (userDto.Rol == "ZakelijkeKlant")
                 {
                     var abonnement = new Abonnement
                     {
@@ -123,12 +124,14 @@ namespace WebApplication1.Controllers
             {
                 return Unauthorized(new { error = "Ongeldige inloggegevens." });
             }
+            var abonnementId = user.BedrijfsAbonnementId;
 
             // Claims voor JWT-token
             var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id), // Gebruikers ID
-        new Claim(ClaimTypes.Role, user.Rol) // Rol van de gebruiker
+        new Claim(ClaimTypes.Role, user.Rol), // Rol van de gebruiker
+        new Claim("AbonnementId", abonnementId.ToString())
     };
 
             // Secret key en JWT-instellingen
@@ -157,6 +160,25 @@ namespace WebApplication1.Controllers
         {
             await HttpContext.SignOutAsync();
             return Ok(new { message = "Uitloggen succesvol." });
+        }
+
+        [Authorize]
+        [HttpGet("notificaties")]
+        public async Task<IActionResult> GetNotificaties()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
+            }
+
+            var notificaties = await _context.Notificaties
+                .Where(n => n.GebruikerId == userId && !n.IsGelezen)
+                .OrderByDescending(n => n.DatumTijd)
+                .ToListAsync();
+
+            return Ok(notificaties);
         }
 
     }

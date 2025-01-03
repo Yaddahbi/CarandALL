@@ -1,54 +1,36 @@
-import React, { useState } from "react";
-import { toast } from 'sonner';
+import { useState } from "react";
+import AboAddMedewerker from "./AboAddMedewerker";
+import AboMedewerkersLijst from "./AboMedewerkersLijst";
+import "../style/Abonnementen.css"; 
 
-function AddMedewerker({ abonnementId }) {
-    const [email, setEmail] = useState("");
-    const [loading, setLoading] = useState(false);
+const Abonnementen = () => {
+    const [refreshKey, setRefreshKey] = useState(0);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-            const response = await fetch(`https://localhost:7040/api/Abonnement/${abonnementId}/add-medewerker`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-            });
-
-            if (response.ok) {
-                toast.success("Medewerker succesvol toegevoegd!");
-                setEmail(""); // Reset 
-            } else {
-                const data = await response.json();
-                toast.error(data.message || "Er is iets fout gegaan.");
-            }
-        } catch (error) {
-            toast.error("Er is een netwerkfout opgetreden.");
-        } finally {
-            setLoading(false);
-        }
+    // Functie om de medewerkerslijst opnieuw op te halen
+    const refreshMedewerkers = () => {
+        setRefreshKey((prevKey) => prevKey + 1); // Verhoog de key om de lijst opnieuw te laden
     };
-
     return (
-        <div>
-            <h2>Medewerker toevoegen</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Zakelijk e-mailadres:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="bijv. medewerker@bedrijf.com"
-                    required
-                />
-                <button type="submit" disabled={loading}>
-                    {loading ? "Bezig met toevoegen..." : "Toevoegen"}
-                </button>
-            </form>
-        </div>
-    );
-}
+        <>
+            {/* Hero-sectie */}
+            <section className="abonnementen-hero">
+                <div className="container abonnementen">
+                    <h1>Abonnement Beheer</h1>
+                    <p>Beheer eenvoudig medewerkers die toegang hebben tot de abonnementen.</p>
+                </div>
+            </section>
 
-export default AddMedewerker;
+            {/* Content-sectie */}
+            <div className="abonnementen-content">
+                <div className="add-medewerker-section">
+                    <AboAddMedewerker refreshMedewerkers={refreshMedewerkers} />
+                </div>
+                <div className="medewerkers-lijst-section">
+                    <AboMedewerkersLijst refreshKey={refreshKey} />
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default Abonnementen;

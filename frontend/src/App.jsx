@@ -12,7 +12,8 @@ import KiesAccountType from './components/KiesAccountType';
 import Login from './components/Login';
 import RegistreerMedewerker from './components/RegistreerMedewerker';
 import RegistreerParticulier from './components/RegistreerParticulier';
-import RegistreerZakelijk from './components/RegistreerZakelijk';  
+import RegistreerZakelijk from './components/RegistreerZakelijk'; 
+import Notificaties from './components/Notificaties';
 import { AuthProvider } from "./AuthContext";
 import { Toaster } from 'sonner';
   
@@ -73,6 +74,8 @@ const App = () => {
 
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
+
+                    <Route path="/notificaties" element={<Notificaties />} />
 
                     {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />

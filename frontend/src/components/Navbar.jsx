@@ -40,11 +40,13 @@ const Navbar = () => {
                             <>
                                 <Link to="/voertuigen">Voertuigen</Link>
                                 <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
+                                <Link to="/notificaties">Notificaties</Link>
                             </>
                         )}
                         {user && user.role === "ZakelijkeKlant" && (
                             <>
                                 <Link to="/abonnementen">Abonnementen</Link>
+                                <Link to="/notificaties">Notificaties</Link>
                             </>
                         )}
                     </div>

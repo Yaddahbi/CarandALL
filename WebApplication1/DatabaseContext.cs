@@ -18,7 +18,8 @@ namespace WebApplication1
         public DbSet<Schade> Schades { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
         public DbSet<User> Users { get; set; }
-        
+        public DbSet<Notificatie> Notificaties { get; set; }
+
         public List<Schade> GetAllSchades()
         {
             return Schades.ToList(); 

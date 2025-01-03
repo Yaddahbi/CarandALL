@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 function RegistreerZakelijk() {
     const [formData, setFormData] = useState({
-        rol: "Zakelijk",
+        rol: "ZakelijkeKlant",
         naam: "",
         email: "",
         wachtwoord: "",
