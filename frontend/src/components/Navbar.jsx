@@ -1,10 +1,9 @@
-// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../style/Navbar.css';
 import { FaBars } from 'react-icons/fa';
 import { useAuth } from "../AuthContext";
-
+import { toast } from 'sonner';
 const Navbar = () => {
 
     const { user, logout } = useAuth();
@@ -12,6 +11,9 @@ const Navbar = () => {
 
     const handleLogout = () => {
         logout();
+        toast('U bent uitgelogd.', {
+            type: 'info',
+        })
         navigate('/'); // Navigeer naar de homepagina
     };
     return (
@@ -38,11 +40,13 @@ const Navbar = () => {
                             <>
                                 <Link to="/voertuigen">Voertuigen</Link>
                                 <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
+                                <Link to="/notificaties">Notificaties</Link>
                             </>
                         )}
                         {user && user.role === "ZakelijkeKlant" && (
                             <>
                                 <Link to="/abonnementen">Abonnementen</Link>
+                                <Link to="/notificaties">Notificaties</Link>
                             </>
                         )}
                     </div>
@@ -59,7 +63,7 @@ const Navbar = () => {
                         <Link to="/kies-account-type">Register</Link>
                     </>
                 ) : (
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className = "button-logout" onClick={handleLogout}>Logout -></button>
                 )}
             </div>
         </nav>

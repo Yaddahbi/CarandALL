@@ -26,13 +26,13 @@ namespace WebApplication1.Controllers
             var huurverzoeken = await _context.Huurverzoeken
                 .Include(h => h.User)
                 .Include(h => h.Voertuig)
+                .Select(h => new {
+                    h.HuurverzoekId,
+                    h.StartDatum,
+                    h.EindDatum,
+                    h.Status
+                })
                 .ToListAsync();
-
-            if (huurverzoeken == null || huurverzoeken.Count == 0)
-            {
-                return NotFound("Geen huurverzoeken gevonden.");
-            }
-
             return Ok(huurverzoeken);
         }
 

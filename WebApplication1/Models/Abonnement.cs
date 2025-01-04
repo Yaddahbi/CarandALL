@@ -1,19 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using System.Text.Json.Serialization;
 
 namespace WebApplication1.Models
 {
     public class Abonnement
     {
-        public int AbonnementId { get; set; }
-        public string AbonnementType { get; set; } // "Pay-as-you-go", "Prepaid"
+        public int Id { get; set; }
+        public string BedrijfsDomein { get; set; } 
+        public string AbonnementType { get; set; }
+        public int MaxMedewerkers { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Kosten { get; set; }
-        public DateTime Startdatum { get; set; }
-        public DateTime Einddatum { get; set; }
-        public int BedrijfId { get; set; }
-        public Bedrijf Bedrijf { get; set; } // Bedrijf dat het abonnement gebruikt
+        public DateTime AangemaaktOp { get; set; } = DateTime.UtcNow;
+
+        [JsonIgnore]
+        public List<User> Medewerkers { get; set; } = new List<User>();
     }
 
 

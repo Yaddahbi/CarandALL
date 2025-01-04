@@ -15,8 +15,8 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
                 </thead>
                 <tbody>
                     {aanvragen.map((aanvraag) => (
-                        <tr key={aanvraag.id}>
-                            <td>{aanvraag.id}</td>
+                        <tr key={aanvraag.huurverzoekId}>
+                            <td>{aanvraag.huurverzoekId}</td>
                             <td>{aanvraag.startDatum}</td>
                             <td>{aanvraag.eindDatum}</td>
                             <td>{aanvraag.status}</td>
@@ -28,6 +28,8 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
                         </tr>
                     ))}
                 </tbody>
+
+
             </table>
         </div>
     );

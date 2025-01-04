@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import '../style/Verhuuraanvraag.css';
 import VerhuuraanvraagLijst from "./VerhuuraanvraagLijst";
 import VerhuuraanvraagDetails from "./VerhuuraanvraagDetails";
+import { toast } from 'sonner';
 
 const Verhuuraanvraag = () => {
     const [aanvragen, setAanvragen] = useState([]);
@@ -9,44 +10,54 @@ const Verhuuraanvraag = () => {
     const [geselecteerdeAanvraag, setGeselecteerdeAanvraag] = useState(null);
     const [searchParams, setSearchParams] = useState({ id: "" });
 
-    useEffect(() => {
-        const fetchAanvragen = async () => {
-            try {
-                const response = await fetch("http://localhost:5000/api/huurverzoeken");
-                if (response.ok) {
-                    const data = await response.json();
-                    setAanvragen(data);
-                    setFilteredAanvragen(data); 
-                } else {
-                    console.error("Error fetching data");
-                }
-            } catch (error) {
-                console.error("Error:", error);
+    const fetchAanvragen = async () => {
+        try {
+            const response = await fetch("https://localhost:7040/api/Huurverzoeken");
+            if (response.ok) {
+                const data = await response.json();
+                const adaptedData = data.map(aanvraag => ({
+                    ...aanvraag,
+                    id: aanvraag.huurverzoekId 
+                }));
+                setAanvragen(adaptedData);
+                setFilteredAanvragen(adaptedData);
+            } else {
+                console.error("Error fetching data");
             }
-        };
-        fetchAanvragen();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchAanvragen(); 
     }, []);
+
 
     const updateAanvraag = async (id, actie, reden = '') => {
         try {
-            const response = await fetch(`http://localhost:5000/api/huurverzoeken/${id}`, {
+            const response = await fetch(`https://localhost:7040/api/Huurverzoeken/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen',
-                    reason: actie === 'afgewezen' ? reden : ''
+                    reden: actie === 'afgewezen' ? reden : ''
                 })
             });
 
             if (response.ok) {
                 setAanvragen(prev =>
                     prev.map(aanvraag =>
-                        aanvraag.id === id
-                            ? { ...aanvraag, status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen', reason: reden }
+                        aanvraag.huurverzoekId === id
+                            ? { ...aanvraag, status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen', reden }
                             : aanvraag
                     )
                 );
-                setGeselecteerdeAanvraag(null); 
+                toast(`Aanvraag ${actie === 'goedkeuren' ? 'goedgekeurd' : 'afgewezen'}!`, {
+                    type: 'success',
+                })
+                setGeselecteerdeAanvraag(null);
+                await fetchAanvragen();
             } else {
                 console.error("Failed to update request");
             }
@@ -60,10 +71,12 @@ const Verhuuraanvraag = () => {
         let results = aanvragen;
 
         if (id) {
-            results = results.filter((aanvraag) => aanvraag.id.toString().includes(id));
+            results = results.filter((aanvraag) =>
+                aanvraag.huurverzoekId.toString().includes(id)
+            );
         }
 
-        setFilteredAanvragen(results); 
+        setFilteredAanvragen(results);
     };
 
     return (
@@ -79,10 +92,10 @@ const Verhuuraanvraag = () => {
                             placeholder="Zoek op aanvraag ID"
                             value={searchParams.id}
                             onChange={(e) =>
-                                setSearchParams({ ...searchParams, id: e.target.value }) 
+                                setSearchParams({ ...searchParams, id: e.target.value })
                             }
                         />
-                        <button onClick={handleSearch}>Zoeken</button> 
+                        <button onClick={handleSearch}>Zoeken</button>
                     </div>
                 </div>
             </section>
@@ -90,13 +103,13 @@ const Verhuuraanvraag = () => {
             <div className="verhuuraanvraag-container">
                 <div className="verhuuraanvraag-content">
                     <VerhuuraanvraagLijst
-                        aanvragen={filteredAanvragen} 
-                        onSelectAanvraag={(aanvraag) => setGeselecteerdeAanvraag(aanvraag)} 
+                        aanvragen={filteredAanvragen}
+                        onSelectAanvraag={(aanvraag) => setGeselecteerdeAanvraag(aanvraag)}
                     />
                     {geselecteerdeAanvraag && (
                         <VerhuuraanvraagDetails
-                            aanvraag={geselecteerdeAanvraag} 
-                            onUpdateAanvraag={updateAanvraag} 
+                            aanvraag={geselecteerdeAanvraag}
+                            onUpdateAanvraag={updateAanvraag}
                         />
                     )}
                 </div>
@@ -106,4 +119,3 @@ const Verhuuraanvraag = () => {
 };
 
 export default Verhuuraanvraag;
-
