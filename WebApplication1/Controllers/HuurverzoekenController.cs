@@ -19,20 +19,20 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetAllHuurverzoeken()
         {
             var huurverzoeken = await _context.Huurverzoeken
                 .Include(h => h.User)
                 .Include(h => h.Voertuig)
+                .Select(h => new {
+                    h.HuurverzoekId,
+                    h.StartDatum,
+                    h.EindDatum,
+                    h.Status
+                })
                 .ToListAsync();
-
-            if (huurverzoeken == null || huurverzoeken.Count == 0)
-            {
-                return NotFound("Geen huurverzoeken gevonden.");
-            }
-
             return Ok(huurverzoeken);
         }
 

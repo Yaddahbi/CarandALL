@@ -1,0 +1,67 @@
+ body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Zorg dat de inhoud goed binnen de pagina staat */
+* {
+    box-sizing: border-box;
+}
+
+.notificaties-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: url('../images/notificatie.jpg') 
+}
+.notificaties-container {
+    max-width: 800px;
+    width: 90%;
+    padding: 20px;
+    background-color: aliceblue;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    
+}
+
+.notificaties-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.notificaties-list {
+    list-style: none;
+    padding: 0;
+}
+
+.notificatie-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+    .notificatie-item:nth-child(odd) {
+        background-color: #f1f1f1;
+    }
+
+.notificatie-bericht {
+    font-size: 16px;
+    color: #555;
+}
+
+.notificatie-datum {
+    font-size: 14px;
+    color: #888;
+}

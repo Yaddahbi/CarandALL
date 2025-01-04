@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import "../style/Notificatie.css"; 
 
 const Notificaties = () => {
     const [notificaties, setNotificaties] = useState([]);
@@ -32,17 +33,21 @@ const Notificaties = () => {
     }, []);
 
     return (
-        <div>
-            <h2>Uw Notificaties</h2>
-            <ul>
-                {notificaties.map((notificatie) => (
-                    <li key={notificatie.id}>
-                        {notificatie.bericht} - {new Date(notificatie.datumTijd).toLocaleString()}
-                    </li>
-                ))}
-            </ul>
+        <div className="notificaties-page-wrapper">
+            <div className="notificaties-container">
+                <h2 className="notificaties-title">Uw Notificaties</h2>
+                <ul className="notificaties-list">
+                    {notificaties.map((notificatie) => (
+                        <li className="notificatie-item" key={notificatie.id}>
+                            <span className="notificatie-bericht">{notificatie.bericht}</span>
+                            <span className="notificatie-datum">{new Date(notificatie.datumTijd).toLocaleString()}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
+
 };
 
 export default Notificaties;
