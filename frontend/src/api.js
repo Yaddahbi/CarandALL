@@ -78,7 +78,7 @@ export const fetchSchadeById = async (id) => {
     throw error;
   }
 };
-export const voegSchadetoe= async (schadeData) => {
+export const voegSchadeToe= async (schadeData) => {
   try {
     const response = await fetch(SCHADE_API_URL, {
       method: "POST",

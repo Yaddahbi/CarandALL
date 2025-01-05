@@ -1,6 +1,7 @@
 import './style/styles.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
@@ -14,6 +15,7 @@ import RegistreerMedewerker from './components/RegistreerMedewerker';
 import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk'; 
 import Notificaties from './components/Notificaties';
+import Privacyverklaring from './components/Privacyverklaring';
 import { AuthProvider } from "./AuthContext";
 import { Toaster } from 'sonner';
   
@@ -57,13 +59,20 @@ const App = () => {
     return (
         <AuthProvider>
         <Router>
-                <Toaster position="top-center" richColors /> 
+                <Toaster
+                    position="top-center"
+                    richColors
+                    aria-live="assertive" 
+                    aria-atomic="true"    
+                    duration={5000}       
+                />
             <Navbar />
             <div className="container mt-4">
                 <Routes>
                     <Route path="/" element={<>
                         <HeroSection />
-                        <FeaturesSection />
+                            <FeaturesSection />
+                            <Footer />
                     </>
                     } />
 
@@ -88,9 +97,11 @@ const App = () => {
                     <Route path="/registreer-particulier" element={<RegistreerParticulier />} />
                     <Route path="/registreer-zakelijk" element={<RegistreerZakelijk />} />
                     <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
+
+                    <Route path="/privacy" element={<Privacyverklaring />} />
                     
                 </Routes>
-            </div>
+                </div>
             </Router>
         </AuthProvider>
     );

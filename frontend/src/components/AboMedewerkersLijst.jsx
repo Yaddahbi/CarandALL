@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import Modal from "./Modal"; 
 
 const AboMedewerkersLijst = ({ refreshKey }) => {
     const [medewerkers, setMedewerkers] = useState([]);
