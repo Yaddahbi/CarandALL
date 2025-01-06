@@ -361,7 +361,8 @@ namespace WebApplication1.Migrations
 
                     b.Property<string>("Beschrijving")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
@@ -371,14 +372,13 @@ namespace WebApplication1.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("VoertuigId")
                         .HasColumnType("int");
 
                     b.HasKey("SchadeId");
-
-                    b.HasIndex("VoertuigId");
 
                     b.ToTable("Schades");
                 });
@@ -596,17 +596,6 @@ namespace WebApplication1.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-
-                    b.Navigation("Voertuig");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Schade", b =>
-                {
-                    b.HasOne("WebApplication1.Models.Voertuig", "Voertuig")
-                        .WithMany()
-                        .HasForeignKey("VoertuigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Voertuig");
                 });

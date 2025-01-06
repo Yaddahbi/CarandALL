@@ -48,7 +48,8 @@ function RegistreerParticulier() {
 
 
     return (
-        <div className="form-container">
+        <div className="regp">
+        <div className="regp-container">
             <h2>Registreer Particulier</h2>
             <form onSubmit={handleSubmit}>
                 <label>E-mail:</label>
@@ -68,6 +69,7 @@ function RegistreerParticulier() {
 
                 <button type="submit">Account aanmaken</button>
             </form>
+            </div>
         </div>
     );
 }

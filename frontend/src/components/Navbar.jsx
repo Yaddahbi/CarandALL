@@ -47,6 +47,7 @@ const Navbar = () => {
                             <>
                                 <Link to="/abonnementen">Abonnementen</Link>
                                 <Link to="/notificaties">Notificaties</Link>
+                                <Link to="/huurgeschiedenisBedrijf">Huurgeschiedenis Medewerkers</Link>
                             </>
                         )}
                     </div>

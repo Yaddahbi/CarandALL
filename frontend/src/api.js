@@ -54,79 +54,79 @@ export const fetchFilteredVoertuigen = async (filters) => {
 };
 
 export const fetchSchades = async () => {
-  try {
-    const response = await fetch(SCHADE_API_URL);
-    if (!response.ok) {
-      throw new Error('Netwerkfout: De server gaf een foutstatus terug.');
+    try {
+        const response = await fetch(SCHADE_API_URL);
+        if (!response.ok) {
+            throw new Error('Netwerkfout: De server gaf een foutstatus terug.');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Fout bij het ophalen van schades: ", error);
+        throw error;
     }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Fout bij het ophalen van schades: ", error);
-    throw error;
-  }
 };
 export const fetchSchadeById = async (id) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`);
-    if (!response.ok) {
-      throw new Error("Fout bij het ophalen van schade");
+    try {
+        const response = await fetch(`${SCHADE_API_URL}/${id}`);
+        if (!response.ok) {
+            throw new Error("Fout bij het ophalen van schade");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het ophalen van schade:", error);
+        throw error;
     }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het ophalen van schade:", error);
-    throw error;
-  }
 };
-export const voegSchadetoe= async (schadeData) => {
-  try {
-    const response = await fetch(SCHADE_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(schadeData),
-    });
-    if (!response.ok) {
-      throw new Error("Fout bij het toevoegen van schade");
+export const voegSchadetoe = async (schadeData) => {
+    try {
+        const response = await fetch(SCHADE_API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(schadeData),
+        });
+        if (!response.ok) {
+            throw new Error("Fout bij het toevoegen van schade");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het versturen van schade:", error);
+        throw error;
     }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het versturen van schade:", error);
-    throw error;
-  }
 };
 export const updateSchade = async (id, schadeData) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(schadeData),
-    });
-    if (!response.ok) {
-      throw new Error("Fout bij het bijwerken van schade");
+    try {
+        const response = await fetch(`${SCHADE_API_URL}/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(schadeData),
+        });
+        if (!response.ok) {
+            throw new Error("Fout bij het bijwerken van schade");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het bijwerken van schade:", error);
+        throw error;
     }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het bijwerken van schade:", error);
-    throw error;
-  }
 };
 export const deleteSchade = async (id) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      throw new Error("Fout bij het verwijderen van schade");
+    try {
+        const response = await fetch(`${SCHADE_API_URL}/${id}`, {
+            method: "DELETE",
+        });
+        if (!response.ok) {
+            throw new Error("Fout bij het verwijderen van schade");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het verwijderen van schade:", error);
+        throw error;
     }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het verwijderen van schade:", error);
-    throw error;
-  }
 };
 
 export const createHuurverzoek = async (huurverzoek) => {
@@ -187,5 +187,58 @@ export const fetchHuurgeschiedenis = async (filters) => {
         throw error;
     }
 };
+export const fetchHuurgeschiedenisBedrijf = async (filters) => {
+    try {
+        const token = localStorage.getItem('jwtToken'); 
+        if (!token) {
+            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+        }
 
+        const params = new URLSearchParams();
+
+        
+        if (filters.startDatum) params.append('startDatum', filters.startDatum);
+        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+        // Voeg voertuigType alleen toe als het niet leeg is
+        if (filters.voertuigType && filters.voertuigType !== '') {
+            params.append('voertuigType', filters.voertuigType);
+        }
+
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${token}`, 
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+export const fetchMedewerkers = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Zet de juiste token als header
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Er is een probleem met het ophalen van de medewerkers.');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchHuurgeschiedenis } from '../api';
-import '../style/Huurgeschiedenis.css'; 
+import '../style/Huurgeschiedenis.css';
 
 const formatDate = (date) => {
     const d = new Date(date);
@@ -44,36 +44,41 @@ const Huurgeschiedenis = () => {
                 <div className="container huurgeschiedenis">
                     <h1>Mijn Huurgeschiedenis</h1>
                     <p>Bekijk en beheer je gehuurde voertuigen en aanvragen.</p>
-                    
                 </div>
             </section>
 
             {/* Gegevensweergave */}
             <div className="huurgeschiedenis-filters">
-                <label>
+                <label htmlFor="startDatum">
                     Startdatum:
                     <input
                         type="date"
                         name="startDatum"
+                        id="startDatum"
                         value={filters.startDatum}
                         onChange={handleFilterChange}
+                        tabIndex="0" // Zorgt ervoor dat het tabbable is
                     />
                 </label>
-                <label>
+                <label htmlFor="eindDatum">
                     Einddatum:
                     <input
                         type="date"
                         name="eindDatum"
+                        id="eindDatum"
                         value={filters.eindDatum}
                         onChange={handleFilterChange}
+                        tabIndex="0" // Zorgt ervoor dat het tabbable is
                     />
                 </label>
-                <label>
+                <label htmlFor="voertuigType">
                     Voertuigtype:
                     <select
                         name="voertuigType"
+                        id="voertuigType"
                         value={filters.voertuigType}
                         onChange={handleFilterChange}
+                        tabIndex="0" // Zorgt ervoor dat het tabbable is
                     >
                         {voertuigTypen.map((type) => (
                             <option key={type} value={type}>
@@ -83,6 +88,7 @@ const Huurgeschiedenis = () => {
                     </select>
                 </label>
             </div>
+
             <div className="huurgeschiedenis-container">
                 {loading ? (
                     <p>Gegevens worden geladen...</p>
@@ -105,7 +111,7 @@ const Huurgeschiedenis = () => {
                                     </thead>
                                     <tbody>
                                         {huurgeschiedenis['Goedgekeurd'].map((item) => (
-                                            <tr key={item.huurverzoekId}>
+                                            <tr key={item.huurverzoekId} tabIndex="0" className="tabelrij">
                                                 <td>
                                                     {formatDate(item.startDatum)} - {formatDate(item.eindDatum)}
                                                 </td>
@@ -118,6 +124,7 @@ const Huurgeschiedenis = () => {
                                                         href={item.factuurUrl}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
+                                                        tabIndex="0" // Zorgt ervoor dat de link tabbable is
                                                     >
                                                         Download
                                                     </a>
@@ -128,55 +135,56 @@ const Huurgeschiedenis = () => {
                                 </table>
                             </>
                         )}
-                                {/* In afwachting verzoeken */}
-                                {huurgeschiedenis['In afwachting'] && huurgeschiedenis['In afwachting'].length > 0 && (
-                                    <>
-                                        <h3>In Afwachting Verzoeken</h3>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Huurperiode</th>
-                                                    <th>Voertuig</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {huurgeschiedenis['In afwachting'].map((item) => (
-                                                    <tr key={item.huurverzoekId}>
-                                                        <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
-                                                        <td>{item.voertuigMerk} ({item.voertuigType})</td>
-                                                        <td>{item.status}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </>
-                                )}
 
-                                {/* Afgewezen verzoeken */}
-                                {huurgeschiedenis['Afgewezen'] && huurgeschiedenis['Afgewezen'].length > 0 && (
-                                    <>
-                                        <h3>Afgewezen Verzoeken</h3>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Huurperiode</th>
-                                                    <th>Voertuig</th>
-                                                    <th>Reden van Afwijzing</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {huurgeschiedenis['Afgewezen'].map((item) => (
-                                                    <tr key={item.huurverzoekId}>
-                                                        <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
-                                                        <td>{item.voertuigMerk} ({item.voertuigType})</td>
-                                                        <td>{item.afwijzingsreden}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </>
-                                )}
+                        {/* In afwachting verzoeken */}
+                        {huurgeschiedenis['In afwachting'] && huurgeschiedenis['In afwachting'].length > 0 && (
+                            <>
+                                <h3>In Afwachting Verzoeken</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Huurperiode</th>
+                                            <th>Voertuig</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {huurgeschiedenis['In afwachting'].map((item) => (
+                                            <tr key={item.huurverzoekId} tabIndex="0" className="tabelrij">
+                                                <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
+                                                <td>{item.voertuigMerk} ({item.voertuigType})</td>
+                                                <td>{item.status}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </>
+                        )}
+
+                        {/* Afgewezen verzoeken */}
+                        {huurgeschiedenis['Afgewezen'] && huurgeschiedenis['Afgewezen'].length > 0 && (
+                            <>
+                                <h3>Afgewezen Verzoeken</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Huurperiode</th>
+                                            <th>Voertuig</th>
+                                            <th>Reden van Afwijzing</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {huurgeschiedenis['Afgewezen'].map((item) => (
+                                            <tr key={item.huurverzoekId} tabIndex="0" className="tabelrij">
+                                                <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
+                                                <td>{item.voertuigMerk} ({item.voertuigType})</td>
+                                                <td>{item.afwijzingsreden}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </>
+                        )}
                     </div>
                 )}
             </div>

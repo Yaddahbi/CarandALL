@@ -79,6 +79,8 @@ body {
     padding: 30px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
     transition: transform 0.3s ease-in-out;
+    margin-top: 10px;
+
 }
 
     .add-medewerker-section:hover, .medewerkers-lijst-section:hover {
@@ -93,6 +95,9 @@ body {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
     margin-top: 30px; /* Ruimte tussen de hero sectie en de details */
     margin-bottom: 20px;
+    margin-left: 12%;
+    margin-right: 12%;
+
 }
 
 
