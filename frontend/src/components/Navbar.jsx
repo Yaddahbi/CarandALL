@@ -33,7 +33,7 @@ const Navbar = () => {
                             <>
                                 <Link to="/aanvraag-beheer">Aanvragen</Link>
                                 <Link to="/schades">Schades</Link>
-                            
+                         
                             </>
                         )}
                         {user && (user.role === "Particulier" || user.role === "Zakelijk") && (
@@ -41,7 +41,6 @@ const Navbar = () => {
                                 <Link to="/voertuigen">Voertuigen</Link>
                                 <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
                                 <Link to="/notificaties">Notificaties</Link>
-                                <Link to="/mijn-gegevens">Mijn Gegevens</Link>
                             </>
                         )}
                         {user && user.role === "ZakelijkeKlant" && (

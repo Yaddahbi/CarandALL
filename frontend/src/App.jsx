@@ -1,22 +1,21 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { Toaster } from 'sonner';
-import { AuthProvider } from "./AuthContext";
-import Abonnementen from './components/Abonnementen';
-import Huurgeschiedenis from './components/Huurgeschiedenis';
-import KiesAccountType from './components/KiesAccountType';
-import KlantGegevens from './components/KlantGegevens';
-import Login from './components/Login';
+import './style/styles.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Notificaties from './components/Notificaties';
-import RegistreerMedewerker from './components/RegistreerMedewerker';
-import RegistreerParticulier from './components/RegistreerParticulier';
-import RegistreerZakelijk from './components/RegistreerZakelijk';
-import SchadeLijst from './components/SchadeLijst';
-import SchadePagina from './components/SchadePagina';
-import SchadeToevoegen from './components/SchadeToevoegen';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
-import './style/styles.css';
+import Abonnementen from './components/Abonnementen';
+import SchadeLijst from './components/SchadeLijst';  
+import SchadeToevoegen from './components/SchadeToevoegen'; 
+import SchadePagina from './components/SchadePagina'; 
+import Huurgeschiedenis from './components/Huurgeschiedenis';
+import KiesAccountType from './components/KiesAccountType';
+import Login from './components/Login';
+import RegistreerMedewerker from './components/RegistreerMedewerker';
+import RegistreerParticulier from './components/RegistreerParticulier';
+import RegistreerZakelijk from './components/RegistreerZakelijk'; 
+import Notificaties from './components/Notificaties';
+import { AuthProvider } from "./AuthContext";
+import { Toaster } from 'sonner';
   
 
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
@@ -69,7 +68,7 @@ const App = () => {
                     } />
 
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
-                    
+                  
                     <Route path="/voertuigen" element={<VoertuigenPagina />} />
                     <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis />} />
 
@@ -80,7 +79,7 @@ const App = () => {
 
                     {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />
-                    <Route path="/mijn-gegevens" element={<KlantGegevens />} />
+                   
                     <Route path="/schades" element={<SchadePagina />} />
                     <Route path="/schades/lijst" element={<SchadeLijst />} /> 
                     <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> 
