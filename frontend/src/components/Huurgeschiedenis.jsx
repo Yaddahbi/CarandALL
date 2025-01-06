@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { fetchHuurgeschiedenis } from '../api';
 
-
 const formatDate = (date) => {
     const d = new Date(date);
     return d.toLocaleDateString('nl-NL');
 };
 
-const Huurgeschiedenis = ({ huurderId }) => {
+const Huurgeschiedenis = () => {
     const [huurgeschiedenis, setHuurgeschiedenis] = useState({});
     const [filters, setFilters] = useState({ startDatum: '', eindDatum: '', voertuigType: 'Auto' });
     const [loading, setLoading] = useState(false);
@@ -21,7 +20,7 @@ const Huurgeschiedenis = ({ huurderId }) => {
         setError(null);
 
         try {
-            const data = await fetchHuurgeschiedenis(huurderId, filters);
+            const data = await fetchHuurgeschiedenis(filters);
             setHuurgeschiedenis(data);  // Nu ontvangen als object met status als key
         } catch (err) {
             setError('Er is een fout opgetreden bij het ophalen van de huurgeschiedenis.');

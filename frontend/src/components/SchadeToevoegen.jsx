@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { voegSchadetoe } from "../api";
 import '../Schadetoevoegen.css';
 
 const SchadeToevoegen = ({ onSchadeToevoegen }) => {
@@ -14,7 +13,7 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
         const schadeData = { beschrijving, datum, kosten, status };
 
         try {
-            const newSchade = await voegSchadeToe(schadeData);
+            const newSchade = await voegSchadetoe(schadeData);
             console.log("Nieuwe schade toegevoegd:", newSchade);
             onSchadeToevoegen(newSchade); 
             setBeschrijving("");
@@ -22,7 +21,8 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
             setKosten(0);
             setStatus("Open");
         } catch (error) {
-            setError("Fout bij toevoegen van schade: " + error.message); 
+            setError("Fout bij toevoegen van schade: " + error.message);
+            console.error("Fout bij toevoegen van schade:", error);
         }
     };
 

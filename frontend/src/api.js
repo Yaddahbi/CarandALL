@@ -1,13 +1,11 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
-const INNAME_API_URL = "https://localhost:7040/api/Inname";
-const UITGIFTE_API_URL = "https://localhost:7040/api/Uitgifte";
 const BASE_URL = "https://localhost:7040/api";
 
 export const voegGebruikerToe = async (gebruikerData) => {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(USER_REGISTER_URL, {
       method: "POST", // We gebruiken de POST-methode om nieuwe gegevens toe te voegen
       headers: {
         "Content-Type": "application/json", // Zorg ervoor dat de content als JSON wordt verzonden
@@ -56,101 +54,67 @@ export const fetchFilteredVoertuigen = async (filters) => {
 };
 
 export const fetchSchades = async () => {
-  try {
-    const response = await fetch(SCHADE_API_URL);
-    if (!response.ok) {
-      throw new Error('Netwerkfout: De server gaf een foutstatus terug.');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Fout bij het ophalen van schades: ", error);
-    throw error;
-  }
+    return await fetchApi(SCHADE_API_URL);
 };
 export const fetchSchadeById = async (id) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`);
-    if (!response.ok) {
-      throw new Error("Fout bij het ophalen van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het ophalen van schade:", error);
-    throw error;
-  }
+    return await fetchApi(`${SCHADE_API_URL}/${id}`);
 };
-export const voegSchadetoe= async (schadeData) => {
-  try {
-    const response = await fetch(SCHADE_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(schadeData),
+
+export const voegSchadetoe = async (schadeData) => {
+    return await fetchApi(SCHADE_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(schadeData),
     });
-    if (!response.ok) {
-      throw new Error("Fout bij het toevoegen van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het versturen van schade:", error);
-    throw error;
-  }
-};
+    };
 export const updateSchade = async (id, schadeData) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(schadeData),
+    return await fetchApi(`${SCHADE_API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(schadeData),
     });
-    if (!response.ok) {
-      throw new Error("Fout bij het bijwerken van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het bijwerken van schade:", error);
-    throw error;
-  }
 };
 export const deleteSchade = async (id) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-      method: "DELETE",
+    return await fetchApi(`${SCHADE_API_URL}/${id}`, {
+        method: "DELETE",
     });
-    if (!response.ok) {
-      throw new Error("Fout bij het verwijderen van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het verwijderen van schade:", error);
-    throw error;
-  }
 };
 
 export const createHuurverzoek = async (huurverzoek) => {
-  const response = await fetch(HUURVERZOEK_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(huurverzoek),
-  });
+    const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+    if (!token) {
+        throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+    }
+    const response = await fetch(HUURVERZOEK_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Voeg het token toe in de header
+        },
+        body: JSON.stringify(huurverzoek),
+    });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
-  }
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error);
+    }
 
-  return response.json();
+    return response.json();
 };
 
-export const fetchHuurgeschiedenis = async (huurderId, filters) => {
-  try {
-    const params = new URLSearchParams();
+
+export const fetchHuurgeschiedenis = async (filters) => {
+    try {
+        const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+        if (!token) {
+            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+        }
+
+        const params = new URLSearchParams();
 
     // Voeg alleen filters toe als ze een waarde hebben
     if (filters.startDatum) params.append('startDatum', filters.startDatum);
@@ -161,7 +125,7 @@ export const fetchHuurgeschiedenis = async (huurderId, filters) => {
       params.append('voertuigType', filters.voertuigType);
     }
 
-    const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${huurderId}?${params.toString()}`);
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${huurderId}?${params.toString()}`);
 
     if (!response.ok) {
       throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
@@ -215,3 +179,4 @@ export const fetchHuurgeschiedenis = async (huurderId, filters) => {
       throw error;
     }
 };
+

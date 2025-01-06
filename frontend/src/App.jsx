@@ -11,6 +11,12 @@ import SchadePagina from './components/SchadePagina';
 import Huurgeschiedenis from './components/Huurgeschiedenis';
 import UitgifteVoertuig from './components/UitgifteVoertuig'; 
 import InnameVoertuig from './components/InnameVoertuig';
+import KiesAccountType from './components/KiesAccountType';
+import Login from './components/Login';
+import RegistreerMedewerker from './components/RegistreerMedewerker';
+import RegistreerParticulier from './components/RegistreerParticulier';
+import RegistreerZakelijk from './components/RegistreerZakelijk';  
+import { AuthProvider } from "./AuthContext";
 
 const Login = () => <h1>Login Page</h1>;
 const Register = () => <h1>Register Page</h1>;
@@ -52,6 +58,7 @@ const App = () => {
     const isFrontOffice = true;
     const huurderId = 1; // harcode
     return (
+        <AuthProvider>
         <Router>
             <Navbar />
             <div className="container mt-4">
@@ -71,13 +78,21 @@ const App = () => {
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
 
+                    {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<GebruikerAanmaken />} />
-                    <Route path="/schades" element={<SchadeLijst />} /> {/* Lijst van schades */}
-                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> {/* Schade toevoegen */}
-                    <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
                     <Route path="/uitgifte" element={<UitgifteVoertuig />} />
                     <Route path="/inname" element={<InnameVoertuig />} />
+                   
+                    <Route path="/schades" element={<SchadePagina />} />
+                    <Route path="/schades/lijst" element={<SchadeLijst />} /> 
+                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> 
+
+                    <Route path="/kies-account-type" element={<KiesAccountType />} />
+                    <Route path="/registreer-particulier" element={<RegistreerParticulier />} />
+                    <Route path="/registreer-zakelijk" element={<RegistreerZakelijk />} />
+                    <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
+                    
                 </Routes>
             </div>
         </Router>

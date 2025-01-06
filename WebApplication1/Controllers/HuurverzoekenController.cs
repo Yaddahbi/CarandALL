@@ -4,6 +4,8 @@ using Microsoft.Identity.Client;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Dto_s;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
@@ -22,7 +24,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetAllHuurverzoeken()
         {
             var huurverzoeken = await _context.Huurverzoeken
-                .Include(h => h.Huurder)
+                .Include(h => h.User)
                 .Include(h => h.Voertuig)
                 .ToListAsync();
 
@@ -68,13 +70,18 @@ namespace WebApplication1.Controllers
 
             return NoContent();
         }
-
-        [HttpGet("geschiedenis/{huurderId}")]
-        public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis(int huurderId, [FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
+        [Authorize]
+        [HttpGet("geschiedenis")]
+        public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis([FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
+            }
             var query = _context.Huurverzoeken
                 .Include(h => h.Voertuig)
-                .Where(h => h.HuurderId == huurderId);
+                .Where(h => h.UserId.Equals(userId));
 
             if (startDatum.HasValue)
                 query = query.Where(h => h.StartDatum >= startDatum);
@@ -108,10 +115,17 @@ namespace WebApplication1.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> PostHuurverzoek(HuurverzoekDTO huurverzoekDto)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
+            }
+
             var voertuig = await _context.Voertuigen.FindAsync(huurverzoekDto.VoertuigId);
             if (voertuig == null)
             {
@@ -130,7 +144,7 @@ namespace WebApplication1.Controllers
 
             var huurverzoek = new Huurverzoek
             {
-                HuurderId = huurverzoekDto.HuurderId,
+                UserId = userId,
                 VoertuigId = huurverzoekDto.VoertuigId,
                 StartDatum = huurverzoekDto.StartDatum,
                 EindDatum = huurverzoekDto.EindDatum,
