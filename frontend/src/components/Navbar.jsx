@@ -1,4 +1,7 @@
-import React from 'react';
+
+// eslint-disable-next-line no-unused-vars
+import React , { useState } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 import '../style/Navbar.css';
 import { FaBars } from 'react-icons/fa';
@@ -6,6 +9,7 @@ import { useAuth } from "../AuthContext";
 import { toast } from 'sonner';
 const Navbar = () => {
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -16,17 +20,24 @@ const Navbar = () => {
         })
         navigate('/'); // Navigeer naar de homepagina
     };
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);  // Toggle de dropdown zichtbaarheid
+    };
+    
     return (
         <nav className="navbar">
             <div className="navbar-left">
                 <div className="dropdown">
-                    <button className="dropbtn">
+                    <button className="dropbtn" onClick={toggleDropdown} >
                         <FaBars size={20} /> {/* Dropdown menu*/}
                     </button>
+                    {isDropdownOpen && (
                     <div className="dropdown-content">
                         {user && user.role === "FrontOfficeMedewerker" && (
                             <>
-                                
+                                <Link to="/uitgifte">Uitgifte Voertuig</Link>
+                                <Link to="/inname">Inname Voertuig</Link>
                             </>
                         )}
                         {user && user.role === "BackOfficeMedewerker" && (
@@ -51,6 +62,7 @@ const Navbar = () => {
                             </>
                         )}
                     </div>
+                    )}
                 </div>
             <div className="logo">
                 <Link to="/">Car And All</Link>{/* Logo text */}

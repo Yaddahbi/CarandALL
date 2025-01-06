@@ -5,10 +5,14 @@ import Footer from './components/Footer';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
+import GebruikerAanmaken from './GebruikerAanmaken';
 import SchadeLijst from './components/SchadeLijst';  
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
+
+import UitgifteVoertuig from './components/UitgifteVoertuig'; 
+import InnameVoertuig from './components/InnameVoertuig';
 import HuurgeschiedenisBedrijf from './components/HuurgeschiedenisBedrijf';
 import KiesAccountType from './components/KiesAccountType';
 import Login from './components/Login';
@@ -18,9 +22,12 @@ import RegistreerZakelijk from './components/RegistreerZakelijk';
 import Notificaties from './components/Notificaties';
 import Privacyverklaring from './components/Privacyverklaring';
 import { AuthProvider } from "./AuthContext";
+
 import { Toaster } from 'sonner';
   
 
+//const Login = () => <h1>Login Page</h1>;
+//const Register = () => <h1>Register Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 const HeroSection = () => (
     <section className="hero">
@@ -55,8 +62,9 @@ const FeaturesSection = () => (
 );
 
 const App = () => {
-    
-  
+    const isZakelijk = false; // hardcode
+    const isFrontOffice = true;
+    const huurderId = 1; // harcode
     return (
         <AuthProvider>
         <Router>
@@ -70,6 +78,7 @@ const App = () => {
             <Navbar />
             <div className="container mt-4">
                 <Routes>
+
                     <Route path="/" element={<>
                         <HeroSection />
                             <FeaturesSection />
@@ -79,8 +88,8 @@ const App = () => {
 
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
                   
-                    <Route path="/voertuigen" element={<VoertuigenPagina />} />
-                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis />} />
+                    <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
+                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis huurderId={huurderId} />} />
 
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
@@ -90,6 +99,9 @@ const App = () => {
 
                     {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<GebruikerAanmaken />} />
+                    <Route path="/uitgifte" element={<UitgifteVoertuig />} />
+                    <Route path="/inname" element={<InnameVoertuig />} />
                    
                     <Route path="/schades" element={<SchadePagina />} />
                     <Route path="/schades/lijst" element={<SchadeLijst />} /> 
@@ -103,8 +115,6 @@ const App = () => {
                     <Route path="/privacy" element={<Privacyverklaring />} />
                     
                 </Routes>
-                </div>
-            </Router>
         </AuthProvider>
     );
 };
