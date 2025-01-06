@@ -9,6 +9,7 @@ import SchadeLijst from './components/SchadeLijst';
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
+import HuurgeschiedenisBedrijf from './components/HuurgeschiedenisBedrijf';
 import KiesAccountType from './components/KiesAccountType';
 import Login from './components/Login';
 import RegistreerMedewerker from './components/RegistreerMedewerker';
@@ -83,6 +84,7 @@ const App = () => {
 
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
+                    <Route path="/HuurgeschiedenisBedrijf" element={<HuurgeschiedenisBedrijf />} />
 
                     <Route path="/notificaties" element={<Notificaties />} />
 

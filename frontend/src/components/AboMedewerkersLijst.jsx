@@ -93,7 +93,8 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
             {loading ? (
                 <p>Laden...</p>
             ) : (
-                <table>
+                <div className = "table-wrapper" >
+                    <table>
                     <thead>
                         <tr>
                             <th>Naam</th>

@@ -54,6 +54,7 @@ const Abonnementen = () => {
 
     return (
         <>
+            <div className="abo-container">
             {/* Hero-sectie */}
             <section className="abonnementen-hero">
                 <div className="container abonnementen">
@@ -87,6 +88,7 @@ const Abonnementen = () => {
                 </div>
                 <div className="medewerkers-lijst-section">
                     <AboMedewerkersLijst refreshKey={refreshKey} />
+                </div>
                 </div>
             </div>
         </>
