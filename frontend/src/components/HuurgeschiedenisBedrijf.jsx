@@ -22,21 +22,20 @@ const HuurgeschiedenisBedrijf = () => {
         setError(null);
 
         try {
-            console.log(filters); // Log de filters om te zien of ze goed zijn ingesteld
+            console.log(filters); 
             const data = await fetchHuurgeschiedenisBedrijf(filters);
-            console.log(data); // Log de ontvangen data om te controleren
+            console.log(data); 
 
             // Gegevens verwerken
             setHuurgeschiedenis(data);
         } catch (err) {
             setError('Er is een fout opgetreden bij het ophalen van de huurgeschiedenis.');
-            console.error(err); // Foutmelding loggen
+            console.error(err);
         } finally {
             setLoading(false);
         }
     };
 
-    // Functie om de medewerkers op te halen
     const loadMedewerkers = async () => {
         try {
             const data = await fetchMedewerkers();
@@ -75,6 +74,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="startDatum"
                         value={filters.startDatum}
                         onChange={handleFilterChange}
+                        tabIndex="0" 
                     />
                 </label>
                 <label>
@@ -84,6 +84,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="eindDatum"
                         value={filters.eindDatum}
                         onChange={handleFilterChange}
+                        tabIndex="0" 
                     />
                 </label>
                 <label>
@@ -92,6 +93,8 @@ const HuurgeschiedenisBedrijf = () => {
                         name="voertuigType"
                         value={filters.voertuigType}
                         onChange={handleFilterChange}
+                        disabled={true}
+                        tabIndex="-1" 
                     >
                         {voertuigTypen.map((type) => (
                             <option key={type} value={type}>
@@ -106,6 +109,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="medewerkerId"
                         value={filters.medewerkerId}
                         onChange={handleFilterChange}
+                        tabIndex="0" 
                     >
                         <option value="">Alle medewerkers</option>
                         {medewerkers.map((medewerker) => (
@@ -131,7 +135,7 @@ const HuurgeschiedenisBedrijf = () => {
 
                                 // Als er een medewerker filter is geselecteerd, alleen de verzoeken van die medewerker tonen
                                 if (filters.medewerkerId && medewerkerNaam !== filters.medewerkerId) {
-                                    return null; 
+                                    return null;
                                 }
 
                                 return (
@@ -147,7 +151,7 @@ const HuurgeschiedenisBedrijf = () => {
                                             </thead>
                                             <tbody>
                                                 {verzoeken.map((item) => (
-                                                    <tr key={item.huurverzoekId}>
+                                                    <tr key={item.huurverzoekId} tabIndex="0" className="tabelrij">
                                                         <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
                                                         <td>{item.voertuigMerk} ({item.voertuigType})</td>
                                                         <td>{item.status}</td>
