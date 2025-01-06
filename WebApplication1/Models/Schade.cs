@@ -7,8 +7,10 @@
         private DateTime _datum;
         private double _kosten;
         private string _status;
+        private List<string> _fotoUrls;
+        private string _opmerkingen;
 
-        public Schade(int voertuigId, string beschrijving, DateTime datum, double kosten, string status = "Open")
+        public Schade(int voertuigId, string beschrijving, DateTime datum, double kosten, List<string> fotoUrls, string status = "Open")
         {
             if (string.IsNullOrWhiteSpace(beschrijving))
                 throw new ArgumentException("Beschrijving mag niet leeg zijn.");
@@ -27,7 +29,9 @@
             Beschrijving = beschrijving;
             Datum = datum;
             Kosten = kosten;
+            FotoUrls = fotoUrls ?? new List<string>();
             Status = status;
+            Opmerkingen = string.Empty;
         }
 
         public int SchadeId
@@ -84,6 +88,28 @@
                 _status = value;
             }
         }
+        public List<string> FotoUrls
+        {
+            get { return _fotoUrls; }
+            set { _fotoUrls = value ?? new List<string>(); }
+        }
+
+        public string Opmerkingen
+        {
+            get { return _opmerkingen; }
+            set { _opmerkingen = value; }
+        }
+        public void VoegOpmerkingToe(string opmerking)
+        {
+            if (!string.IsNullOrWhiteSpace(opmerking))
+            {
+                Opmerkingen = opmerking;
+            }
+            else
+            {
+                throw new ArgumentException("Opmerking mag niet leeg zijn.");
+            }
+        }
 
         public void UpdateSchade(string nieuweBeschrijving, double nieuweKosten, string nieuweStatus)
         {
@@ -106,6 +132,24 @@
             if (Status == "Afgehandeld")
                 throw new InvalidOperationException("De schade is al afgehandeld.");
             Status = "In behandeling";
+        }
+        public void ZetVoertuigInReparatie()
+        {
+            if (Status == "Afgehandeld")
+                throw new InvalidOperationException("De schade is al afgehandeld, het voertuig kan niet in reparatie worden gezet.");
+            
+            Status = "In reparatie";
+        }
+        public void UpdateSchade(string nieuweBeschrijving, double nieuweKosten, string nieuweStatus, List<string> nieuweFotoUrls)
+        {
+            Beschrijving = nieuweBeschrijving;
+            Kosten = nieuweKosten;
+            Status = nieuweStatus;
+            FotoUrls = nieuweFotoUrls;
+        }
+        public void KoppelAanReparatie(string reparatieDetails)
+        {
+            Opmerkingen = $"Schade gekoppeld aan reparatie: {reparatieDetails}";
         }
     }
 }

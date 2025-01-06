@@ -21,7 +21,8 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
             setKosten(0);
             setStatus("Open");
         } catch (error) {
-            setError("Fout bij toevoegen van schade: " + error.message); 
+            setError("Fout bij toevoegen van schade: " + error.message);
+            console.error("Fout bij toevoegen van schade:", error);
         }
     };
 

@@ -38,6 +38,8 @@ namespace WebApplication1.Models
 
         [JsonIgnore]
         public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
+        [JsonIgnore]
+        public List<Schade> Schades { get; set; }
     }
 
     public enum StatusType

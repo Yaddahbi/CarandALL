@@ -54,79 +54,36 @@ export const fetchFilteredVoertuigen = async (filters) => {
 };
 
 export const fetchSchades = async () => {
-  try {
-    const response = await fetch(SCHADE_API_URL);
-    if (!response.ok) {
-      throw new Error('Netwerkfout: De server gaf een foutstatus terug.');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Fout bij het ophalen van schades: ", error);
-    throw error;
-  }
+    return await fetchApi(SCHADE_API_URL);
 };
+
 export const fetchSchadeById = async (id) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`);
-    if (!response.ok) {
-      throw new Error("Fout bij het ophalen van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het ophalen van schade:", error);
-    throw error;
-  }
+    return await fetchApi(`${SCHADE_API_URL}/${id}`);
 };
-export const voegSchadetoe= async (schadeData) => {
-  try {
-    const response = await fetch(SCHADE_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(schadeData),
+
+export const voegSchadetoe = async (schadeData) => {
+    return await fetchApi(SCHADE_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(schadeData),
     });
-    if (!response.ok) {
-      throw new Error("Fout bij het toevoegen van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het versturen van schade:", error);
-    throw error;
-  }
 };
 export const updateSchade = async (id, schadeData) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(schadeData),
+    return await fetchApi(`${SCHADE_API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(schadeData),
     });
-    if (!response.ok) {
-      throw new Error("Fout bij het bijwerken van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het bijwerken van schade:", error);
-    throw error;
-  }
 };
+
 export const deleteSchade = async (id) => {
-  try {
-    const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-      method: "DELETE",
+    return await fetchApi(`${SCHADE_API_URL}/${id}`, {
+        method: "DELETE",
     });
-    if (!response.ok) {
-      throw new Error("Fout bij het verwijderen van schade");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fout bij het verwijderen van schade:", error);
-    throw error;
-  }
 };
 
 export const createHuurverzoek = async (huurverzoek) => {
