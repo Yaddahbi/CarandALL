@@ -5,14 +5,12 @@ import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
 import GebruikerAanmaken from './GebruikerAanmaken';
-import SchadeLijst from './components/SchadeLijst';  
-import SchadeToevoegen from './components/SchadeToevoegen'; 
-import SchadePagina from './components/SchadePagina'; 
+import SchadePagina from './components/SchadePagina';
+import Wagenparkbeheer from './components/Wagenparkbeheer';
 
 
 
 const Login = () => <h1>Login Page</h1>;
-const Register = () => <h1>Register Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 const HeroSection = () => (
     <section className="hero">
@@ -69,9 +67,9 @@ const App = () => {
 
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<GebruikerAanmaken />} />
-                    <Route path="/schades" element={<SchadeLijst />} /> {/* Lijst van schades */}
-                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> {/* Schade toevoegen */}
-                    <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
+                    <Route path="/schades" element={<SchadePagina />} />
+                    <Route path="/wagenparkbeheer" element={<Wagenparkbeheer />} />
+                   
                 </Routes>
             </div>
         </Router>

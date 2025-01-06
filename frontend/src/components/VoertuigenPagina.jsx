@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchFilteredVoertuigen } from "../api";
-import "../style/voertuigenPagina.css";
+import "../style/Voertuigen.css";
 import VoertuigFilter from "./VoertuigFilter";
 import VoertuigWeergave from "./VoertuigWeergave";
 
@@ -26,15 +26,24 @@ const VoertuigenPagina = ({ isZakelijk }) => {
     loadVoertuigen();
   }, [filters]);
 
-  return (
+    return (
+        <>
+            <section className="voertuigen-hero">
+                <div className="container voertuigen">
+                    <h1>Voertuigen</h1>
+                    <p>In welke auto wil je rijden?</p>
+                </div>
+            </section>
+
     <div className="voertuigen-pagina">
       <header className="page-header">
-        <h2>{isZakelijk ? "Filter Auto's voor Zakelijke Huurder" : "Filter Voertuigen"}</h2>
+                    {isZakelijk ? "Filter Auto's voor Zakelijke Huurder" : "Filter Voertuigen"}
       </header>
       <VoertuigFilter filters={filters} setFilters={setFilters} isZakelijk={isZakelijk} />
       {error && <p style={{ color: "red" }}>{error}</p>}
       <VoertuigWeergave voertuigen={voertuigen} />
-    </div>
+            </div>
+   </>
   );
 };
 

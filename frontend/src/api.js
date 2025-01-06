@@ -1,6 +1,7 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
+const API_BASE_URL = "https://localhost:7040/api/Gebruikers";
 
 export const voegGebruikerToe = async (gebruikerData) => {
   try {
@@ -51,6 +52,66 @@ export const fetchFilteredVoertuigen = async (filters) => {
   }
   return response.json();
 };
+
+export const voegVoertuigToe = async (voertuigData) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(voertuigData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het toevoegen van een voertuig");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het toevoegen van voertuig:", error);
+        throw error;
+    }
+};
+
+export const updateVoertuig = async (id, voertuigData) => {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(voertuigData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het bijwerken van een voertuig");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het bijwerken van voertuig:", error);
+        throw error;
+    }
+};
+
+export const deleteVoertuig = async (id) => {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het verwijderen van een voertuig");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het verwijderen van voertuig:", error);
+        throw error;
+    }
+};
+
 
 export const fetchSchades = async () => {
   try {
@@ -145,3 +206,40 @@ export const createHuurverzoek = async (huurverzoek) => {
   return response.json();
 };
 
+export const updateHuurverzoek = async (id, huurverzoekData) => {
+    try {
+        const response = await fetch(`${HUURVERZOEK_API_URL}/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(huurverzoekData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het bijwerken van huurverzoek");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het bijwerken van huurverzoek:", error);
+        throw error;
+    }
+};
+
+export const deleteHuurverzoek = async (id) => {
+    try {
+        const response = await fetch(`${HUURVERZOEK_API_URL}/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het verwijderen van huurverzoek");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het verwijderen van huurverzoek:", error);
+        throw error;
+    }
+};

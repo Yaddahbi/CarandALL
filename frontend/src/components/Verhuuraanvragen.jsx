@@ -5,14 +5,14 @@ const Verhuuraanvragen = () => {
     const [aanvragen, setAanvragen] = useState([]);
 
     useEffect(() => {
-        fetch('https://localhost:7040/api/Huurverzoeken')
+        fetch('https://localhost:5000/api/huurverzoeken')
             .then(response => response.json())
             .then(data => setAanvragen(data))
             .catch(error => console.error('Fout bij ophalen aanvragen:', error));
     }, []);
 
     const handelBijwerken = (id, status, reden = "") => {
-        fetch(`https://localhost:7040/api/Huurverzoeken/${id}`, {
+        fetch(`https://localhost:5000/api/huurverzoeken/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

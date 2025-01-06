@@ -23,7 +23,7 @@ const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
   return (
     <div className="voertuigen-filters">
       <div>
-        <label htmlFor="soort">Soort:</label>
+        <label htmlFor="soort">Voertuigtype:</label>
         <select
           name="soort"
           id="soort"

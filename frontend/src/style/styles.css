@@ -134,6 +134,7 @@ body {
         border: none;
         cursor: pointer;
         width: 17%;
+        margin-bottom: 15px;
     }
 
         .search-bar button:hover {

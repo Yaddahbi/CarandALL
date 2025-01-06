@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { fetchSchades} from "../api";
-import '../Schadelijst.css';
+import { fetchSchades } from "../api";
+import '../style/Schadelijst.css';
 
 const SchadeLijst = ({ schadesProp }) => {
 
@@ -25,12 +25,12 @@ const SchadeLijst = ({ schadesProp }) => {
             }
         };
 
-        loadSchades(); 
+        loadSchades();
     }, []);
 
-    if (loading) return <div>Loading...</div>; 
+    if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
-    
+
     return (
         <div className="SchadeLijst">
             <h1>Schadelijst</h1>

@@ -17,7 +17,9 @@ namespace WebApplication1
         public DbSet<Huurverzoek> Huurverzoeken { get; set; }
         public DbSet<Schade> Schades { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
-        
+        public DbSet<Gebruiker> Gebruikers { get; set; }
+
+
         public List<Schade> GetAllSchades()
         {
             return Schades.ToList(); 
@@ -51,10 +53,30 @@ namespace WebApplication1
         }
 
 
-         public DbSet<Gebruiker> Gebruikers { get; set; }
         // public DbSet<Uitgifte> Uitgiftes { get; set; }  
         //  public DbSet<Inname> Innames { get; set; } 
-         
+
+        public Huurverzoek UpdateHuurverzoekStatus(int id, string status, string? afwijzingsreden)
+        {
+            var huurverzoek = Huurverzoeken.Find(id);
+            if (huurverzoek == null)
+                throw new Exception("Huurverzoek not found.");
+
+            // Handle validation for rejection with missing Afwijzingsreden
+            if (status == "Afgewezen" && string.IsNullOrWhiteSpace(afwijzingsreden))
+            {
+                throw new Exception("Afwijzingsreden is required when rejecting a request.");
+            }
+
+            // Update the Huurverzoek status and Afwijzingsreden
+            huurverzoek.Status = status;
+            huurverzoek.Afwijzingsreden = status == "Afgewezen" ? afwijzingsreden : null;
+
+            // Save the changes to the database
+            SaveChanges();
+            return huurverzoek;
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

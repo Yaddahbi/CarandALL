@@ -17,6 +17,7 @@ const Navbar = () => {
                         <Link to="/voertuigen">Voertuigen</Link>
                         <Link to="/abonnementen">Abonnementen</Link>
                         <Link to="/schades">Schades</Link>
+                        <Link to="/wagenparkbeheer">Wagenparkbeheer</Link>
                     </div>
                 </div>
             <div className="logo">
