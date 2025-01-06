@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1;
 
@@ -11,9 +12,11 @@ using WebApplication1;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250101175046_abonnement")]
+    partial class abonnement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,34 +326,6 @@ namespace WebApplication1.Migrations
                     b.ToTable("Medewerkers");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Notificatie", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Bericht")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatumTijd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GebruikerId")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsGelezen")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notificaties");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.Schade", b =>
                 {
                     b.Property<int>("SchadeId")
@@ -361,8 +336,7 @@ namespace WebApplication1.Migrations
 
                     b.Property<string>("Beschrijving")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
@@ -372,13 +346,14 @@ namespace WebApplication1.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VoertuigId")
                         .HasColumnType("int");
 
                     b.HasKey("SchadeId");
+
+                    b.HasIndex("VoertuigId");
 
                     b.ToTable("Schades");
                 });
@@ -596,6 +571,17 @@ namespace WebApplication1.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+
+                    b.Navigation("Voertuig");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Schade", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Voertuig", "Voertuig")
+                        .WithMany()
+                        .HasForeignKey("VoertuigId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Voertuig");
                 });

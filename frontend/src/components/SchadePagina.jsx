@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchSchades } from "../api";
 import SchadeLijst from "./SchadeLijst";
 import SchadeToevoegen from "./SchadeToevoegen";
@@ -25,10 +25,10 @@ const SchadePagina = () => {
             setLoading(false);
         }
     };
-    
+
     const handleSchadeToevoegen = async (newSchade) => {
         try {
-            const addedSchade = await voegSchadeToe(newSchade); 
+            const addedSchade = await voegSchadeToe(newSchade);
             setSchades((prevSchades) => [...prevSchades, addedSchade]);
             setActivePage("Lijst");
         } catch (err) {
@@ -41,15 +41,15 @@ const SchadePagina = () => {
             loadSchades();
         }
     }, [activePage]);
-    
+
     return (
         <div className="Schades">
             <h1>Schades</h1>
-            
-                <div>
-                    <button onClick={() => setActivePage("lijst")}>Schade Lijst</button>
-                    <button onClick={() => setActivePage("toevoegen")}>Voeg Schade Toe</button>
-                </div>
+
+            <div>
+                <button onClick={() => setActivePage("lijst")}>Schade Lijst</button>
+                <button onClick={() => setActivePage("toevoegen")}>Voeg Schade Toe</button>
+            </div>
             {error && <p style={{ color: "red" }}>{error}</p>}
             {activePage === "lijst" && (
                 <>

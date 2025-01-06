@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { toast } from 'sonner';
 
 const VerhuuraanvraagDetails = ({ aanvraag, onUpdateAanvraag }) => {
     const [reden, setReden] = useState("");
@@ -10,7 +11,9 @@ const VerhuuraanvraagDetails = ({ aanvraag, onUpdateAanvraag }) => {
 
     const handleAfwijzen = () => {
         if (!reden.trim()) {
-            alert('Reden is verplicht bij afwijzen.');
+            toast(`Reden is verplicht bij afwijzen.`, {
+                type: 'warning',
+            })
             return;
         }
         onUpdateAanvraag(aanvraag.id, 'afgewzen', reden);

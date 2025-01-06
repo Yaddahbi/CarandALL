@@ -1,4 +1,8 @@
-.form-container {
+.regp {
+    background-color: #222;
+}
+
+.regp-container {
     max-width: 400px;
     margin: auto;
     padding: 20px;

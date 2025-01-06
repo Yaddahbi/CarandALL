@@ -67,7 +67,13 @@ namespace WebApplication1.Controllers
                 case "prijs":
                     query = query.OrderBy(v => v.Prijs);
                     break;
+                case "prijsHL":
+                    query = query.OrderByDescending(v => v.Prijs);
+                    break;
                 case "merk":
+                    query = query.OrderBy(v => v.Merk);
+                    break;
+                case "merkZA":
                     query = query.OrderBy(v => v.Merk);
                     break;
                 case "beschikbaarheid":

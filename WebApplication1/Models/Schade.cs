@@ -21,7 +21,7 @@
 
             if (datum > DateTime.Now)
                 throw new ArgumentException("Datum mag niet in de toekomst liggen.");
-            
+
             var allowedStatuses = new[] { "Open", "In behandeling", "Afgehandeld" };
             if (!allowedStatuses.Contains(status))
                 throw new ArgumentException("Status moet 'Open', 'In behandeling' of 'Afgehandeld' zijn.");

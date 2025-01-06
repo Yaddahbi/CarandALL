@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
@@ -20,18 +20,54 @@ namespace WebApplication1
         public DbSet<Inname> Innames { get; set; }
         public DbSet<Uitgifte> Uitgiftes { get; set; }
         public DbSet<Schadeclaim> Schadeclaims { get; set; }
+          public DbSet<Gebruiker> Gebruikers { get; set; }
+  
         
-         public DbSet<Gebruiker> Gebruikers { get; set; }
-         public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Notificatie> Notificaties { get; set; }
+
+        public List<Schade> GetAllSchades()
+        {
+            return Schades.ToList(); 
+        }
+
+        public Schade GetSchadeById(int id)
+        {
+            return Schades.FirstOrDefault(s => s.SchadeId == id); 
+        }
+
+        public void CreateSchade(Schade schade)
+        {
+            Schades.Add(schade);
+            SaveChanges(); 
+        }
+
+        public void UpdateSchade(Schade schade)
+        {
+            Schades.Update(schade); 
+            SaveChanges();
+        }
+
+        public void DeleteSchade(int id)
+        {
+            var schade = GetSchadeById(id); 
+            if (schade != null)
+            {
+                Schades.Remove(schade); 
+                SaveChanges();
+            }
+        }
+
+       
          
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Bedrijf>()
-                .HasOne(b => b.Abonnement)
-                .WithOne(a => a.Bedrijf)
-                .HasForeignKey<Abonnement>(a => a.BedrijfId);
+           // modelBuilder.Entity<Bedrijf>()
+              //  .HasOne(b => b.Abonnement)
+               // .WithOne(a => a.Bedrijf)
+               // .HasForeignKey<Abonnement>(a => a.BedrijfId);
 
             modelBuilder.Entity<Huurder>()
                 .HasOne(h => h.Bedrijf)

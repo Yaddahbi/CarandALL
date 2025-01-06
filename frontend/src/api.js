@@ -58,6 +58,12 @@ export const fetchFilteredVoertuigen = async (filters) => {
 export const fetchSchades = async () => {
     return await fetchApi(SCHADE_API_URL);
 };
+
+export const fetchSchadeById = async (id) => {
+    return await fetchApi(`${SCHADE_API_URL}/${id}`);
+};
+
+
 export const fetchSchadeById = async (id) => {
     return await fetchApi(`${SCHADE_API_URL}/${id}`);
 };
@@ -80,6 +86,7 @@ export const updateSchade = async (id, schadeData) => {
         body: JSON.stringify(schadeData),
     });
 };
+
 export const deleteSchade = async (id) => {
     return await fetchApi(`${SCHADE_API_URL}/${id}`, {
         method: "DELETE",
@@ -179,6 +186,60 @@ export const fetchHuurgeschiedenis = async (filters) => {
     } catch (error) {
       console.error("Fout bij het registreren van uitgifte:", error);
       throw error;
+
+};
+export const fetchHuurgeschiedenisBedrijf = async (filters) => {
+    try {
+        const token = localStorage.getItem('jwtToken'); 
+        if (!token) {
+            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+        }
+
+        const params = new URLSearchParams();
+
+        
+        if (filters.startDatum) params.append('startDatum', filters.startDatum);
+        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+        // Voeg voertuigType alleen toe als het niet leeg is
+        if (filters.voertuigType && filters.voertuigType !== '') {
+            params.append('voertuigType', filters.voertuigType);
+        }
+
+        const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${token}`, 
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+export const fetchMedewerkers = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Zet de juiste token als header
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Er is een probleem met het ophalen van de medewerkers.');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 };
 

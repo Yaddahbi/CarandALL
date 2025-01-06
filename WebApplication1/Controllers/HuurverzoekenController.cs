@@ -26,13 +26,13 @@ namespace WebApplication1.Controllers
             var huurverzoeken = await _context.Huurverzoeken
                 .Include(h => h.User)
                 .Include(h => h.Voertuig)
+                .Select(h => new {
+                    h.HuurverzoekId,
+                    h.StartDatum,
+                    h.EindDatum,
+                    h.Status
+                })
                 .ToListAsync();
-
-            if (huurverzoeken == null || huurverzoeken.Count == 0)
-            {
-                return NotFound("Geen huurverzoeken gevonden.");
-            }
-
             return Ok(huurverzoeken);
         }
 
@@ -70,6 +70,58 @@ namespace WebApplication1.Controllers
 
             return NoContent();
         }
+
+        [Authorize]  
+        [HttpGet("bedrijf/huurgeschiedenis")]
+        public async Task<ActionResult<IEnumerable<HuurgeschiedenisDtoBedrijf>>> GetHuurGeschiedenisVanMedewerkers([FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
+            }
+
+            var abonnementId = User.FindFirst("AbonnementId")?.Value;
+            if (string.IsNullOrEmpty(abonnementId))
+            {
+                return Unauthorized(new { error = "Abonnement niet gevonden." });
+            }
+
+            var query = _context.Huurverzoeken
+                .Include(h => h.Voertuig)
+                .Where(h => h.User.BedrijfsAbonnementId == int.Parse(abonnementId)); // Haal huurverzoeken van medewerkers van het zelfde abonnement
+
+            if (startDatum.HasValue)
+                query = query.Where(h => h.StartDatum >= startDatum);
+
+            if (eindDatum.HasValue)
+                query = query.Where(h => h.EindDatum <= eindDatum);
+
+            if (!string.IsNullOrEmpty(voertuigType))
+                query = query.Where(h => h.Voertuig.Soort.Contains(voertuigType));
+
+            var huurGeschiedenis = await query
+                .Select(h => new HuurgeschiedenisDtoBedrijf
+                {
+                    HuurverzoekId = h.HuurverzoekId,
+                    StartDatum = h.StartDatum,
+                    EindDatum = h.EindDatum,
+                    VoertuigMerk = h.Voertuig.Merk,
+                    VoertuigType = h.Voertuig.Type,
+                    Kosten = h.Voertuig.Prijs * ((h.EindDatum - h.StartDatum).Days + 1),
+                    Status = h.Status,
+                    FactuurUrl = $"/facturen/{h.HuurverzoekId}.pdf",
+                    MedewerkerNaam = h.User.Naam
+                })
+                .ToListAsync();
+
+            var verzoekenGroupedByMedewerker = huurGeschiedenis
+                .GroupBy(h => h.MedewerkerNaam)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            return Ok(verzoekenGroupedByMedewerker);
+        }
+
         [Authorize]
         [HttpGet("geschiedenis")]
         public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis([FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)

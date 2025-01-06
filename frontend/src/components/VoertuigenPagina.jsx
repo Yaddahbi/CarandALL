@@ -5,7 +5,6 @@ import VoertuigFilter from "./VoertuigFilter";
 import VoertuigWeergave from "./VoertuigWeergave";
 import { useAuth } from "../AuthContext";
 
-
 const VoertuigenPagina = () => {
     const { user } = useAuth();
     const isZakelijk = user?.role === "Zakelijk";
@@ -35,19 +34,48 @@ const VoertuigenPagina = () => {
     }, [filters]);
 
     return (
-        <div className="voertuigen-pagina">
-            <header className="page-header">
-                <h2>{isZakelijk ? "Filter Auto's voor Zakelijke Huurder" : "Filter Voertuigen"}</h2>
-            </header>
-            {ontbrekendeDatums && (
-                <div className="datum-waarschuwing">
-                    <p>Voer een start- en einddatum in om beschikbare voertuigen te zien.</p>
+        <>
+            {/* Hero-sectie */}
+            <section className="voertuigen-hero">
+                <div className="container voertuigen">
+                    <h1>CarAndAll Voertuigen</h1>
+                    <p>Vind en huur het voertuig dat het beste bij je behoeften past.</p>
+                    {ontbrekendeDatums && (
+                        <div className="datum-waarschuwing1">
+                            <p>Voer een start- en einddatum in om beschikbare voertuigen te zien.</p>
+                        </div>
+                    )}
+                    <div className="datum-filters">
+                        <VoertuigFilter
+                            filters={filters}
+                            setFilters={setFilters}
+                            isZakelijk={isZakelijk}
+                            filterType="datum"
+                        />
+                    </div>
                 </div>
-            )}
-            <VoertuigFilter filters={filters} setFilters={setFilters} isZakelijk={isZakelijk} />
-            {error && <p className="error-message">{error}</p>}
-            {!ontbrekendeDatums && <VoertuigWeergave voertuigen={voertuigen} filters={filters} />}
-        </div>
+            </section>
+
+            {/* Gegevensweergave */}
+            <div className="voertuigen-weergave-container">
+                <div className="overige-filters">
+                    <VoertuigFilter
+                        filters={filters}
+                        setFilters={setFilters}
+                        isZakelijk={isZakelijk}
+                        filterType="overige"
+                    />
+                </div>
+
+                {ontbrekendeDatums && (
+                    <div className="datum-waarschuwing">
+                        <p>Voer een start- en einddatum in om beschikbare voertuigen te zien.</p>
+                    </div>
+                )}
+                {error && <p className="error-message">{error}</p>}
+                {!ontbrekendeDatums && <VoertuigWeergave voertuigen={voertuigen} filters={filters} />}
+            </div>
+        </>
     );
 };
 

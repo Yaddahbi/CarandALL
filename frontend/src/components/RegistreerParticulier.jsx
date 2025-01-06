@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RegistreerParticulier.css";
-
+import { toast } from 'sonner';
 function RegistreerParticulier() {
     const [formData, setFormData] = useState({
         rol: "Particulier",
@@ -27,21 +27,29 @@ function RegistreerParticulier() {
         });
 
         if (response.ok) {
-            alert("Account succesvol aangemaakt!");
+            toast(`Account succesvol aangemaakt!`, {
+                description: 'U kunt nu inloggen.',
+                type: 'succes',
+            }) 
             navigate("/login");
         } else {
             const data = await response.json();
             if (data.errors) {
-                alert(`Fouten: ${data.errors.join(", ")}`);
+                toast(`Fouten: ${data.errors.join(", ")}`, {
+                    type: 'error',
+                }) 
             } else {
-                alert("Er is iets fout gegaan.");
+                toast(`Er is iets fout gegaan`, {
+                    type: 'error',
+                }) 
             }
         }
     };
 
 
     return (
-        <div className="form-container">
+        <div className="regp">
+        <div className="regp-container">
             <h2>Registreer Particulier</h2>
             <form onSubmit={handleSubmit}>
                 <label>E-mail:</label>
@@ -61,6 +69,7 @@ function RegistreerParticulier() {
 
                 <button type="submit">Account aanmaken</button>
             </form>
+            </div>
         </div>
     );
 }
