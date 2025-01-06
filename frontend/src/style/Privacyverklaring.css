@@ -1,0 +1,88 @@
+.privacy-page-container {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    padding: 40px;
+}
+    /* Privacyverklaringspagina container */
+    .privacy-page {
+  background-color: #fff;
+  padding: 40px;
+  max-width: 800px;
+  margin: 60px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Koppen en teksten */
+.privacy-page h1 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.privacy-page h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #444;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.privacy-page p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.privacy-page ul {
+  list-style-type: disc;
+  padding-left: 40px;
+  margin-bottom: 20px;
+}
+
+.privacy-page ul li {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Links */
+.privacy-page a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.privacy-page a:hover {
+  text-decoration: underline;
+}
+
+/* Belangrijke tekst */
+.privacy-page .important {
+  font-weight: bold;
+  color: #d9534f;
+}
+
+/* Achtergrond-overlay (indien afbeelding gebruikt) */
+.privacy-page:before {
+  content: "";
+  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  z-index: -1;
+}
+
+/* Responsiviteit */
+@media (max-width: 768px) {
+  .privacy-page {
+    padding: 20px;
+    margin: 20px;
+  }
+}

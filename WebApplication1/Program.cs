@@ -1,36 +1,77 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using WebApplication1;
+using WebApplication1.Models;
 
-namespace WebApplication1
+var builder = WebApplication.CreateBuilder(args);
+
+// Add CORS policy
+builder.Services.AddCors(options =>
 {
-    public class Program
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        public static void Main(string[] args)
+        policy.WithOrigins("http://localhost:58899") // frontend 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Configure database context
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configure Identity API
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddEntityFrameworkStores<DatabaseContext>();
+
+// Configure JWT authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            var builder = WebApplication.CreateBuilder(args);
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = "your_issuer", // Zet een geldige issuer in
+            ValidAudience = "your_audience", // Zet een geldige audience in
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JouwGeheimeSleutelVoorDeWebsiteProject123")) // Gebruik een geheime sleutel
+        };
+    });
 
-            // Add services to the container.
+// Configure authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MedewerkerOnly", policy => policy.RequireRole("Medewerker"));
+    options.AddPolicy("UserRoles", policy => policy.RequireRole("Particulier", "Zakelijk", "Medewerker"));
+});
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+// Use CORS
+app.UseCors("AllowFrontend");
 
-            app.UseHttpsRedirection();
+// Use authentication and authorization middleware
+app.UseAuthentication();
+app.UseAuthorization();
 
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+// Map controllers
+app.MapControllers();
+app.MapIdentityApi<User>();
+
+// Run the app
+app.Run();
