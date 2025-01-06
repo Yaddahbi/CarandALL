@@ -181,5 +181,33 @@ namespace WebApplication1.Controllers
             return Ok(notificaties);
         }
 
+        [Authorize]
+[HttpPut("update")]
+public async Task<IActionResult> UpdateUser([FromBody] UserDto userDto)
+{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await _userManager.FindByIdAsync(userId);
+
+    if (user == null)
+    {
+        return NotFound(new { message = "Gebruiker niet gevonden." });
+    }
+
+    user.Naam = userDto.Naam;
+    user.Email = userDto.Email;
+    user.Adres = userDto.Adres;
+    user.PhoneNumber = userDto.Telefoonnummer;
+
+    var result = await _userManager.UpdateAsync(user);
+
+    if (result.Succeeded)
+    {
+        return Ok(new { message = "Gegevens succesvol bijgewerkt." });
+    }
+
+    var errors = result.Errors.Select(e => e.Description);
+    return BadRequest(new { errors });
+}
+
     }
 }
