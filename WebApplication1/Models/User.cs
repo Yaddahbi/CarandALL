@@ -9,6 +9,6 @@ namespace WebApplication1.Models
         public string Rol { get; set; }
         public string? BedrijfsNaam { get; set; }
         public string? KvkNummer { get; set; }
-        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
+        public ICollection<Huurverzoek> Huurverzoeken { get; set; }
     }
 }

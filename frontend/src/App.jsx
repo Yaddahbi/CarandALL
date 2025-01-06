@@ -18,8 +18,8 @@ import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk';  
 import { AuthProvider } from "./AuthContext";
 
-const Login = () => <h1>Login Page</h1>;
-const Register = () => <h1>Register Page</h1>;
+//const Login = () => <h1>Login Page</h1>;
+//const Register = () => <h1>Register Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 const HeroSection = () => (
     <section className="hero">
@@ -96,7 +96,7 @@ const App = () => {
                 </Routes>
             </div>
         </Router>
-
+        </AuthProvider>
     );
 };
 

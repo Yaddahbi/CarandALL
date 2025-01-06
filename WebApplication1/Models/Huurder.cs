@@ -12,12 +12,9 @@ namespace WebApplication1.Models
         public bool IsZakelijk { get; set; } // True = Zakelijke werknemer, False = Particulier
         public int? BedrijfId { get; set; } // Voor zakelijke huurders
         public Bedrijf? Bedrijf { get; set; }
-        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
-        [JsonIgnore]
-        public List<Uitgifte> Uitgiftes { get; set; } = new List<Uitgifte>();  // Relatie met Uitgifte
-
-        [JsonIgnore]
-        public List<Inname> Innames { get; set; } = new List<Inname>(); 
+        public ICollection<Huurverzoek> Huurverzoeken { get; set; }
+        public ICollection<Inname> Innames { get; set; }
+        public ICollection<Uitgifte> Uitgiftes { get; set; }
         
         public Huurder()
         {

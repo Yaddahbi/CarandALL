@@ -9,6 +9,7 @@
         private string _status;
         private List<string> _fotoUrls;
         private string _opmerkingen;
+        
 
         public Schade(int voertuigId, string beschrijving, DateTime datum, double kosten, List<string> fotoUrls, string status = "Open")
         {

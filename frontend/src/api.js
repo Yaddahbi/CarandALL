@@ -1,6 +1,8 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
+const INNAME_API_URL = "https://localhost:7040/api/Inname";
+const UITGIFTE_API_URL = "https://localhost:7040/api/Uitgifte";
 const BASE_URL = "https://localhost:7040/api";
 
 export const voegGebruikerToe = async (gebruikerData) => {
@@ -68,7 +70,7 @@ export const voegSchadetoe = async (schadeData) => {
         },
         body: JSON.stringify(schadeData),
     });
-    };
+};
 export const updateSchade = async (id, schadeData) => {
     return await fetchApi(`${SCHADE_API_URL}/${id}`, {
         method: "PUT",

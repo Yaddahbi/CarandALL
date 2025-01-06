@@ -24,7 +24,8 @@ const Navbar = () => {
                     <div className="dropdown-content">
                         {user && user.role === "FrontOfficeMedewerker" && (
                             <>
-                                
+                                <Link to="/uitgifte">Uitgifte Voertuig</Link>
+                                <Link to="/inname">Inname Voertuig</Link>
                             </>
                         )}
                         {user && user.role === "BackOfficeMedewerker" && (
@@ -45,13 +46,6 @@ const Navbar = () => {
                                 <Link to="/abonnementen">Abonnementen</Link>
                             </>
                         )}
-                        <Link to="/aanvraag-beheer">Aanvraag Beheer</Link>
-                        <Link to="/voertuigen">Voertuigen</Link>
-                        <Link to="/Huurgeschiedenis">Huurgeschiedenis</Link>
-                        <Link to="/abonnementen">Abonnementen</Link>
-                        <Link to="/schades">Schades</Link>
-                        <Link to="/uitgifte">Uitgifte Voertuig</Link>
-                        <Link to="/inname">Inname Voertuig</Link>
                     </div>
                 </div>
             <div className="logo">

@@ -10,15 +10,20 @@ namespace WebApplication1
             : base(options)
         {
         }
-
-        //public DbSet<Huurder> Huurders { get; set; }
+        public DbSet<Huurder> Huurders { get; set; }
         public DbSet<Bedrijf> Bedrijven { get; set; }
         public DbSet<Voertuig> Voertuigen { get; set; }
         public DbSet<Abonnement> Abonnementen { get; set; }
         public DbSet<Huurverzoek> Huurverzoeken { get; set; }
         public DbSet<Schade> Schades { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
+        public DbSet<Inname> Innames { get; set; }
+        public DbSet<Uitgifte> Uitgiftes { get; set; }
+        public DbSet<Schadeclaim> Schadeclaims { get; set; }
+        
          public DbSet<Gebruiker> Gebruikers { get; set; }
+         public DbSet<User> Users { get; set; }
+         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,39 +39,39 @@ namespace WebApplication1
                 .HasForeignKey(h => h.BedrijfId);
 
             modelBuilder.Entity<Huurverzoek>()
-                .HasOne(hv => hv.Huurder)
-                .WithMany(h => h.Huurverzoeken)
-                .HasForeignKey(hv => hv.HuurderId);
+                .HasOne(hv => hv.Voertuig)
+                .WithMany(v => v.Huurverzoeken)
+                .HasForeignKey(hv => hv.VoertuigId);
 
             modelBuilder.Entity<Huurverzoek>()
                 .HasOne(hv => hv.Voertuig)
                 .WithMany(v => v.Huurverzoeken)
                 .HasForeignKey(hv => hv.VoertuigId);
             
-             modelBuilder.Entity<Uitgifte>()
-                 .HasOne(u => u.Voertuig)
-                 .WithMany(v => v.Uitgiftes)
-                 .HasForeignKey(u => u.VoertuigID);
-             
-             modelBuilder.Entity<Uitgifte>()
-                 .HasOne(u => u.Huurder)
-                 .WithMany(h => h.Uitgiftes)
-                 .HasForeignKey(u => u.HuurderID);
-             
-             modelBuilder.Entity<Inname>()
-                 .HasOne(i => i.Voertuig)
-                 .WithMany(v => v.Innames)
-                 .HasForeignKey(i => i.VoertuigID); 
-             
-             modelBuilder.Entity<Inname>()
-                 .HasOne(i => i.Huurder)
-                 .WithMany(h => h.Innames)
-                 .HasForeignKey(i => i.HuurderID);
             modelBuilder.Entity<Schade>()
                 .HasOne(s => s.Voertuig)
                 .WithMany(v => v.Schades)
                 .HasForeignKey(s => s.VoertuigId);
             
+            modelBuilder.Entity<Uitgifte>()
+                .HasOne(u => u.Voertuig)
+                .WithMany(v => v.Uitgiftes)
+                .HasForeignKey(u => u.VoertuigID);
+
+            modelBuilder.Entity<Uitgifte>()
+                .HasOne(u => u.Huurder)
+                .WithMany(h => h.Uitgiftes)
+                .HasForeignKey(u => u.HuurderID);
+
+            modelBuilder.Entity<Inname>()
+                .HasOne(i => i.Voertuig)
+                .WithMany(v => v.Innames)
+                .HasForeignKey(i => i.VoertuigID); 
+
+            modelBuilder.Entity<Inname>()
+                .HasOne(i => i.Huurder)
+                .WithMany(h => h.Innames)
+                .HasForeignKey(i => i.HuurderID);
         }
     }
 }
