@@ -18,6 +18,8 @@ const Navbar = () => {
                         <Link to="/Huurgeschiedenis">Huurgeschiedenis</Link>
                         <Link to="/abonnementen">Abonnementen</Link>
                         <Link to="/schades">Schades</Link>
+                        <Link to="/uitgifte">Uitgifte Voertuig</Link>
+                        <Link to="/inname">Inname Voertuig</Link>
                     </div>
                 </div>
             <div className="logo">

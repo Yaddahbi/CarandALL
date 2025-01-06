@@ -9,8 +9,8 @@ import SchadeLijst from './components/SchadeLijst';
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
-
-
+import UitgifteVoertuig from './components/UitgifteVoertuig'; 
+import InnameVoertuig from './components/InnameVoertuig';
 
 const Login = () => <h1>Login Page</h1>;
 const Register = () => <h1>Register Page</h1>;
@@ -49,6 +49,7 @@ const FeaturesSection = () => (
 
 const App = () => {
     const isZakelijk = false; // hardcode
+    const isFrontOffice = true;
     const huurderId = 1; // harcode
     return (
         <Router>
@@ -75,6 +76,8 @@ const App = () => {
                     <Route path="/schades" element={<SchadeLijst />} /> {/* Lijst van schades */}
                     <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> {/* Schade toevoegen */}
                     <Route path="/schades/:id" element={<SchadePagina />} /> {/* Schade detailpagina (bewerken) */}
+                    <Route path="/uitgifte" element={<UitgifteVoertuig />} />
+                    <Route path="/inname" element={<InnameVoertuig />} />
                 </Routes>
             </div>
         </Router>

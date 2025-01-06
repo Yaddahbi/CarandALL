@@ -38,8 +38,18 @@ namespace WebApplication1.Models
 
         [JsonIgnore]
         public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
+        [JsonIgnore]
+        public List<Uitgifte> Uitgiftes { get; set; } = new List<Uitgifte>(); 
+        [JsonIgnore]
+        public List<Inname> Innames { get; set; } = new List<Inname>();  
+        
+        public Voertuig()
+        {
+            Uitgiftes = new List<Uitgifte>();
+            Innames = new List<Inname>();
+        }
     }
-
+    
     public enum StatusType
     {
         Beschikbaar,

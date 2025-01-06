@@ -9,12 +9,17 @@ public class Inname
     public int HuurderID { get; set; }
     public DateTime DatumInname { get; set; }
     public string SchadeOpmerkingen { get; set; }
-    public bool Schade { get; set; } // true of false
-    public string Status { get; set; } // "Teruggebracht", "Teruggebracht met schade"
+    public bool HeeftSchade { get; set; } 
+    public string Status { get; set; } 
     
     
     public Voertuig Voertuig { get; set; }
     public Huurder Huurder { get; set; }
 
-    public Inname() { }
+    public Inname()
+    {
+        DatumInname = DateTime.Now; 
+        HeeftSchade = false; 
+        Status = "Teruggebracht"; 
+    }
 }

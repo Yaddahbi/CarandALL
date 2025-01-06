@@ -1,6 +1,8 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
+const INNAME_API_URL = "https://localhost:7040/api/Inname";
+const UITGIFTE_API_URL = "https://localhost:7040/api/Uitgifte";
 const BASE_URL = "https://localhost:7040/api";
 
 export const voegGebruikerToe = async (gebruikerData) => {
@@ -147,28 +149,69 @@ export const createHuurverzoek = async (huurverzoek) => {
 };
 
 export const fetchHuurgeschiedenis = async (huurderId, filters) => {
+  try {
+    const params = new URLSearchParams();
+
+    // Voeg alleen filters toe als ze een waarde hebben
+    if (filters.startDatum) params.append('startDatum', filters.startDatum);
+    if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+    // Voeg voertuigType alleen toe als het niet leeg is
+    if (filters.voertuigType && filters.voertuigType !== '') {
+      params.append('voertuigType', filters.voertuigType);
+    }
+
+    const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${huurderId}?${params.toString()}`);
+
+    if (!response.ok) {
+      throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+    return response.json();
+  }
+};
+  export const createInname = async (innameData) => {
     try {
-        const params = new URLSearchParams();
+      const response = await fetch(INNAME_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(innameData),
+      });
 
-        // Voeg alleen filters toe als ze een waarde hebben
-        if (filters.startDatum) params.append('startDatum', filters.startDatum);
-        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+      if (!response.ok) {
+        throw new Error("Fout bij het registreren van de inname");
+      }
 
-        // Voeg voertuigType alleen toe als het niet leeg is
-        if (filters.voertuigType && filters.voertuigType !== '') {
-            params.append('voertuigType', filters.voertuigType);
-        }
-
-        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis/${huurderId}?${params.toString()}`);
-
-        if (!response.ok) {
-            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
-        }
-
-        return await response.json();
+      return await response.json();
     } catch (error) {
-        console.error(error);
-        throw error;
+      console.error("Fout bij het registreren van inname:", error);
+      throw error;
+    }
+  };
+
+  export const createUitgifte = async (uitgifteData) => {
+    try {
+      const response = await fetch(UITGIFTE_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(uitgifteData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Fout bij het registreren van de uitgifte");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Fout bij het registreren van uitgifte:", error);
+      throw error;
     }
 };
-

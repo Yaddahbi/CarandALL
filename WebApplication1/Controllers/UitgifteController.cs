@@ -1,14 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "FrontOffice")]
     [Route("api/[controller]")]
     [ApiController]
     public class UitgiftesController : ControllerBase
@@ -49,6 +49,25 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<ActionResult<Uitgifte>> PostUitgifte(Uitgifte uitgifte)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var voertuig = await _context.Voertuigen.FindAsync(uitgifte.VoertuigID);
+            if (voertuig == null)
+            {
+                return NotFound("Voertuig niet gevonden.");
+            }
+            
+            var huurder = await _context.Huurders.FindAsync(uitgifte.HuurderID);
+            if (huurder == null)
+            {
+                return NotFound("Huurder niet gevonden.");
+            }
+            
+            uitgifte.Status = "Uitgegeven"; 
+            uitgifte.DatumUitgifte = DateTime.Now; 
+
             _context.Uitgiftes.Add(uitgifte);
             await _context.SaveChangesAsync();
 
@@ -60,7 +79,7 @@ namespace WebApplication1.Controllers
         {
             if (id != uitgifte.UitgifteID)
             {
-                return BadRequest();
+                return BadRequest("IDs komen niet overeen.");
             }
 
             _context.Entry(uitgifte).State = EntityState.Modified;
@@ -73,7 +92,7 @@ namespace WebApplication1.Controllers
             {
                 if (!UitgifteExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Uitgifte niet gevonden.");
                 }
                 else
                 {
