@@ -1,34 +1,23 @@
 import { useState } from "react";
-import { voegSchadeToe } from "../api";
-import "../Schadetoevoegen.css";
-import { toast } from 'sonner';
+import '../Schadetoevoegen.css';
 
 const SchadeToevoegen = ({ onSchadeToevoegen }) => {
-    const [voertuigId, setVoertuigId] = useState("");
     const [beschrijving, setBeschrijving] = useState("");
+    const [datum, setDatum] = useState("");
     const [kosten, setKosten] = useState(0);
     const [status, setStatus] = useState("Open");
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const schadeData = {
-            VoertuigId: voertuigId,
-            Beschrijving: beschrijving,
-            Kosten: parseFloat(kosten),
-            Status: status
-        };
-        console.log("Schade data verzonden:", schadeData); // Debug-log
+        const schadeData = { beschrijving, datum, kosten, status };
+
         try {
-            const newSchade = await voegSchadeToe(schadeData);
+            const newSchade = await voegSchadetoe(schadeData);
             console.log("Nieuwe schade toegevoegd:", newSchade);
             onSchadeToevoegen(newSchade);
-            toast('Nieuwe schade toegevoegd!', {
-                type: 'success', 
-            })
-            // Reset formulier
-            setVoertuigId("");
             setBeschrijving("");
+            setDatum("");
             setKosten(0);
             setStatus("Open");
         } catch (error) {
@@ -37,20 +26,11 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
     };
 
     return (
-        <div className="SchadeToevoegen">
+        <div className="Schade Toevoegen">
             <h1>Schade Toevoegen</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Voertuig ID:</label>
-                    <input
-                        type="number"
-                        value={voertuigId}
-                        onChange={(e) => setVoertuigId(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Beschrijving:</label>
+                    <label>Beschrijving: </label>
                     <input
                         type="text"
                         value={beschrijving}
@@ -59,7 +39,16 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
                     />
                 </div>
                 <div>
-                    <label>Kosten:</label>
+                    <label>Datum: </label>
+                    <input
+                        type="date"
+                        value={datum}
+                        onChange={(e) => setDatum(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Kosten: </label>
                     <input
                         type="number"
                         value={kosten}
@@ -68,7 +57,7 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
                     />
                 </div>
                 <div>
-                    <label>Status:</label>
+                    <label>Status: </label>
                     <select
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
@@ -80,6 +69,7 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
                 </div>
                 <button type="submit">Voeg Schade Toe</button>
             </form>
+            {error && <p style={{ color: "red" }}>{error}</p>} {/* Foutmelding als er een probleem is */}
         </div>
     );
 };

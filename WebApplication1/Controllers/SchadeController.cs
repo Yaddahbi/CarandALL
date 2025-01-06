@@ -22,37 +22,21 @@ namespace WebApplication1.Controllers
             return Ok(schades);
         }
 
+        // GET: api/Schade/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Schade>> GetSchade(int id)
+        public ActionResult<Schade> GetSchadeById(int id)
         {
-            var schade = await _context.Schades.FindAsync(id);
-
-            if (schade == null)
-            {
-                return NotFound();
-            }
-
-            return schade;
+            var schade = _context.GetSchadeById(id);
+            if (schade == null) return NotFound();
+            return Ok(schade);
         }
 
         // POST: api/Schade
         [HttpPost]
-        public async Task<ActionResult<Schade>> PostSchade(Schade schade)
+        public ActionResult CreateSchade(Schade schade)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                _context.Schades.Add(schade);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetSchade), new { id = schade.SchadeId }, schade);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Er is een fout opgetreden bij het toevoegen van schade." });
-            }
+            _context.CreateSchade(schade);
+            return CreatedAtAction(nameof(GetSchadeById), new { id = schade.SchadeId }, schade);
         }
 
         // PUT: api/Schade/{id}
