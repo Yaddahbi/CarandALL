@@ -5,22 +5,41 @@ import { useAuth } from "../AuthContext";
 const KlantGegevens = () => {
     const { user } = useAuth();
     const [formData, setFormData] = useState({
-        naam: "",
-        email: "",
-        adres: "",
-        telefoonnummer: "",
+        Naam: "",
+        Email: "",
+        Adres: "",
+        Telefoonnummer: "",
     });
 
     useEffect(() => {
-        if (user) {
-            setFormData({
-                naam: user.naam,
-                email: user.email,
-                adres: user.adres,
-                telefoonnummer: user.telefoonnummer,
-            });
-        }
-    }, [user]);
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem("jwtToken");
+                const response = await fetch(`https://localhost:7040/api/User/details`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setFormData({
+                        Naam: data.naam,
+                        Email: data.email,
+                        Adres: data.adres,
+                        Telefoonnummer: data.phoneNumber,
+                    });
+                } else {
+                    const data = await response.json();
+                    toast.error(data.message || "Kon gebruikersgegevens niet ophalen.");
+                }
+            } catch (error) {
+                toast.error("Netwerkfout bij het ophalen van gebruikersgegevens.");
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -44,7 +63,8 @@ const KlantGegevens = () => {
                 toast.success("Gegevens succesvol bijgewerkt!");
             } else {
                 const data = await response.json();
-                toast.error(data.message || "Er is iets fout gegaan.");
+                console.error("Foutdetails:", data);
+                toast.error(data.errors ? data.errors.join(", ") : data.message || "Er is iets fout gegaan.");
             }
         } catch (error) {
             toast.error("Er is een netwerkfout opgetreden.");
@@ -55,17 +75,45 @@ const KlantGegevens = () => {
         <div className="form-container">
             <h2>Mijn Gegevens</h2>
             <form onSubmit={handleSubmit}>
-                <label>Naam:</label>
-                <input type="text" name="naam" value={formData.naam} onChange={handleChange} required />
+                <label htmlFor="Naam">Naam:</label>
+                <input
+                    type="text"
+                    name="Naam"
+                    id="Naam"
+                    value={formData.Naam}
+                    onChange={handleChange}
+                    required
+                />
 
-                <label>Email:</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                <label htmlFor="Email">Email:</label>
+                <input
+                    type="email"
+                    name="Email"
+                    id="Email"
+                    value={formData.Email}
+                    onChange={handleChange}
+                    required
+                />
 
-                <label>Adres:</label>
-                <input type="text" name="adres" value={formData.adres} onChange={handleChange} required />
+                <label htmlFor="Adres">Adres:</label>
+                <input
+                    type="text"
+                    name="Adres"
+                    id="Adres"
+                    value={formData.Adres}
+                    onChange={handleChange}
+                    required
+                />
 
-                <label>Telefoonnummer:</label>
-                <input type="text" name="telefoonnummer" value={formData.telefoonnummer} onChange={handleChange} required />
+                <label htmlFor="Telefoonnummer">Telefoonnummer:</label>
+                <input
+                    type="text"
+                    name="Telefoonnummer"
+                    id="Telefoonnummer"
+                    value={formData.Telefoonnummer}
+                    onChange={handleChange}
+                    required
+                />
 
                 <button type="submit">Gegevens Bijwerken</button>
             </form>
