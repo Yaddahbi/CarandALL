@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import "../style/Notificatie.css"; 
+import "../style/Notificatie.css";
 
 const Notificaties = () => {
     const [notificaties, setNotificaties] = useState([]);
@@ -47,7 +47,6 @@ const Notificaties = () => {
             </div>
         </div>
     );
-
 };
 
 export default Notificaties;

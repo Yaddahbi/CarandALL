@@ -50,7 +50,19 @@ namespace WebApplication1.Controllers
             return huurverzoek;
         }
 
+    private async Task StuurNotificatie(string gebruikerId, string bericht)
+        {
+            var notificatie = new Notificatie
+            {
+                GebruikerId = gebruikerId,
+                Bericht = bericht,
+                DatumTijd = DateTime.Now,
+                IsGelezen = false
+            };
 
+            _context.Notificaties.Add(notificatie);
+            await _context.SaveChangesAsync();
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHuurverzoek(int id, [FromBody] HuurverzoekUpdateDto updateDto)
@@ -60,18 +72,25 @@ namespace WebApplication1.Controllers
             {
                 return NotFound("Huurverzoek niet gevonden.");
             }
+
             huurverzoek.Status = updateDto.Status;
             if (updateDto.Status == "Afgewezen" && !string.IsNullOrEmpty(updateDto.Reden))
             {
                 huurverzoek.Afwijzingsreden = updateDto.Reden;
             }
+
             _context.Huurverzoeken.Update(huurverzoek);
             await _context.SaveChangesAsync();
+
+            if (updateDto.Status == "Goedgekeurd")
+            {
+                await StuurNotificatie(huurverzoek.UserId, "Uw huurverzoek is goedgekeurd.");
+            }
 
             return NoContent();
         }
 
-        [Authorize]  
+        [Authorize]
         [HttpGet("bedrijf/huurgeschiedenis")]
         public async Task<ActionResult<IEnumerable<HuurgeschiedenisDtoBedrijf>>> GetHuurGeschiedenisVanMedewerkers([FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
         {
