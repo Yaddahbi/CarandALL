@@ -1,109 +1,103 @@
-import { useState, useEffect } from "react";
-import '../style/Verhuuraanvraag.css';
-import VerhuuraanvraagLijst from "./VerhuuraanvraagLijst";
-import VerhuuraanvraagDetails from "./VerhuuraanvraagDetails";
+import { useEffect, useState } from 'react';
+import "../style/Verhuuraanvraag.css"
 
-const Verhuuraanvraag = () => {
+const Verhuuraanvragen = () => {
     const [aanvragen, setAanvragen] = useState([]);
-    const [filteredAanvragen, setFilteredAanvragen] = useState([]);
-    const [geselecteerdeAanvraag, setGeselecteerdeAanvraag] = useState(null);
-    const [searchParams, setSearchParams] = useState({ id: "" });
 
     useEffect(() => {
-        const fetchAanvragen = async () => {
-            try {
-                const response = await fetch("http://localhost:5000/api/huurverzoeken");
-                if (response.ok) {
-                    const data = await response.json();
-                    setAanvragen(data);
-                    setFilteredAanvragen(data); 
-                } else {
-                    console.error("Error fetching data");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        };
-        fetchAanvragen();
+        fetch('https://localhost:7040/api/Huurverzoeken')
+            .then(response => response.json())
+            .then(data => setAanvragen(data))
+            .catch(error => console.error('Fout bij ophalen aanvragen:', error));
     }, []);
 
-    const updateAanvraag = async (id, actie, reden = '') => {
-        try {
-            const response = await fetch(`http://localhost:5000/api/huurverzoeken/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen',
-                    reason: actie === 'afgewezen' ? reden : ''
-                })
-            });
-
-            if (response.ok) {
-                setAanvragen(prev =>
-                    prev.map(aanvraag =>
-                        aanvraag.id === id
-                            ? { ...aanvraag, status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen', reason: reden }
-                            : aanvraag
-                    )
-                );
-                setGeselecteerdeAanvraag(null); 
-            } else {
-                console.error("Failed to update request");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
-
-    const handleSearch = () => {
-        const { id } = searchParams;
-        let results = aanvragen;
-
-        if (id) {
-            results = results.filter((aanvraag) => aanvraag.id.toString().includes(id));
-        }
-
-        setFilteredAanvragen(results); 
+    const handelBijwerken = (id, status, reden = "") => {
+        fetch(`https://localhost:7040/api/Huurverzoeken/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                huurStatus: status,
+                afwijzingsreden: reden
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Fout bij bijwerken aanvraag");
+                }
+                return response.json();
+            })
+            .then(bijgewerktVerzoek => {
+                // Verwijder het goedgekeurde of afgewezen verzoek uit de lijst
+                setAanvragen(aanvragen.filter(aanvraag => aanvraag.huurverzoekId !== id));
+                alert(`Aanvraag ${status === "Goedgekeurd" ? "goedgekeurd" : "afgewezen"}!`);
+            })
+            .catch(error => console.error('Fout bij bijwerken aanvraag:', error));
     };
 
     return (
         <>
             <section className="verhuuraanvraag-hero">
                 <div className="container verhuuraanvraag">
-                    <h1>Beheer Verhuur Aanvragen</h1>
-                    <p>Bekijk en beheer alle aanvragen in een overzicht.</p>
-                    <div className="verhuuraanvraag-search-bar">
-                        <input
-                            className="aanvraag-ID"
-                            type="text"
-                            placeholder="Zoek op aanvraag ID"
-                            value={searchParams.id}
-                            onChange={(e) =>
-                                setSearchParams({ ...searchParams, id: e.target.value }) 
-                            }
-                        />
-                        <button onClick={handleSearch}>Zoeken</button> 
-                    </div>
+                    <h1>Mijn Verhuuraanvragen</h1>
+                    <p>Hier kun je de verhuurgeschiedenis zien</p>
                 </div>
             </section>
 
             <div className="verhuuraanvraag-container">
                 <div className="verhuuraanvraag-content">
-                    <VerhuuraanvraagLijst
-                        aanvragen={filteredAanvragen} 
-                        onSelectAanvraag={(aanvraag) => setGeselecteerdeAanvraag(aanvraag)} 
-                    />
-                    {geselecteerdeAanvraag && (
-                        <VerhuuraanvraagDetails
-                            aanvraag={geselecteerdeAanvraag} 
-                            onUpdateAanvraag={updateAanvraag} 
-                        />
-                    )}
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Huurder</th>
+                                <th>Voertuig</th>
+                                <th>Startdatum</th>
+                                <th>Einddatum</th>
+                                <th>Status</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {aanvragen.map(aanvraag => (
+                                <tr
+                                    key={aanvraag.huurverzoekId}
+                                    className={aanvraag.status === "Afgewezen" ? "table-danger" : ""}
+                                >
+                                    <td>{aanvraag.huurderNaam}</td>
+                                    <td>{aanvraag.voertuigMerk} {aanvraag.voertuigType}</td>
+                                    <td>{new Date(aanvraag.startDatum).toLocaleDateString('nl-NL')}</td>
+                                    <td>{new Date(aanvraag.eindDatum).toLocaleDateString('nl-NL')}</td>
+                                    <td>{aanvraag.status}</td>
+                                    <td>
+                                        {aanvraag.status !== "Goedgekeurd" && aanvraag.status !== "Afgewezen" && (
+                                            <>
+                                                <button
+                                                    className="btn btn-success"
+                                                    onClick={() => handelBijwerken(aanvraag.huurverzoekId, "Goedgekeurd")}
+                                                >
+                                                    Goedkeuren
+                                                </button>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => {
+                                                        const reden = prompt("Geef een reden voor afwijzing:");
+                                                        if (reden) {
+                                                            handelBijwerken(aanvraag.huurverzoekId, "Afgewezen", reden);
+                                                        }
+                                                    }}
+                                                >
+                                                    Afwijzen
+                                                </button>
+                                            </>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>
     );
 };
 
-export default Verhuuraanvraag;
-
+export default Verhuuraanvragen;

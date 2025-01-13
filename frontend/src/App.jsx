@@ -1,13 +1,13 @@
 import './style/styles.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Verhuuraanvraag from './components/Verhuuraanvraag';
+import BeheerAanvragen from './components/BeheerAanvragen';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
 import GebruikerAanmaken from './GebruikerAanmaken';
 import SchadePagina from './components/SchadePagina';
 import Wagenparkbeheer from './components/Wagenparkbeheer';
-
+import Verhuuraanvraag from './components/Verhuuraanvraag';
 
 
 const Login = () => <h1>Login Page</h1>;
@@ -45,10 +45,14 @@ const FeaturesSection = () => (
 );
 
 const App = () => {
-    const isZakelijk = false; // hardcode
+    const gebruiker = {
+        naam: 'Jan Janssen',
+        rol: 'FrontofficeMedewerker'
+    };
+
     return (
         <Router>
-            <Navbar />
+            <Navbar gebruiker={gebruiker} />
             <div className="container mt-4">
                 <Routes>
 
@@ -60,9 +64,10 @@ const App = () => {
 
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
                   
-                    <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
+                    <Route path="/voertuigen" element={<VoertuigenPagina />} />
+                    <Route path="/mijn-verhuuraanvraag" element={<Verhuuraanvraag />} />
 
-                    <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
+                    <Route path="/aanvraag-beheer" element={<BeheerAanvragen />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
 
                     <Route path="/login" element={<Login />} />

@@ -2,32 +2,54 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style/Navbar.css';
-import { FaBars } from 'react-icons/fa';
 
-const Navbar = () => {
+
+const Navbar = ({gebruiker}) => {
     return (
         <nav className="navbar">
             <div className="navbar-left">
-                <div className="dropdown">
-                    <button className="dropbtn">
-                        <FaBars size={20} /> {/* Dropdown menu*/}
-                    </button>
-                    <div className="dropdown-content">
-                        <Link to="/aanvraag-beheer">Aanvraag Beheer</Link>
-                        <Link to="/voertuigen">Voertuigen</Link>
-                        <Link to="/abonnementen">Abonnementen</Link>
-                        <Link to="/schades">Schades</Link>
-                        <Link to="/wagenparkbeheer">Wagenparkbeheer</Link>
-                    </div>
+                 <div className="logo">
+                <Link to="/">Car And All</Link>{/* Logo */}
                 </div>
-            <div className="logo">
-                <Link to="/">Car And All</Link>{/* Logo text */}
+
+                <div className="menu">
+                 
+
+                    {gebruiker?.rol === 'Particulier' && (
+                        <>
+                            <Link to="/voertuigen">Voertuigen</Link>            
+                            <Link to="/mijn-verhuuraanvraag">Mijn Aanvragen</Link>
+                        </>
+                    )}
+                    {gebruiker?.rol === 'ZakelijkeHuurder' && (
+                        <Link to="/abonnementen">Abonnementen</Link>
+                    )}
+                    {gebruiker?.rol === 'BackofficeMedewerker' && (
+                        <>
+                            <Link to="/wagenparkbeheer">Wagenparkbeheer</Link>
+                            <Link to="/aanvraag-beheer">Aanvraagbeheer</Link>
+                        </>
+                    )}
+                    {gebruiker?.rol === 'FrontofficeMedewerker' && (
+                        <Link to="/schades">Schades</Link>
+                    )}
+                  
                 </div>
             </div>
 
             <div className="navbar-right">
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
+                {!gebruiker ? (
+                    <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
+                    </>
+                ) : (
+
+                    <>
+                        <span className="gebruikersnaam">Welkom, {gebruiker.naam}</span>
+                        <Link to="/logout">Uitloggen</Link>
+                    </>
+                )}
             </div>
         </nav>
     );

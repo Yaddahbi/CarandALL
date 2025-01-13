@@ -20,8 +20,6 @@ const Wagenparkbeheer = () => {
     }, []);
 
     const handleOpslaan = () => {
-        console.log("Opslaan data:", voertuig); // Check the structure of the data
-
         if (!voertuig.merk || !voertuig.type || !voertuig.kleur || !voertuig.aanschafjaar || !voertuig.kenteken) {
             alert("Alle velden (behalve opmerkingen) zijn verplicht!");
             return;
@@ -87,55 +85,89 @@ const Wagenparkbeheer = () => {
             <div className="container-wagenparkbeheer">
                 <div className="wagenparkbeheer">
                     <div className="form-row">
+                    <div>
+                        <label htmlFor="merk">Merk</label>
                         <input
+                            id="merk"
                             placeholder="Merk"
                             value={voertuig.merk}
                             onChange={(e) => setVoertuig({ ...voertuig, merk: e.target.value })}
-                        />
+                            aria-required="true"
+                            />
+                        </div>
+                        <div>
+                        <label htmlFor="type">Type</label>
                         <input
+                            id="type"
                             placeholder="Type"
                             value={voertuig.type}
                             onChange={(e) => setVoertuig({ ...voertuig, type: e.target.value })}
-                        />
+                            aria-required="true"
+                            />
+                        </div>
+                        <div>
+                        <label htmlFor="kleur">Kleur</label>
                         <input
+                            id="kleur"
                             placeholder="Kleur"
                             value={voertuig.kleur}
                             onChange={(e) => setVoertuig({ ...voertuig, kleur: e.target.value })}
-                        />
+                            aria-required="true"
+                            />
+                        </div>
                     </div>
+
                     <div className="form-row-2">
+                    <div>
+                        <label htmlFor="aanschafjaar">Bouwjaar</label>
                         <input
+                            id="aanschafjaar"
                             placeholder="Bouwjaar"
                             value={voertuig.aanschafjaar}
                             onChange={(e) => setVoertuig({ ...voertuig, aanschafjaar: e.target.value })}
-                        />
+                            aria-required="true"
+                            />
+                        </div>
+                        <div>
+                        <label htmlFor="kenteken">Kenteken</label>
                         <input
+                            id="kenteken"
                             placeholder="Kenteken"
                             value={voertuig.kenteken}
                             onChange={(e) => setVoertuig({ ...voertuig, kenteken: e.target.value })}
-                        />
+                            aria-required="true"
+                            />
+                        </div>
                     </div>
                     <div className="form-row-1">
+                    <div>
+                        <label htmlFor="opmerkingen">Opmerkingen</label>
                         <textarea
+                            id="opmerkingen"
                             placeholder="Opmerkingen"
                             value={voertuig.opmerkingen}
                             onChange={(e) => setVoertuig({ ...voertuig, opmerkingen: e.target.value })}
                             rows="5"
                             style={{ resize: 'vertical' }}
-                        ></textarea>
+                            ></textarea>
+                        </div>
                     </div>
-                    <button onClick={handleOpslaan}>{bewerken ? 'Opslaan' : 'Toevoegen'}</button>
+                    <button onClick={handleOpslaan} aria-label={bewerken ? 'Opslaan voertuig' : 'Toevoegen voertuig'}>
+                        {bewerken ? 'Opslaan' : 'Toevoegen'}
+                    </button>
                 </div>
+
+                <h1>Overzicht van voertuigen</h1>
 
                 <table>
                     <thead>
                         <tr>
-                            <th>Merk</th>
-                            <th>Type</th>
-                            <th>Kleur</th>
-                            <th>Bouwjaar</th>
-                            <th>Kenteken</th>
-                            <th>Acties</th>
+                            <th scope="col">Merk</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Kleur</th>
+                            <th scope="col">Bouwjaar</th>
+                            <th scope="col">Kenteken</th>
+                            <th scope="col">Acties</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,8 +179,12 @@ const Wagenparkbeheer = () => {
                                 <td>{v.aanschafjaar}</td>
                                 <td>{v.kenteken}</td>
                                 <td>
-                                    <button onClick={() => handleBewerk(v)}>Wijzigen</button>
-                                    <button onClick={() => handleVerwijder(v.voertuigId)}>Verwijderen</button>
+                                    <button onClick={() => handleBewerk(v)} aria-label={`Wijzigen voertuig ${v.merk}`}>
+                                        Wijzigen
+                                    </button>
+                                    <button onClick={() => handleVerwijder(v.voertuigId)} aria-label={`Verwijderen voertuig ${v.merk}`}>
+                                        Verwijderen
+                                    </button>
                                 </td>
                             </tr>
                         ))}

@@ -1,0 +1,42 @@
+.abonnementen-hero {
+    position: relative;
+    height: 485px;
+    text-align: center;
+    background-image: url('../images/Abonnementen-Hero.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    padding: 64px 20px 0;
+}
+
+    .abonnementen-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
+        z-index: 1;
+    }
+
+    .abonnementen-hero .container {
+        padding: 40px 20px;
+        border-radius: 16px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .abonnementen-hero h1 {
+        color: white;
+        font-size: 70px;
+        margin-bottom: 5px;
+    }
+
+    .abonnementen-hero p {
+        font-size: 25px;
+    }
