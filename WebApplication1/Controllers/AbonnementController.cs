@@ -101,7 +101,6 @@ namespace WebApplication1.Controllers
         [HttpPost("add-medewerker")]
         public async Task<IActionResult> AddMedewerker([FromBody] AddMedewerkerDto medewerkerDto)
         {
-            // Haal het gebruikers ID en abonnement ID uit de claims
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var abonnementIdClaim = User.FindFirst("AbonnementId")?.Value;
 
@@ -110,20 +109,17 @@ namespace WebApplication1.Controllers
                 return Unauthorized(new { error = "Gebruiker of abonnement niet geauthenticeerd." });
             }
 
-            // Probeer het abonnementId om te zetten naar een integer
             if (!int.TryParse(abonnementIdClaim, out int abonnementId))
             {
                 return Unauthorized(new { error = "Ongeldig abonnement ID." });
             }
 
-            // Zoek het abonnement op via het abonnementId
             var abonnement = await _context.Abonnementen.FindAsync(abonnementId);
             if (abonnement == null)
             {
                 return NotFound(new { message = "Abonnement niet gevonden." });
             }
 
-            // Dynamische controle van bedrijfsdomein
             string bedrijfsDomein = abonnement.BedrijfsDomein;
             if (!medewerkerDto.Email.EndsWith($"@{bedrijfsDomein}", StringComparison.OrdinalIgnoreCase))
             {
