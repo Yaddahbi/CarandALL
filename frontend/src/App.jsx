@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
+import BeheerAanvragen from './components/BeheerAanvragen';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
 import GebruikerAanmaken from './GebruikerAanmaken';
@@ -25,8 +26,9 @@ import VerhuurdeVoertuigen from './components/VerhuurdeVoertuigen';
 import VoertuigStatusOverzicht from './components/VoertuigStatusOverzicht';
 import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
 import { AuthProvider } from "./AuthContext";
-
 import { Toaster } from 'sonner';
+import Verhuuraanvraag from './components/Verhuuraanvraag';
+
 
 const Login = () => <h1>Login Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
@@ -63,9 +65,11 @@ const FeaturesSection = () => (
 );
 
 const App = () => {
-    const isZakelijk = false; // hardcode
-    const isFrontOffice = true;
-    const huurderId = 1; // harcode
+    const gebruiker = {
+        naam: 'Jan Janssen',
+        rol: 'FrontofficeMedewerker'
+    };
+
     return (
         <AuthProvider>
         <Router>
@@ -77,6 +81,7 @@ const App = () => {
                     duration={5000}       
                 />
             <Navbar />
+            <Navbar gebruiker={gebruiker} />
             <div className="container mt-4">
                 <Routes>
 
@@ -91,8 +96,10 @@ const App = () => {
                   
                     <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
                     <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis huurderId={huurderId} />} />
+                    <Route path="/voertuigen" element={<VoertuigenPagina />} />
+                    <Route path="/mijn-verhuuraanvraag" element={<Verhuuraanvraag />} />
 
-                    <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
+                    <Route path="/aanvraag-beheer" element={<BeheerAanvragen />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
                     <Route path="/HuurgeschiedenisBedrijf" element={<HuurgeschiedenisBedrijf />} />
 

@@ -2,11 +2,12 @@ body {
     background-color: #f7f7f7;
 }
 
-.verhuuraanvraag-hero {
+/* Hero Section Styling */
+.beheeraanvragen-hero {
     position: relative;
-    height: 485px;
+    height: 685px;
     text-align: center;
-    background-image: url('../images/Verhuur-Hero.png');
+    background-image: url('../images/BeheerAanvragen-Hero.png');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -17,35 +18,77 @@ body {
     padding: 64px 20px 0;
 }
 
-.verhuuraanvraag-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
-    z-index: 1;
-}
-
-.verhuuraanvraag-hero .container {
-    padding: 40px 20px;
-    border-radius: 16px;
-    text-align: center;
-    z-index: 2;
-}
-
-    .verhuuraanvraag-hero h1 {
-        color: white;
-        font-size: 70px;
-        margin-bottom: 5px;
+    .beheeraanvragen-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
     }
 
-.verhuuraanvraag-hero p {
-    font-size: 25px;
+    .beheeraanvragen-hero .container {
+        position: relative;
+        width: 60%;
+        padding: 40px 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .beheeraanvragen-hero h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .beheeraanvragen-hero p {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+/* Search-bar styling */
+.beheeraanvragen-search-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.verhuuraanvraag-container {
+    .beheeraanvragen-search-bar input, .beheeraanvragen-search-bar button {
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid rgb(201, 201, 207);
+        font-size: 18px;
+        background: none;
+        box-sizing: border-box;
+        height: 3.125rem;
+    }
+
+    .beheeraanvragen-search-bar input {
+        width: 60%;
+        margin-right: 10px;
+    }
+
+    .beheeraanvragen-search-bar button {
+        background-color: #ff5f00;
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: 20%;
+        margin-left: 0;
+    }
+
+        .beheeraanvragen-search-bar button:hover {
+            background-color: #e54d00;
+        }
+
+.beheeraanvragen-container {
     padding: 20px;
     font-family: Arial, sans-serif;
     margin-top: 60px;

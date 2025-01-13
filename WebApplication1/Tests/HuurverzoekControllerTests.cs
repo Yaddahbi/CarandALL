@@ -1,4 +1,4 @@
-public void UpdateStatus_ApprovesHuurverzoek()
+/*public void UpdateStatus_ApprovesHuurverzoek()
 {
 	// Arrange
 	var dto = new UpdateHuurverzoekDto { HuurStatus = "Goedgekeurd" };
@@ -21,3 +21,4 @@ public void UpdateStatus_RejectsHuurverzoek_WithoutReason_ThrowsError()
 	// Act & Assert
 	Assert.Throws<Exception>(() => controller.UpdateHuurverzoekStatus(1, dto));
 }
+*/

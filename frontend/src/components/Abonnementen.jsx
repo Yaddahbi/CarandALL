@@ -96,4 +96,4 @@ const Abonnementen = () => {
 
 };
 
-export default Abonnementen;
+    export default Abonnementen;
