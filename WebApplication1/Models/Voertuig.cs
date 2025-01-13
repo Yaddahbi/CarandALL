@@ -49,6 +49,7 @@ namespace WebApplication1.Models
         {
             Uitgiftes = new List<Uitgifte>();
             Innames = new List<Inname>();
+            Huurverzoeken = new List<Huurverzoek>();
         }
     }
 

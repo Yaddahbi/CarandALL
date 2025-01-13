@@ -169,76 +169,89 @@ export const fetchHuurgeschiedenis = async (filters) => {
   };
 
   export const createUitgifte = async (uitgifteData) => {
-    try {
-      const response = await fetch(UITGIFTE_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(uitgifteData),
-      });
+      try {
+          const response = await fetch(UITGIFTE_API_URL, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify(uitgifteData),
+          });
 
-      if (!response.ok) {
-        throw new Error("Fout bij het registreren van de uitgifte");
+          if (!response.ok) {
+              throw new Error("Fout bij het registreren van de uitgifte");
+          }
+
+          return await response.json();
+      } catch (error) {
+          console.error("Fout bij het registreren van uitgifte:", error);
+          throw error;
+
       }
+      ;
+      export const fetchHuurgeschiedenisBedrijf = async (filters) => {
+          try {
+              const token = localStorage.getItem('jwtToken');
+              if (!token) {
+                  throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+              }
 
-      return await response.json();
-    } catch (error) {
-      console.error("Fout bij het registreren van uitgifte:", error);
-      throw error;
+              const params = new URLSearchParams();
 
-};
-export const fetchHuurgeschiedenisBedrijf = async (filters) => {
+
+              if (filters.startDatum) params.append('startDatum', filters.startDatum);
+              if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+              // Voeg voertuigType alleen toe als het niet leeg is
+              if (filters.voertuigType && filters.voertuigType !== '') {
+                  params.append('voertuigType', filters.voertuigType);
+              }
+
+              const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
+                  method: 'GET',
+                  headers: {
+                      "Authorization": `Bearer ${token}`,
+                  },
+              });
+
+              if (!response.ok) {
+                  throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+              }
+
+              return await response.json();
+          } catch (error) {
+              console.error(error);
+              throw error;
+          }
+      };
+      export const fetchMedewerkers = async () => {
+          try {
+              const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
+                  method: 'GET',
+                  headers: {
+                      'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Zet de juiste token als header
+                  },
+              });
+
+              if (!response.ok) {
+                  throw new Error('Er is een probleem met het ophalen van de medewerkers.');
+              }
+
+              return await response.json();
+          } catch (error) {
+              console.error(error);
+              throw error;
+          }
+      }
+  }
+export const fetchVerhuurdeVoertuigen = async (startDatum, eindDatum, voertuigType, huurder) => {
     try {
-        const token = localStorage.getItem('jwtToken'); 
-        if (!token) {
-            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
-        }
-
-        const params = new URLSearchParams();
-
-        
-        if (filters.startDatum) params.append('startDatum', filters.startDatum);
-        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
-
-        // Voeg voertuigType alleen toe als het niet leeg is
-        if (filters.voertuigType && filters.voertuigType !== '') {
-            params.append('voertuigType', filters.voertuigType);
-        }
-
-        const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
-            method: 'GET',
-            headers: {
-                "Authorization": `Bearer ${token}`, 
-            },
+        const response = await axios.get(`${API_URL}/verhuurde`, {
+            params: { startDatum, eindDatum, voertuigType, huurder }
         });
-
-        if (!response.ok) {
-            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
-        }
-
-        return await response.json();
+        return response.data;
     } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-export const fetchMedewerkers = async () => {
-    try {
-        const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Zet de juiste token als header
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Er is een probleem met het ophalen van de medewerkers.');
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(error);
+        console.error("Fout bij het ophalen van verhuurde voertuigen:", error);
         throw error;
     }
 };

@@ -18,5 +18,4 @@
             Schadeclaims = new List<Schadeclaim>();
         }
     }
-
 }

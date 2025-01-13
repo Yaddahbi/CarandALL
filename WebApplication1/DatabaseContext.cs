@@ -78,11 +78,11 @@ namespace WebApplication1
                 .HasOne(hv => hv.Voertuig)
                 .WithMany(v => v.Huurverzoeken)
                 .HasForeignKey(hv => hv.VoertuigId);
-
+            
             modelBuilder.Entity<Huurverzoek>()
-                .HasOne(hv => hv.Voertuig)
-                .WithMany(v => v.Huurverzoeken)
-                .HasForeignKey(hv => hv.VoertuigId);
+                .HasOne(hv => hv.Huurder)
+                .WithMany(h => h.Huurverzoeken)
+                .HasForeignKey(hv => hv.HuurderId);
             
             modelBuilder.Entity<Schade>()
                 .HasOne(s => s.Voertuig)

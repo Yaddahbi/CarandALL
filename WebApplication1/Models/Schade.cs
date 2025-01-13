@@ -10,6 +10,8 @@
         private List<string> _fotoUrls;
         private string _opmerkingen;
         
+        public Schade() { }
+        
 
         public Schade(int voertuigId, string beschrijving, DateTime datum, double kosten, List<string> fotoUrls, string status = "Open")
         {
@@ -152,5 +154,7 @@
         {
             Opmerkingen = $"Schade gekoppeld aan reparatie: {reparatieDetails}";
         }
+        
+        
     }
 }
