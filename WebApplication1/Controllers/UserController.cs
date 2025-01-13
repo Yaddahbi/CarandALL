@@ -179,7 +179,67 @@ namespace WebApplication1.Controllers
                 .ToListAsync();
 
             return Ok(notificaties);
+    [Authorize]
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateUser([FromBody] Updateuserdto userDto)
+    {
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await _userManager.FindByIdAsync(userId);
+
+    if (user == null)
+    {
+        return NotFound(new { message = "Gebruiker niet gevonden." });
+    }
+
+    user.Naam = userDto.Naam;
+    user.Email = userDto.Email;
+    user.Adres = userDto.Adres;
+    user.PhoneNumber = userDto.Telefoonnummer;
+
+    var result = await _userManager.UpdateAsync(user);
+
+    if (result.Succeeded)
+    {
+        return Ok(new { message = "Gegevens succesvol bijgewerkt." });
+    }
+
+    var errors = result.Errors.Select(e => e.Description);
+    return BadRequest(new { errors });
+}
+        [Authorize]
+        [HttpGet("details")]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
+            }
+
+            var user = await _userManager.Users
+                .Where(u => u.Id == userId)
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Naam,
+                    u.Email,
+                    u.Adres,
+                    u.PhoneNumber,
+                    u.Rol,
+                    u.BedrijfsNaam,
+                    u.KvkNummer
+                })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound(new { message = "Gebruiker niet gevonden." });
+            }
+
+            return Ok(user);
         }
+
 
     }
 }
