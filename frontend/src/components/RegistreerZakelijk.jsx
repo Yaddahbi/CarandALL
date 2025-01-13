@@ -52,7 +52,8 @@ function RegistreerZakelijk() {
     };
 
     return (
-        <div className="form-container">
+        <div className="regz">
+        <div className="regz-container">
             <h2>Registreer Zakelijk</h2>
             <form className="form-display" onSubmit={handleSubmit}>
                 <label>E-mail:</label>
@@ -84,6 +85,7 @@ function RegistreerZakelijk() {
 
                 <button type="submit">Account aanmaken</button>
             </form>
+            </div>
         </div>
     );
 }

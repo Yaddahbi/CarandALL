@@ -179,8 +179,6 @@ namespace WebApplication1.Controllers
                 .ToListAsync();
 
             return Ok(notificaties);
-        }
-
     [Authorize]
     [HttpPut("update")]
     public async Task<IActionResult> UpdateUser([FromBody] Updateuserdto userDto)

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import Modal from "./Modal"; 
 
 const AboMedewerkersLijst = ({ refreshKey }) => {
     const [medewerkers, setMedewerkers] = useState([]);
@@ -94,7 +93,8 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
             {loading ? (
                 <p>Laden...</p>
             ) : (
-                <table>
+                
+                    <table>
                     <thead>
                         <tr>
                             <th>Naam</th>
