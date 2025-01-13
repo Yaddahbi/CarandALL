@@ -64,20 +64,20 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
                             } catch (error) {
                                 toast.error("Er is een netwerkfout opgetreden.");
                             }
-                            toast.dismiss(toastId); // Sluit de toast na actie
+                            toast.dismiss(toastId); 
                         }}
                     >
                         Ja, verwijderen
                     </button>
                     <button
-                        onClick={() => toast.dismiss(toastId)} // Zorg ervoor dat de juiste toast wordt gesloten
+                        onClick={() => toast.dismiss(toastId)} 
                     >
                         Nee, annuleren
                     </button>
                 </div>
             ),
             {
-                duration: Infinity, // Toast blijft open totdat het wordt gesloten
+                duration: Infinity, 
             }
         );
     };
