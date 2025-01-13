@@ -10,7 +10,6 @@ import SchadeLijst from './components/SchadeLijst';
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
-
 import UitgifteVoertuig from './components/UitgifteVoertuig'; 
 import InnameVoertuig from './components/InnameVoertuig';
 import HuurgeschiedenisBedrijf from './components/HuurgeschiedenisBedrijf';
@@ -21,6 +20,9 @@ import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk'; 
 import Notificaties from './components/Notificaties';
 import Privacyverklaring from './components/Privacyverklaring';
+import VerhuurdeVoertuigen from './components/VerhuurdeVoertuigen';
+import VoertuigStatusOverzicht from './components/VoertuigStatusOverzicht';
+import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
 import { AuthProvider } from "./AuthContext";
 
 import { Toaster } from 'sonner';
@@ -113,11 +115,15 @@ const App = () => {
                     <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
 
                     <Route path="/privacy" element={<Privacyverklaring />} />
-                    
+
+                    <Route path="/verhuurde-voertuigen" element={<VerhuurdeVoertuigen />} />
+                    <Route path="/voertuig-status-overzicht" element={<VoertuigStatusOverzicht />} />
+                    <Route path="/blokkeren-voertuigen" element={<BlokkerenVoertuigen />} />
                 </Routes>
+            </div>
+        </Router>
         </AuthProvider>
     );
 };
 
-
-export default App;                                                                                                       
+export default App;                                                                                                 

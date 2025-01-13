@@ -55,14 +55,71 @@ export const fetchFilteredVoertuigen = async (filters) => {
   return response.json();
 };
 
+export const fetchVerhuurdeVoertuigen = async (filters) => {
+    const queryParams = new URLSearchParams({
+        startDatum: filters.startDatum,
+        eindDatum: filters.eindDatum,
+        voertuigType: filters.voertuigType,
+        huurder: filters.huurder
+    }).toString();
+    const response = await fetch(`${API_URL}/verhuurde?${queryParams}`);
+    if (!response.ok) {
+        throw new Error("Fout bij het ophalen van verhuurde voertuigen");
+    }
+    return await response.json();
+};
+
+export const fetchVehicleStatus = async () => {
+    const response = await fetch(`${API_URL}/status`);
+    if (!response.ok) {
+        throw new Error("Fout bij het ophalen van voertuigstatus");
+    }
+    return await response.json();
+};
+export const updateVehicleStatus = async (vehicleId, status) => {
+    try {
+        const response = await fetch(`${API_URL}/${vehicleId}/status`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het bijwerken van voertuigstatus");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het bijwerken van voertuigstatus:", error);
+        throw error;
+    }
+};
+export const blockVehicleForRent = async (vehicleId, reason) => {
+    try {
+        const response = await fetch(`${API_URL}/${vehicleId}/block`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ reason }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het blokkeren van voertuig voor verhuur");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het blokkeren van voertuig:", error);
+        throw error;
+    }
+};
+
 export const fetchSchades = async () => {
     return await fetchApi(SCHADE_API_URL);
 };
-
-export const fetchSchadeById = async (id) => {
-    return await fetchApi(`${SCHADE_API_URL}/${id}`);
-};
-
 
 export const fetchSchadeById = async (id) => {
     return await fetchApi(`${SCHADE_API_URL}/${id}`);
@@ -188,7 +245,7 @@ export const fetchHuurgeschiedenis = async (filters) => {
           throw error;
 
       }
-      ;
+  };
       export const fetchHuurgeschiedenisBedrijf = async (filters) => {
           try {
               const token = localStorage.getItem('jwtToken');
@@ -242,17 +299,4 @@ export const fetchHuurgeschiedenis = async (filters) => {
               console.error(error);
               throw error;
           }
-      }
-  }
-export const fetchVerhuurdeVoertuigen = async (startDatum, eindDatum, voertuigType, huurder) => {
-    try {
-        const response = await axios.get(`${API_URL}/verhuurde`, {
-            params: { startDatum, eindDatum, voertuigType, huurder }
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Fout bij het ophalen van verhuurde voertuigen:", error);
-        throw error;
-    }
-};
-
+      };

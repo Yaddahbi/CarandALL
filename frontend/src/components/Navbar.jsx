@@ -61,6 +61,12 @@ const Navbar = () => {
                                 <Link to="/huurgeschiedenisBedrijf">Huurgeschiedenis Medewerkers</Link>
                             </>
                         )}
+                        {user && user.role === "Wagenparkbeheerder" && (
+                            <>
+                                <Link to="/overzicht-verhuurde-voertuigen">Overzicht Verhuurde Voertuigen</Link>
+                                <Link to="/voertuigstatus">Voertuigstatus Overzicht</Link>
+                            </>
+                        )}
                     </div>
                     )}
                 </div>
