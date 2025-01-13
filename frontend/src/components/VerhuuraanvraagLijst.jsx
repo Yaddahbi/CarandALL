@@ -15,10 +15,10 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
                 </thead>
                 <tbody>
                     {aanvragen.map((aanvraag) => (
-                        <tr key={aanvraag.id}>
-                            <td>{aanvraag.id}</td>
-                            <td>{aanvraag.startDatum}</td>
-                            <td>{aanvraag.eindDatum}</td>
+                        <tr key={aanvraag.huurverzoekId}>
+                            <td>{aanvraag.huurverzoekId}</td>
+                            <td>{new Date(aanvraag.startDatum).toLocaleDateString('nl-NL')}</td>
+                            <td>{new Date(aanvraag.eindDatum).toLocaleDateString('nl-NL')}</td>
                             <td>{aanvraag.status}</td>
                             <td>
                                 <button onClick={() => onSelectAanvraag(aanvraag)}>
@@ -28,6 +28,8 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
                         </tr>
                     ))}
                 </tbody>
+
+
             </table>
         </div>
     );

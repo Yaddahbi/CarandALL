@@ -11,8 +11,10 @@ const SchadePagina = () => {
     const [activePage, setActivePage] = useState(null);
 
     const loadSchades = async () => {
+
         setLoading(true);
         setError(null);
+
         try {
             const data = await fetchSchades();
             if (data && data.length === 0) {

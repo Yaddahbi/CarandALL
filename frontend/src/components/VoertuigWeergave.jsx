@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import VoertuigFormulier from './VoertuigFormulier';
 import { createHuurverzoek } from '../api';
@@ -36,12 +37,52 @@ const VoertuigWeergave = ({ voertuigen }) => {
             setGeselecteerdVoertuig(null);
         } catch (err) {
             alert('Voertuig is niet beschikbaar in deze periode.');
+import { useState } from "react";
+import VoertuigFormulier from "./VoertuigFormulier";
+import { createHuurverzoek } from "../api";
+import { useAuth } from "../AuthContext";
+import { toast } from 'sonner';
+
+const VoertuigWeergave = ({ voertuigen, filters }) => {
+    const [geselecteerdVoertuig, setGeselecteerdVoertuig] = useState(null);
+    const [error, setError] = useState(null);
+    const { user } = useAuth();
+    const userId = user?.id;
+
+    const handleVoertuigKlik = (voertuig) => {
+        setGeselecteerdVoertuig({
+            voertuig,
+            startDatum: filters.startDatum,
+            eindDatum: filters.eindDatum,
+        });
+    };
+
+    const handleFormulierSluiten = () => {
+        setGeselecteerdVoertuig(null);
+    };
+
+    const handleHuurverzoek = async (huurverzoekData) => {
+        try {
+            await createHuurverzoek({ ...huurverzoekData, userId: {userId} });
+            toast(`Huurverzoek succesvol aangemaakt!`, {
+                description: 'Check de status in uw huurgeschiedenis.',
+                type: 'succes',
+            }) 
+            setGeselecteerdVoertuig(null);
+        } catch (err) {
+            console.error("Fout bij maken huurverzoek:", err);
+            toast(`Er ging iets fout: ${err.message}`, {
+                type: 'error',
+            }) 
             setError(err.message);
         }
     };
 
     if (!voertuigen.length) {
+
         return <p>Geen voertuigen gevonden</p>;
+
+        return <p>Voertuigen worden geladen...</p>;
     }
 
     return (
@@ -90,13 +131,16 @@ const VoertuigWeergave = ({ voertuigen }) => {
 
             {geselecteerdVoertuig && (
                 <VoertuigFormulier
-                    voertuig={geselecteerdVoertuig}
+                    voertuig={geselecteerdVoertuig.voertuig}
+                    startDatum={geselecteerdVoertuig.startDatum}
+                    eindDatum={geselecteerdVoertuig.eindDatum}
                     onClose={handleFormulierSluiten}
                     onSubmit={handleHuurverzoek}
                 />
             )}
 
             {error && <p style={{ color: 'red' }} aria-live="assertive">{error}</p>}
+           
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import '../style/Schadetoevoegen.css';
+import '../Schadetoevoegen.css';
+
 
 const SchadeToevoegen = ({ onSchadeToevoegen }) => {
     const [beschrijving, setBeschrijving] = useState("");

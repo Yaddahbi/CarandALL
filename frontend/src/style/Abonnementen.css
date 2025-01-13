@@ -1,0 +1,165 @@
+/* Algemeen Styling */
+body {
+    background-color: #f7f7f7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Hero Section Styling */
+.abonnementen-hero {
+    position: relative;
+    height: 600px;
+    text-align: center;
+    background-image: url("../images/Abonnementen.webp");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0 20px;
+    background-attachment: fixed;
+}
+
+    .abonnementen-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+
+    .abonnementen-hero .container {
+        position: relative;
+        max-width: 800px;
+        padding: 40px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 16px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+        z-index: 2;
+        text-align: center;
+    }
+
+    .abonnementen-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .abonnementen-hero p {
+        font-size: 1.25rem;
+        font-weight: 300;
+        margin-bottom: 30px;
+        line-height: 1.5;
+    }
+
+/* Content Section Styling */
+.abonnementen-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.add-medewerker-section, .medewerkers-lijst-section {
+    flex: 1;
+    min-width: 320px;
+    background-color: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+    transition: transform 0.3s ease-in-out;
+    margin-top: 10px;
+
+}
+
+    .add-medewerker-section:hover, .medewerkers-lijst-section:hover {
+        transform: translateY(-10px);
+    }
+
+.abonnement-details {
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+    margin-top: 30px; /* Ruimte tussen de hero sectie en de details */
+    margin-bottom: 20px;
+    margin-left: 12%;
+    margin-right: 12%;
+
+}
+
+
+    .abonnement-details h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .abonnement-details ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .abonnement-details li {
+        margin: 15px 0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    .abonnement-details strong {
+        font-weight: 600;
+        color: #007bff;
+    }
+
+/* Buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+    button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+        background-color: #0056b3;
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .abonnementen-hero .container {
+        width: 90%;
+    }
+
+    .abonnementen-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .add-medewerker-section, .medewerkers-lijst-section {
+        min-width: 100%;
+    }
+}

@@ -101,3 +101,7 @@
         margin: 5px 0;
     }
 }
+.button-logout {
+    color: white;
+    background: transparent;
+}

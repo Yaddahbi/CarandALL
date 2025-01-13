@@ -27,10 +27,28 @@ const SchadeLijst = ({ schadesProp }) => {
 
         loadSchades();
     }, []);
+    const handleSchadeUpdate = async (schadeId, status = null, opmerking = null) => {
+        try {
+            if (status) {
+                await updateSchadeStatus(schadeId, status);
+                setSchades((prevSchades) =>
+                    prevSchades.map((schade) =>
+                        schade.schadeId === schadeId ? { ...schade, status } : schade
+                    )
+                );
+            }
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+            if (opmerking) {
+                alert(`Opmerking toegevoegd aan schade ${schadeId}: ${opmerking}`);
+            }
 
+        } catch (error) {
+            setError("Fout bij het bijwerken van de schade: " + error.message);
+            console.error("Fout bij het bijwerken van de schade:", error);
+        }
+    };
+
+    
     return (
         <div className="SchadeLijst">
             <h1>Schadelijst</h1>
@@ -42,9 +60,22 @@ const SchadeLijst = ({ schadesProp }) => {
                             <p><strong>Datum:</strong> {schade.datum}</p>
                             <p><strong>Status:</strong> {schade.status}</p>
                             <p><strong>Kosten:</strong> €{schade.kosten}</p>
+                            <button onClick={() => handleSchadeUpdate(schade.schadeId, "in reparatie")}>
+                                Zet in reparatie
+                            </button>
+
+                            {/* Toevoegen van opmerkingen over de schade */}
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Voeg een opmerking toe..."
+                                    onBlur={(e) => handleSchadeUpdate(schade.schadeId, null, e.target.value)}
+                                />
+                            </div>
                         </li>
                     ))}
-                </ul>) : (
+                </ul>
+            ) : (
                 <p>Geen schades gevonden.</p>
             )}
         </div>
