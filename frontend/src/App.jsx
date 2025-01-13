@@ -113,8 +113,9 @@ const App = () => {
                     <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
 
                     <Route path="/privacy" element={<Privacyverklaring />} />
-                    
                 </Routes>
+            </div>
+        </Router>
         </AuthProvider>
     );
 };
