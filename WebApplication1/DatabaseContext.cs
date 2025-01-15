@@ -21,7 +21,6 @@ namespace WebApplication1
         public DbSet<Inname> Innames { get; set; }
         public DbSet<Uitgifte> Uitgiftes { get; set; }
         public DbSet<Schadeclaim> Schadeclaims { get; set; }
-        public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
 

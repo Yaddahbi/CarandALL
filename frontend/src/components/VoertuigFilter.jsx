@@ -153,10 +153,10 @@ const VoertuigFilter = ({ filters, setFilters, isZakelijk, filterType }) => {
                             aria-label="Kies sorteeroptie"
                         >
                             <option value="">Geen</option>
-                            <option value="prijs">Prijs (laag => hoog)</option>
-                            <option value="prijsHL">Prijs (hoog => laag)</option>
-                            <option value="merk">Merk (A => Z)</option>
-                            <option value="merkZA">Merk (Z => A)</option>
+                            <option value="prijs">Prijs (laag =&gt; hoog)</option>
+                            <option value="prijsHL">Prijs (hoog =&gt; laag)</option>
+                            <option value="merk">Merk (A =&gt; Z)</option>
+                            <option value="merkZA">Merk (Z =&gt; A)</option>
                             {/* } <option value="beschikbaarheid">Beschikbaarheid</option>{*/ }
                         </select>
                     </div>

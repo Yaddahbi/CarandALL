@@ -27,10 +27,9 @@ import VoertuigStatusOverzicht from './components/VoertuigStatusOverzicht';
 import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
 import { AuthProvider } from "./AuthContext";
 import { Toaster } from 'sonner';
-import Verhuuraanvraag from './components/Verhuuraanvraag';
 
 
-const Login = () => <h1>Login Page</h1>;
+///const Login = () => <h1>Login Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 const HeroSection = () => (
     <section className="hero">
@@ -94,8 +93,8 @@ const App = () => {
 
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
                   
-                    <Route path="/voertuigen" element={<VoertuigenPagina isZakelijk={isZakelijk} />} />
-                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis huurderId={huurderId} />} />
+                    <Route path="/voertuigen" element={<VoertuigenPagina  />} />
+                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis  />} />
                     <Route path="/voertuigen" element={<VoertuigenPagina />} />
                     <Route path="/mijn-verhuuraanvraag" element={<Verhuuraanvraag />} />
 

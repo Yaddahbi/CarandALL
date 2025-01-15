@@ -1,42 +1,3 @@
-
-import { useState } from 'react';
-import VoertuigFormulier from './VoertuigFormulier';
-import { createHuurverzoek } from '../api';
-
-const VoertuigWeergave = ({ voertuigen }) => {
-    const [geselecteerdVoertuig, setGeselecteerdVoertuig] = useState(null);
-    const [error, setError] = useState(null);
-
-    const getImagePath = (name) => {
-        if (!name) {
-            console.log("No vehicle name provided. Using placeholder.");
-            return "src/images/cars/placeholder.png"; // Fallback for missing name
-        }
-        const formattedName = name.replace(/ /g, "_").toLowerCase(); // Replace spaces with underscores and lowercase
-        const imagePathJpg = `src/images/cars/${formattedName}.jpg`;
-        const imagePathPng = `src/images/cars/${formattedName}.png`;
-
-        // Log to verify paths
-        console.log(`Image Paths: JPG: ${imagePathJpg}, PNG: ${imagePathPng}`);
-
-        return { jpg: imagePathJpg, png: imagePathPng };
-    };
-
-    const handleVoertuigKlik = (voertuig) => {
-        setGeselecteerdVoertuig(voertuig);
-    };
-
-    const handleFormulierSluiten = () => {
-        setGeselecteerdVoertuig(null);
-    };
-
-    const handleHuurverzoek = async (huurverzoekData) => {
-        try {
-            await createHuurverzoek({ ...huurverzoekData, huurderId: 1 }); // huurderId hardcode
-            alert('Huurverzoek succesvol aangemaakt!');
-            setGeselecteerdVoertuig(null);
-        } catch (err) {
-            alert('Voertuig is niet beschikbaar in deze periode.');
 import { useState } from "react";
 import VoertuigFormulier from "./VoertuigFormulier";
 import { createHuurverzoek } from "../api";
@@ -48,6 +9,18 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
     const [error, setError] = useState(null);
     const { user } = useAuth();
     const userId = user?.id;
+
+    const getImagePath = (name) => {
+        if (!name) {
+            console.log("No vehicle name provided. Using placeholder.");
+            return "src/images/cars/placeholder.png";
+        }
+        const formattedName = name.replace(/ /g, "_").toLowerCase();
+        return {
+            jpg: `src/images/cars/${formattedName}.jpg`,
+            png: `src/images/cars/${formattedName}.png`,
+        };
+    };
 
     const handleVoertuigKlik = (voertuig) => {
         setGeselecteerdVoertuig({
@@ -63,26 +36,23 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
 
     const handleHuurverzoek = async (huurverzoekData) => {
         try {
-            await createHuurverzoek({ ...huurverzoekData, userId: {userId} });
-            toast(`Huurverzoek succesvol aangemaakt!`, {
-                description: 'Check de status in uw huurgeschiedenis.',
-                type: 'succes',
-            }) 
+            await createHuurverzoek({ ...huurverzoekData, userId });
+            toast("Huurverzoek succesvol aangemaakt!", {
+                description: "Check de status in uw huurgeschiedenis.",
+                type: "success",
+            });
             setGeselecteerdVoertuig(null);
         } catch (err) {
             console.error("Fout bij maken huurverzoek:", err);
             toast(`Er ging iets fout: ${err.message}`, {
-                type: 'error',
-            }) 
+                type: "error",
+            });
             setError(err.message);
         }
     };
 
-    if (!voertuigen.length) {
-
+    if (!voertuigen || voertuigen.length === 0) {
         return <p>Geen voertuigen gevonden</p>;
-
-        return <p>Voertuigen worden geladen...</p>;
     }
 
     return (
@@ -90,7 +60,7 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
             <h3>Beschikbare Voertuigen</h3>
             <div className="voertuigen-grid">
                 {voertuigen.map((voertuig) => {
-                    console.log(getImagePath(`${voertuig.merk} ${voertuig.type}`));
+                    const { jpg, png } = getImagePath(`${voertuig.merk} ${voertuig.type}`);
                     return (
                         <div
                             className="voertuigen-kaart"
@@ -99,15 +69,15 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
                             aria-labelledby={`voertuig-${voertuig.voertuigId}`}
                         >
                             <img
-                                src={getImagePath(`${voertuig.merk} ${voertuig.type}`).jpg}
+                                src={jpg}
                                 alt={`${voertuig.merk} ${voertuig.type}`}
                                 onError={(e) => {
-                                    e.target.onerror = null; 
-                                    const pngSrc = getImagePath(`${voertuig.merk} ${voertuig.type}`).png;
-                                    if (e.target.src !== pngSrc) {
-                                        e.target.src = pngSrc; 
+                                    e.target.onerror = null;
+                                    const fallbackSrc = png;
+                                    if (e.target.src !== fallbackSrc) {
+                                        e.target.src = fallbackSrc;
                                     } else {
-                                        e.target.src = "src/images/cars/placeholder.png"; 
+                                        e.target.src = "src/images/cars/placeholder.png";
                                     }
                                 }}
                             />
@@ -139,8 +109,7 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
                 />
             )}
 
-            {error && <p style={{ color: 'red' }} aria-live="assertive">{error}</p>}
-           
+            {error && <p style={{ color: "red" }} aria-live="assertive">{error}</p>}
         </div>
     );
 };
