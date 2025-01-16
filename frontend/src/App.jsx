@@ -17,6 +17,7 @@ import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk'; 
 import Notificaties from './components/Notificaties';
 import Privacyverklaring from './components/Privacyverklaring';
+import Klantgegevens from './components/KlantGegevens';
 import { AuthProvider } from "./AuthContext";
 import { Toaster } from 'sonner';
   
@@ -80,11 +81,12 @@ const App = () => {
                     <Route path="/mijn-reservingen" element={<Reserveringen />} />
                   
                     <Route path="/voertuigen" element={<VoertuigenPagina />} />
-                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis />} />
+                        <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis />} />
+                        <Route path="/klantgegevens" element={<Klantgegevens />} />
 
                     <Route path="/aanvraag-beheer" element={<Verhuuraanvraag />} />
                     <Route path="/abonnementen" element={<Abonnementen />} />
-                    <Route path="/HuurgeschiedenisBedrijf" element={<HuurgeschiedenisBedrijf />} />
+                        <Route path="/HuurgeschiedenisBedrijf" element={<HuurgeschiedenisBedrijf />} />
 
                     <Route path="/notificaties" element={<Notificaties />} />
 

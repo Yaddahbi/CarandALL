@@ -189,26 +189,21 @@ export const fetchHuurgeschiedenis = async (filters) => {
 };
 export const fetchHuurgeschiedenisBedrijf = async (filters) => {
     try {
-        const token = localStorage.getItem('jwtToken'); 
+        const token = localStorage.getItem('jwtToken');
         if (!token) {
             throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
         }
 
         const params = new URLSearchParams();
-
-        
         if (filters.startDatum) params.append('startDatum', filters.startDatum);
         if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
-
-        // Voeg voertuigType alleen toe als het niet leeg is
-        if (filters.voertuigType && filters.voertuigType !== '') {
-            params.append('voertuigType', filters.voertuigType);
-        }
+        if (filters.voertuigType) params.append('voertuigType', filters.voertuigType);
+        if (filters.medewerkerId) params.append('medewerkerId', filters.medewerkerId);
 
         const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
             method: 'GET',
             headers: {
-                "Authorization": `Bearer ${token}`, 
+                "Authorization": `Bearer ${token}`,
             },
         });
 

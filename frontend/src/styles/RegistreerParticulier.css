@@ -24,6 +24,34 @@ label {
     color: #495057;
 }
 
+.privacy-consent {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Ruimte tussen de checkbox en de tekst */
+}
+
+    .privacy-consent input[type="checkbox"] {
+        margin: 0; /* Verwijder standaard marges */
+        width: 20px; /* Optioneel: stel een vaste breedte in */
+        height: 20px; /* Optioneel: stel een vaste hoogte in */
+    }
+
+    .privacy-consent span {
+        font-size: 14px; /* Pas de tekstgrootte aan indien nodig */
+        cursor: pointer; /* Zorg ervoor dat de tekst aanklikbaar is */
+    }
+
+    .privacy-consent .privacy-link {
+        color: #007bff; /* Pas aan naar een gewenste kleur */
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+
+
+
+
+
 input {
     width: 100%;
     padding: 10px;

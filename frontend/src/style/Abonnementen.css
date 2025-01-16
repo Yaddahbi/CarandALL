@@ -163,3 +163,55 @@ button {
         min-width: 100%;
     }
 }
+/* Hoofdcontainer voor de medewerkerslijst */
+.medewerkers-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* Scrollbare tabelcontainer */
+.tabel-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Tabelstijl */
+.tabel {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    /* Koptekststijl van de tabel */
+    .tabel thead th {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Rijstijl van de tabel */
+    .tabel tbody td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Centraal uitgelijnde rij voor lege data */
+    .tabel tbody .no-data {
+        text-align: center;
+    }
+
+    /* Verwijderknopstijl */
+    .tabel tbody button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+        .tabel tbody button:hover {
+            background-color: #d32f2f;
+        }
