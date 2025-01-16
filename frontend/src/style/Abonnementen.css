@@ -7,21 +7,21 @@ body {
     box-sizing: border-box;
 }
 
-/* Hero Section Styling */
 .abonnementen-hero {
     position: relative;
-    height: 600px;
+    height: 485px;
     text-align: center;
-    background-image: url("../images/Abonnementen.webp");
+    background-image: url('../images/Abonnementen-Hero.png');
+
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    
+    justify-content: flex-start;
     align-items: center;
     color: white;
-    padding: 0 20px;
-    background-attachment: fixed;
+    padding: 64px 20px 0;
 }
 
     .abonnementen-hero::before {
@@ -31,7 +31,8 @@ body {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4);
+
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
         z-index: 1;
     }
 
@@ -161,5 +162,19 @@ button {
 
     .add-medewerker-section, .medewerkers-lijst-section {
         min-width: 100%;
+        padding: 40px 20px;
+        border-radius: 16px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .abonnementen-hero h1 {
+        color: white;
+        font-size: 70px;
+        margin-bottom: 5px;
+    }
+
+    .abonnementen-hero p {
+        font-size: 25px;
     }
 }

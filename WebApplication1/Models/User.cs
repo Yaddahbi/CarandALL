@@ -11,13 +11,12 @@ namespace WebApplication1.Models
         public string Rol { get; set; }
         public string? BedrijfsNaam { get; set; }
         public string? KvkNummer { get; set; }
+        public ICollection<Huurverzoek> Huurverzoeken { get; set; }
 
         // Relatie met Abonnement
         public int? BedrijfsAbonnementId { get; set; }
         [ForeignKey("BedrijfsAbonnementId")]
         public Abonnement? BedrijfsAbonnement { get; set; }
 
-        [JsonIgnore]
-        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
     }
 }

@@ -16,21 +16,18 @@ const HuurgeschiedenisBedrijf = () => {
 
     const voertuigTypen = ['Auto', 'Caravan', 'Camper'];
 
-    // Functie om de huurgeschiedenis op te halen
     const loadHuurgeschiedenis = async () => {
         setLoading(true);
         setError(null);
 
         try {
-            console.log(filters); 
+            console.log(filters);
             const data = await fetchHuurgeschiedenisBedrijf(filters);
-            console.log(data); 
-
-            // Gegevens verwerken
+            console.log(data);
             setHuurgeschiedenis(data);
         } catch (err) {
+            console.error('Error fetching huurgeschiedenis:', err);
             setError('Er is een fout opgetreden bij het ophalen van de huurgeschiedenis.');
-            console.error(err);
         } finally {
             setLoading(false);
         }
@@ -40,7 +37,7 @@ const HuurgeschiedenisBedrijf = () => {
         try {
             const data = await fetchMedewerkers();
             setMedewerkers(data);
-        } catch (err) {
+        } catch {
             setError('Er is een fout opgetreden bij het ophalen van de medewerkers.');
         }
     };
@@ -56,6 +53,10 @@ const HuurgeschiedenisBedrijf = () => {
     const handleFilterChange = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
+
+    const filteredHuurgeschiedenis = filters.medewerkerId
+        ? { [filters.medewerkerId]: huurgeschiedenis[filters.medewerkerId] || [] }
+        : huurgeschiedenis;
 
     return (
         <>
@@ -74,7 +75,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="startDatum"
                         value={filters.startDatum}
                         onChange={handleFilterChange}
-                        tabIndex="0" 
+                        tabIndex="0"
                     />
                 </label>
                 <label>
@@ -84,7 +85,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="eindDatum"
                         value={filters.eindDatum}
                         onChange={handleFilterChange}
-                        tabIndex="0" 
+                        tabIndex="0"
                     />
                 </label>
                 <label>
@@ -93,8 +94,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="voertuigType"
                         value={filters.voertuigType}
                         onChange={handleFilterChange}
-                        disabled={true}
-                        tabIndex="-1" 
+                        disabled
                     >
                         {voertuigTypen.map((type) => (
                             <option key={type} value={type}>
@@ -109,7 +109,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="medewerkerId"
                         value={filters.medewerkerId}
                         onChange={handleFilterChange}
-                        tabIndex="0" 
+                        tabIndex="0"
                     >
                         <option value="">Alle medewerkers</option>
                         {medewerkers.map((medewerker) => (
@@ -127,45 +127,33 @@ const HuurgeschiedenisBedrijf = () => {
                 ) : error ? (
                     <p style={{ color: 'red' }}>{error}</p>
                 ) : (
-                    <div>
-                        {/* Als de medewerkerId is geselecteerd, filteren we de verzoeken op die medewerker */}
-                        {Object.keys(huurgeschiedenis).length > 0 ? (
-                            Object.keys(huurgeschiedenis).map((medewerkerNaam) => {
-                                const verzoeken = huurgeschiedenis[medewerkerNaam];
-
-                                // Als er een medewerker filter is geselecteerd, alleen de verzoeken van die medewerker tonen
-                                if (filters.medewerkerId && medewerkerNaam !== filters.medewerkerId) {
-                                    return null;
-                                }
-
-                                return (
-                                    <div key={medewerkerNaam}>
-                                        <h3>Huurverzoeken voor {medewerkerNaam}</h3>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Huurperiode</th>
-                                                    <th>Voertuig</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {verzoeken.map((item) => (
-                                                    <tr key={item.huurverzoekId} tabIndex="0" className="tabelrij">
-                                                        <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
-                                                        <td>{item.voertuigMerk} ({item.voertuigType})</td>
-                                                        <td>{item.status}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <p>Geen huurverzoeken gevonden.</p>
-                        )}
-                    </div>
+                    Object.keys(filteredHuurgeschiedenis).length > 0 ? (
+                        Object.keys(filteredHuurgeschiedenis).map((medewerkerNaam) => (
+                            <div key={medewerkerNaam}>
+                                <h3>Huurverzoeken voor {medewerkerNaam}</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Huurperiode</th>
+                                            <th>Voertuig</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredHuurgeschiedenis[medewerkerNaam].map((item) => (
+                                            <tr key={item.huurverzoekId}>
+                                                <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
+                                                <td>{item.voertuigMerk} ({item.voertuigType})</td>
+                                                <td>{item.status}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Geen huurverzoeken gevonden.</p>
+                    )
                 )}
             </div>
         </>

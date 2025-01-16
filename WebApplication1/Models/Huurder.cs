@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+namespace WebApplication1.Models
 {
     public class Huurder
     {
@@ -10,7 +12,16 @@
         public bool IsZakelijk { get; set; } // True = Zakelijke werknemer, False = Particulier
         public int? BedrijfId { get; set; } // Voor zakelijke huurders
         public Bedrijf? Bedrijf { get; set; }
-        public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
+        public ICollection<Huurverzoek> Huurverzoeken { get; set; }
+        public ICollection<Inname> Innames { get; set; }
+        public ICollection<Uitgifte> Uitgiftes { get; set; }
+        
+        public Huurder()
+        {
+            Huurverzoeken = new List<Huurverzoek>();
+            Uitgiftes = new List<Uitgifte>();
+            Innames = new List<Inname>();
+        }
 
     }
 }
