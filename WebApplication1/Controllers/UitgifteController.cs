@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize(Roles = "FrontOffice")]
     [Route("api/[controller]")]
     [ApiController]
     public class UitgiftesController : ControllerBase
@@ -25,7 +24,7 @@ namespace WebApplication1.Controllers
         {
             return await _context.Uitgiftes
                 .Include(u => u.Voertuig)
-                .Include(u => u.Huurder)
+                .Include(u => u.User)
                 .ToListAsync();
         }
         
@@ -34,7 +33,7 @@ namespace WebApplication1.Controllers
         {
             var uitgifte = await _context.Uitgiftes
                 .Include(u => u.Voertuig)
-                .Include(u => u.Huurder)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(u => u.UitgifteID == id);
 
             if (uitgifte == null)
@@ -59,7 +58,7 @@ namespace WebApplication1.Controllers
                 return NotFound("Voertuig niet gevonden.");
             }
             
-            var huurder = await _context.Huurders.FindAsync(uitgifte.HuurderID);
+            var huurder = await _context.Users.FindAsync(uitgifte.HuurderID);
             if (huurder == null)
             {
                 return NotFound("Huurder niet gevonden.");

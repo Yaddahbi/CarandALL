@@ -15,8 +15,8 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
                 </thead>
                 <tbody>
                     {aanvragen.map((aanvraag) => (
-                        <tr key={aanvraag.huurverzoekId}>
-                            <td>{aanvraag.huurverzoekId}</td>
+                        <tr key={aanvraag.id}> 
+                            <td>{aanvraag.id}</td>
                             <td>{new Date(aanvraag.startDatum).toLocaleDateString('nl-NL')}</td>
                             <td>{new Date(aanvraag.eindDatum).toLocaleDateString('nl-NL')}</td>
                             <td>{aanvraag.status}</td>
@@ -27,6 +27,7 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
                             </td>
                         </tr>
                     ))}
+
                 </tbody>
 
 
@@ -38,7 +39,7 @@ const VerhuuraanvraagLijst = ({ aanvragen, onSelectAanvraag }) => {
 VerhuuraanvraagLijst.propTypes = {
     aanvragen: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number.isRequired,
+            id: PropTypes.number.isRequired, 
             startDatum: PropTypes.string.isRequired,
             eindDatum: PropTypes.string.isRequired,
             status: PropTypes.string.isRequired,
@@ -46,6 +47,5 @@ VerhuuraanvraagLijst.propTypes = {
     ).isRequired,
     onSelectAanvraag: PropTypes.func.isRequired,
 };
-
 
 export default VerhuuraanvraagLijst;
