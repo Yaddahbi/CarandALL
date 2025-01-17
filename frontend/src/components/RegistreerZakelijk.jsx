@@ -101,7 +101,8 @@ function RegistreerZakelijk() {
                             checked={isChecked}
                             onChange={handleCheckboxChange}
                         />
-                        Ik ga akkoord met de{' '}
+                        <span>
+                        Ik ga akkoord met de{" "}
                         <span
                             className="privacy-link"
                             onClick={() => {
@@ -110,7 +111,8 @@ function RegistreerZakelijk() {
                             }}
                         >
                             privacyverklaring
-                        </span>.
+                            </span>.
+                        </span>
                     </label>
 
                     <button type="submit">Account aanmaken</button>
