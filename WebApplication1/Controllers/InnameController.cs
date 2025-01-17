@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize(Roles = "FrontOffice")]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class InnameController : ControllerBase
@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
         {
             return await _context.Innames
                 .Include(i => i.Voertuig)
-                .Include(i => i.Huurder)
+                .Include(i => i.User)
                 .ToListAsync();
         }
         
@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
         {
             var inname = await _context.Innames
                 .Include(i => i.Voertuig)
-                .Include(i => i.Huurder)
+                .Include(i => i.User)
                 .FirstOrDefaultAsync(i => i.InnameID == id);
 
             if (inname == null)
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
                 return NotFound("Voertuig niet gevonden.");
             }
 
-            var huurder = await _context.Huurders.FindAsync(inname.HuurderID);
+            var huurder = await _context.Users.FindAsync(inname.HuurderID);
             if (huurder == null)
             {
                 return NotFound("Huurder niet gevonden.");
@@ -132,7 +132,7 @@ namespace WebApplication1.Controllers
             return _context.Innames.Any(e => e.InnameID == id);
         }
 
-        private async Task VerstuurBevestigingsmail(Huurder huurder, Inname inname)
+        private async Task VerstuurBevestigingsmail(User huurder, Inname inname)
         {
             // Dit is een vereenvoudigd voorbeeld. Vervang door echte mailfunctionaliteit.
             Console.WriteLine($"Bevestigingsmail verstuurd naar {huurder.Email}:");

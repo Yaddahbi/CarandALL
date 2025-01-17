@@ -79,7 +79,7 @@ namespace WebApplication1.Controllers
                     query = query.OrderBy(v => v.Merk);
                     break;
                 case "merkZA":
-                    query = query.OrderBy(v => v.Merk);
+                    query = query.OrderByDescending(v => v.Merk);
                     break;
                 case "beschikbaarheid":
                     query = query.OrderBy(v => v.Status);
@@ -126,6 +126,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<ActionResult<Voertuig>> PostVoertuig(Voertuig voertuig)
         {
+            voertuig.Status = "Beschikbaar";
             _context.Voertuigen.Add(voertuig);
             await _context.SaveChangesAsync();
 
@@ -164,7 +165,7 @@ namespace WebApplication1.Controllers
             var query = _context.Voertuigen
                 .Where(v => v.Status == StatusType.Verhuurd.ToString())
                 .Include(v => v.Huurverzoeken)
-                .ThenInclude(h => h.Huurder)
+                .ThenInclude(h => h.User)
                 .AsQueryable();
 
             if (startDatum.HasValue && eindDatum.HasValue)
@@ -180,7 +181,7 @@ namespace WebApplication1.Controllers
 
             if (!string.IsNullOrEmpty(huurder))
             {
-                query = query.Where(v => v.Huurverzoeken.Any(h => h.Huurder.Naam.Contains(huurder)));
+                query = query.Where(v => v.Huurverzoeken.Any(h => h.User.Naam.Contains(huurder)));
             }
 
             var voertuigen = await query.ToListAsync();
@@ -192,7 +193,7 @@ namespace WebApplication1.Controllers
                 v.Type,
                 v.Kenteken,
                 v.Status,
-                Huurder = v.Huurverzoeken.FirstOrDefault()?.Huurder?.Naam,
+                Huurder = v.Huurverzoeken.FirstOrDefault()?.User?.Naam,
                 Verhuurdatum = v.Huurverzoeken.FirstOrDefault()?.StartDatum
             }).ToList();
 
@@ -253,7 +254,7 @@ namespace WebApplication1.Controllers
             var verhuurdeVoertuigen = _context.Voertuigen
                 .Where(v => v.Huurverzoeken.Any(h => h.StartDatum >= startDatum && h.EindDatum <= eindDatum))
                 .Include(v => v.Huurverzoeken)
-                .ThenInclude(h => h.Huurder)
+                .ThenInclude(h => h.User)
                 .ToList();
             
             var csv = new StringBuilder();
@@ -262,7 +263,7 @@ namespace WebApplication1.Controllers
             foreach (var v in verhuurdeVoertuigen)
             {
                 var huurVerzoek = v.Huurverzoeken.FirstOrDefault();
-                var huurderNaam = huurVerzoek?.Huurder?.Naam ?? "Onbekend";
+                var huurderNaam = huurVerzoek?.User?.Naam ?? "Onbekend";
                 var verhuurDatum = huurVerzoek?.StartDatum.ToString("yyyy-MM-dd") ?? "Onbekend";
 
                 csv.AppendLine($"{v.VoertuigId},{v.Merk},{v.Type},{v.Kenteken},{v.Status},{huurderNaam},{verhuurDatum}");

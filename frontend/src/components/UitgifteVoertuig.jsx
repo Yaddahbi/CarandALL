@@ -41,7 +41,7 @@ const UitgifteVoertuig = () => {
                 <label>
                     Huurder ID:
                     <input
-                        type="number"
+                        type="text"
                         value={uitgifteData.huurderId}
                         onChange={(e) =>
                             setUitgifteData({ ...uitgifteData, huurderId: e.target.value })

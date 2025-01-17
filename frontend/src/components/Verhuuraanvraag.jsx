@@ -17,7 +17,7 @@ const Verhuuraanvraag = () => {
                 const data = await response.json();
                 const adaptedData = data.map(aanvraag => ({
                     ...aanvraag,
-                    id: aanvraag.huurverzoekId 
+                    id: aanvraag.huurverzoekId, 
                 }));
                 setAanvragen(adaptedData);
                 setFilteredAanvragen(adaptedData);

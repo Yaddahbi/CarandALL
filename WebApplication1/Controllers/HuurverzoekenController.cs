@@ -51,20 +51,22 @@ namespace WebApplication1.Controllers
             return huurverzoek;
         }
 
-        [HttpPut("{id}/status")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHuurverzoekStatus(int id, [FromBody] HuurverzoekUpdateDto updateDto)
         {
-            var huurverzoek = await _context.Huurverzoeken.FindAsync(id);
+            var huurverzoek = await _context.Huurverzoeken.Include(h => h.Voertuig).FirstOrDefaultAsync(h => h.HuurverzoekId == id);
             if (huurverzoek == null)
             {
                 return NotFound("Huurverzoek niet gevonden.");
             }
 
+            // Controleer of de afwijzingsreden aanwezig is bij afwijzing
             if (updateDto.Status == "Afgewezen" && string.IsNullOrWhiteSpace(updateDto.Reden))
             {
                 return BadRequest("Afwijzingsreden is verplicht bij afwijzing.");
             }
 
+            // Update de status en afwijzingsreden van het huurverzoek
             huurverzoek.Status = updateDto.Status;
             if (updateDto.Status == "Afgewezen" && !string.IsNullOrEmpty(updateDto.Reden))
             {
@@ -72,9 +74,30 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                huurverzoek.Afwijzingsreden = null; 
+                huurverzoek.Afwijzingsreden = null;
             }
 
+            // Maak de notificatie voor de gebruiker
+            string bericht = string.Empty;
+            if (updateDto.Status == "Goedgekeurd")
+            {
+                bericht = $"Je huurverzoek voor het voertuig {huurverzoek.Voertuig.Merk} {huurverzoek.Voertuig.Type} is goedgekeurd van {huurverzoek.StartDatum.ToShortDateString()} tot {huurverzoek.EindDatum.ToShortDateString()}.";
+            }
+            else if (updateDto.Status == "Afgewezen")
+            {
+                bericht = $"Je huurverzoek voor het voertuig {huurverzoek.Voertuig.Merk} {huurverzoek.Voertuig.Type} is afgewezen. Afwijzingsreden: {huurverzoek.Afwijzingsreden}.";
+            }
+
+            // Maak een notificatie object en voeg deze toe aan de context
+            var notificatie = new Notificatie
+            {
+                GebruikerId = huurverzoek.UserId,
+                Bericht = bericht
+            };
+
+            _context.Notificaties.Add(notificatie);
+
+            // Werk het huurverzoek bij in de database
             _context.Huurverzoeken.Update(huurverzoek);
             await _context.SaveChangesAsync();
 

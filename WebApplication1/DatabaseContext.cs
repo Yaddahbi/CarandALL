@@ -10,14 +10,10 @@ namespace WebApplication1
             : base(options)
         {
         }
-        public DbSet<Huurder> Huurders { get; set; }
-        public DbSet<Bedrijf> Bedrijven { get; set; }
         public DbSet<Voertuig> Voertuigen { get; set; }
         public DbSet<Abonnement> Abonnementen { get; set; }
         public DbSet<Huurverzoek> Huurverzoeken { get; set; }
         public DbSet<Schade> Schades { get; set; }
-        public DbSet<Medewerker> Medewerkers { get; set; }
-        public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<Inname> Innames { get; set; }
         public DbSet<Uitgifte> Uitgiftes { get; set; }
         public DbSet<Schadeclaim> Schadeclaims { get; set; }
@@ -82,15 +78,12 @@ namespace WebApplication1
         {
             base.OnModelCreating(modelBuilder);
 
-           // modelBuilder.Entity<Bedrijf>()
-              //  .HasOne(b => b.Abonnement)
-               // .WithOne(a => a.Bedrijf)
-               // .HasForeignKey<Abonnement>(a => a.BedrijfId);
-
-            modelBuilder.Entity<Huurder>()
-                .HasOne(h => h.Bedrijf)
-                .WithMany(b => b.Werknemers)
-                .HasForeignKey(h => h.BedrijfId);
+            // modelBuilder.Entity<Bedrijf>()
+            //  .HasOne(b => b.Abonnement)
+            // .WithOne(a => a.Bedrijf)
+            // .HasForeignKey<Abonnement>(a => a.BedrijfId);
+            modelBuilder.Entity<Voertuig>()
+            .Ignore(v => v.Schades);
 
             modelBuilder.Entity<Huurverzoek>()
                 .HasOne(hv => hv.Voertuig)
@@ -98,9 +91,9 @@ namespace WebApplication1
                 .HasForeignKey(hv => hv.VoertuigId);
             
             modelBuilder.Entity<Huurverzoek>()
-                .HasOne(hv => hv.Huurder)
+                .HasOne(hv => hv.User)
                 .WithMany(h => h.Huurverzoeken)
-                .HasForeignKey(hv => hv.HuurderId);
+                .HasForeignKey(hv => hv.UserId);
             
             modelBuilder.Entity<Schade>()
                 .HasOne(s => s.Voertuig)
@@ -113,7 +106,7 @@ namespace WebApplication1
                 .HasForeignKey(u => u.VoertuigID);
 
             modelBuilder.Entity<Uitgifte>()
-                .HasOne(u => u.Huurder)
+                .HasOne(u => u.User)
                 .WithMany(h => h.Uitgiftes)
                 .HasForeignKey(u => u.HuurderID);
 
@@ -123,7 +116,7 @@ namespace WebApplication1
                 .HasForeignKey(i => i.VoertuigID); 
 
             modelBuilder.Entity<Inname>()
-                .HasOne(i => i.Huurder)
+                .HasOne(i => i.User)
                 .WithMany(h => h.Innames)
                 .HasForeignKey(i => i.HuurderID);
         }

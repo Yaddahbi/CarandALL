@@ -13,10 +13,10 @@ const VerhuuraanvraagDetails = ({ aanvraag, onUpdateAanvraag }) => {
         if (!reden.trim()) {
             toast(`Reden is verplicht bij afwijzen.`, {
                 type: 'warning',
-            })
+            });
             return;
         }
-        onUpdateAanvraag(aanvraag.id, 'afgewzen', reden);
+        onUpdateAanvraag(aanvraag.id, 'afwijzen', reden);
     };
 
     return (

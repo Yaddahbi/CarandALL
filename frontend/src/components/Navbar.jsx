@@ -4,7 +4,17 @@ import '../style/Navbar.css';
 import { FaBars } from 'react-icons/fa';
 import { useAuth } from "../AuthContext";
 import { toast } from 'sonner';
-const Navbar = ({user}) => {
+const Navbar = () => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        toast('U bent uitgelogd.', {
+            type: 'info',
+        })
+        navigate('/'); // Navigeer naar de homepagina
+    };
     return (
         <nav className="navbar">
             <div className="navbar-left">
@@ -13,27 +23,27 @@ const Navbar = ({user}) => {
                 </div>
 
                 <div className="menu">
-                    {user?.rol === 'Particulier' && (
+                    {user && (user.role === "Particulier" || user.role === "Zakelijk") && (
                         <>
                             <Link to="/voertuigen">Voertuigen</Link>
                             <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
-                            <Link to="/mijn-verhuuraanvraag">Mijn Aanvragen</Link>
+                            <Link to="/notificaties">Notificaties</Link>
                         </>
                     )}
-                    {user?.rol === 'ZakelijkeHuurder' && (
+                    {user && user?.role === 'ZakelijkeKlant' && (
                         <>
                         <Link to="/abonnementen">Abonnementen</Link>
                         <Link to="/notificaties">Notificaties</Link>
                         <Link to="/huurgeschiedenisBedrijf">Huurgeschiedenis Medewerkers</Link>
                         </>
                     )}
-                    {user?.rol === 'BackofficeMedewerker' && (
+                    {user?.role === 'BackofficeMedewerker' && (
                         <>
                             <Link to="/wagenparkbeheer">Wagenparkbeheer</Link>
-                            <Link to="/aanvraag-beheer">Aanvraagbeheer</Link>
+                            <Link to="/mijn-verhuuraanvraag">Aanvragen</Link>
                         </>
                     )}
-                    {user?.rol === 'FrontofficeMedewerker' && (
+                    {user?.role === 'FrontofficeMedewerker' && (
                         <>
                         <Link to="/schades">Schades</Link>
                         <Link to="/uitgifte">Uitgifte Voertuig</Link>
@@ -59,9 +69,9 @@ const Navbar = ({user}) => {
                     </>
                 ) : (
                         <>
-                            <span className="gebruikersnaam">Welkom, {user.naam}</span>
-                            {/* <button className="button-logout" onClick={handleLogout}>Logout -></button> */} 
-                            <Link to="/logout">Uitloggen</Link>
+                            { /*}  <span className="gebruikersnaam">Welkom, {user.naam}</span> {*/ }
+                            <button className="button-logout" onClick={handleLogout}>Logout -></button> 
+                            
                         </>
                 )}
             </div>
