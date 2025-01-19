@@ -22,6 +22,7 @@ import RegistreerParticulier from './components/RegistreerParticulier';
 import RegistreerZakelijk from './components/RegistreerZakelijk'; 
 import Notificaties from './components/Notificaties';
 import Privacyverklaring from './components/Privacyverklaring';
+import Klantgegevens from './components/KlantGegevens';
 import VerhuurdeVoertuigen from './components/VerhuurdeVoertuigen';
 import VoertuigStatusOverzicht from './components/VoertuigStatusOverzicht';
 import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
@@ -96,6 +97,8 @@ const App = () => {
                     <Route path="/voertuigen" element={<VoertuigenPagina  />} />
                     <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis  />} />
                     <Route path="/voertuigen" element={<VoertuigenPagina />} />
+
+                    <Route path="/klantgegevens" element={<Klantgegevens />} />
                     <Route path="/mijn-verhuuraanvraag" element={<Verhuuraanvraag />} />
 
                     <Route path="/aanvraag-beheer" element={<BeheerAanvragen />} />

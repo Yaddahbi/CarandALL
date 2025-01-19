@@ -82,10 +82,13 @@ namespace WebApplication1.Controllers
                 {
                     var abonnement = new Abonnement
                     {
-                        BedrijfsDomein = userDto.BedrijfsNaam.ToLower().Replace(" ", "") + ".com",
-                        AbonnementType = "Pay-as-you-go", // Standaard abonnementstype
+                        AbonnementType = userDto.AbonnementType, 
                     };
 
+                    var emailDomain = userDto.Email.Substring(userDto.Email.IndexOf('@') + 1);
+                    abonnement.BedrijfsDomein = emailDomain.ToLower();
+
+                    abonnement.KostenPerMaand = abonnement.AbonnementType == "Prepaid" ? 200 : 50;
                     abonnement.MaxMedewerkers = abonnement.AbonnementType == "Prepaid" ? 100 : 50;
 
                     _context.Abonnementen.Add(abonnement);
@@ -95,7 +98,6 @@ namespace WebApplication1.Controllers
                     user.BedrijfsAbonnementId = abonnement.Id;
                     await _userManager.UpdateAsync(user);
 
-                    // Maak een melding dat het abonnement is aangemaakt
                     return Ok(new { message = "Zakelijke gebruiker succesvol aangemaakt en abonnement aangemaakt." });
                 }
                 else
@@ -104,7 +106,6 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            // Retourneer eventuele fouten van Identity
             var identityErrors = result.Errors.Select(e => e.Description).ToList();
             return BadRequest(new { errors = identityErrors });
         }

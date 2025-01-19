@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using WebApplication1.Models;
 
@@ -72,7 +73,10 @@ namespace WebApplication1.Controllers
                 {
                     a.MaxMedewerkers,
                     a.AbonnementType,
-                    a.BedrijfsDomein
+                    a.BedrijfsDomein,
+                    a.ToekomstigAbonnementType,
+                    a.ToekomstigeKosten,
+                    a.WijzigingIngangsdatum
                 })
                 .FirstOrDefaultAsync();
 
@@ -218,12 +222,66 @@ namespace WebApplication1.Controllers
 
             return Ok(new { message = "Medewerker succesvol verwijderd van het abonnement." });
         }
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateAbonnement([FromBody] UpdateAbonnementDto abonnementDto)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var abonnementIdClaim = User.FindFirst("AbonnementId")?.Value;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(abonnementIdClaim))
+            {
+                return Unauthorized(new { error = "Gebruiker of abonnement niet geauthenticeerd." });
+            }
+
+            if (!int.TryParse(abonnementIdClaim, out int abonnementId))
+            {
+                return Unauthorized(new { error = "Ongeldig abonnement ID." });
+            }
+
+            var abonnement = await _context.Abonnementen.FindAsync(abonnementId);
+            if (abonnement == null)
+            {
+                return NotFound(new { message = "Abonnement niet gevonden." });
+            }
+
+            // Bereken de eerste dag van de volgende maand
+            DateTime eersteDagVolgendeMaand = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).AddMonths(1);
+
+            abonnement.ToekomstigAbonnementType = abonnementDto.NieuwAbonnementType;
+            abonnement.ToekomstigeKosten = abonnementDto.NieuweKosten;
+            abonnement.WijzigingIngangsdatum = eersteDagVolgendeMaand;
+
+            abonnement.LaatstGewijzigdOp = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Abonnement succesvol bijgewerkt. Wijzigingen worden actief op de eerste dag van de volgende maand.",
+                toekomstigeWijzigingen = new
+                {
+                    abonnement.ToekomstigAbonnementType,
+                    abonnement.ToekomstigeKosten,
+                    abonnement.WijzigingIngangsdatum
+                }
+            });
+        }
+
+        public class UpdateAbonnementDto
+        {
+            [Required]
+            public string NieuwAbonnementType { get; set; }
+
+            [Required]
+            [Range(0, double.MaxValue)]
+            public decimal NieuweKosten { get; set; }
+        }
+
+        public class AddMedewerkerDto
+        {
+            public string Email { get; set; }
+        }
 
     }
-
-    public class AddMedewerkerDto
-    {
-        public string Email { get; set; }
-    }
-
 }

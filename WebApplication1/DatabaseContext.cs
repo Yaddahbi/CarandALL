@@ -22,32 +22,32 @@ namespace WebApplication1
 
         public List<Schade> GetAllSchades()
         {
-            return Schades.ToList(); 
+            return Schades.ToList();
         }
 
         public Schade GetSchadeById(int id)
         {
-            return Schades.FirstOrDefault(s => s.SchadeId == id); 
+            return Schades.FirstOrDefault(s => s.SchadeId == id);
         }
 
         public void CreateSchade(Schade schade)
         {
             Schades.Add(schade);
-            SaveChanges(); 
+            SaveChanges();
         }
 
         public void UpdateSchade(Schade schade)
         {
-            Schades.Update(schade); 
+            Schades.Update(schade);
             SaveChanges();
         }
 
         public void DeleteSchade(int id)
         {
-            var schade = GetSchadeById(id); 
+            var schade = GetSchadeById(id);
             if (schade != null)
             {
-                Schades.Remove(schade); 
+                Schades.Remove(schade);
                 SaveChanges();
             }
         }
@@ -73,7 +73,7 @@ namespace WebApplication1
             SaveChanges();
             return huurverzoek;
         }
-         
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -89,17 +89,17 @@ namespace WebApplication1
                 .HasOne(hv => hv.Voertuig)
                 .WithMany(v => v.Huurverzoeken)
                 .HasForeignKey(hv => hv.VoertuigId);
-            
+
             modelBuilder.Entity<Huurverzoek>()
                 .HasOne(hv => hv.User)
                 .WithMany(h => h.Huurverzoeken)
                 .HasForeignKey(hv => hv.UserId);
-            
+
             modelBuilder.Entity<Schade>()
                 .HasOne(s => s.Voertuig)
                 .WithMany(v => v.Schades)
                 .HasForeignKey(s => s.VoertuigId);
-            
+
             modelBuilder.Entity<Uitgifte>()
                 .HasOne(u => u.Voertuig)
                 .WithMany(v => v.Uitgiftes)
@@ -113,7 +113,7 @@ namespace WebApplication1
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.Voertuig)
                 .WithMany(v => v.Innames)
-                .HasForeignKey(i => i.VoertuigID); 
+                .HasForeignKey(i => i.VoertuigID);
 
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.User)
@@ -122,4 +122,3 @@ namespace WebApplication1
         }
     }
 }
-

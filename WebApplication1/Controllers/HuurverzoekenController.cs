@@ -107,7 +107,10 @@ namespace WebApplication1.Controllers
 
         [Authorize]  
         [HttpGet("bedrijf/huurgeschiedenis")]
-        public async Task<ActionResult<IEnumerable<HuurgeschiedenisDtoBedrijf>>> GetHuurGeschiedenisVanMedewerkers([FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
+        public async Task<ActionResult<IEnumerable<HuurgeschiedenisDtoBedrijf>>> GetHuurGeschiedenisVanMedewerkers(
+     [FromQuery] DateTime? startDatum,
+     [FromQuery] DateTime? eindDatum,
+     [FromQuery] string voertuigType)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
@@ -123,7 +126,7 @@ namespace WebApplication1.Controllers
 
             var query = _context.Huurverzoeken
                 .Include(h => h.Voertuig)
-                .Where(h => h.User.BedrijfsAbonnementId == int.Parse(abonnementId)); // Haal huurverzoeken van medewerkers van het zelfde abonnement
+                .Where(h => h.User.BedrijfsAbonnementId == int.Parse(abonnementId)); // Filter op abonnement
 
             if (startDatum.HasValue)
                 query = query.Where(h => h.StartDatum >= startDatum);
@@ -149,12 +152,10 @@ namespace WebApplication1.Controllers
                 })
                 .ToListAsync();
 
-            var verzoekenGroupedByMedewerker = huurGeschiedenis
-                .GroupBy(h => h.MedewerkerNaam)
-                .ToDictionary(g => g.Key, g => g.ToList());
-
-            return Ok(verzoekenGroupedByMedewerker);
+            return Ok(huurGeschiedenis.GroupBy(h => h.MedewerkerNaam)
+                .ToDictionary(g => g.Key, g => g.ToList()));
         }
+
 
         [Authorize]
         [HttpGet("geschiedenis")]
