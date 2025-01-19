@@ -72,14 +72,10 @@ const Abonnementen = () => {
                             <li><strong>Maximale aantal medewerkers:</strong> {abonnementDetails.maxMedewerkers}</li>
                             <li><strong>Huidig Abonnement Type:</strong> {abonnementDetails.abonnementType}</li>
                             <li><strong>Bedrijfsdomein:</strong> {abonnementDetails.bedrijfsDomein}</li>
-                            {abonnementDetails.ToekomstigAbonnementType && (
-                                <>
-                                    <h3>Aankomende Wijzigingen</h3>
-                                    <li><strong>Nieuw Abonnement Type:</strong> {abonnementDetails.ToekomstigAbonnementType}</li>
-                                    <li><strong>Nieuwe Kosten:</strong> €{abonnementDetails.ToekomstigeKosten}</li>
-                                    <li><strong>Ingangsdatum:</strong> {new Date(abonnementDetails.WijzigingIngangsdatum).toLocaleDateString()}</li>
-                                </>
-                            )}
+                            <AboWijzigAbonnement
+                                huidigType={abonnementDetails.abonnementType}
+                                onWijziging={(nieuwType) => console.log("Gekozen type:", nieuwType)}
+                            />
                         </ul>
                     ) : (
                         <p>Geen abonnementdetails beschikbaar.</p>
@@ -87,16 +83,6 @@ const Abonnementen = () => {
                 </div>
             </section>
 
-            {/* Wijzig Abonnement-sectie */}
-            <section className="wijzig-abonnement-section">
-                <div className="container">
-                    <h2>Wijzig Abonnement</h2>
-                    <AboWijzigAbonnement
-                        abonnementDetails={abonnementDetails}
-                        onAbonnementUpdated={fetchAbonnementDetails}
-                    />
-                </div>
-            </section>
 
             {/* Content-sectie */}
             <div className="abonnementen-content">
