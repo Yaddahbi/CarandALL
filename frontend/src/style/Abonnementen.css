@@ -11,7 +11,7 @@ body {
     position: relative;
     height: 485px;
     text-align: center;
-    background-image: url('../images/Abonnementen-Hero.png');
+    background-image: url('../images/Abonnementen.webp');
 
     background-size: cover;
     background-position: center;
@@ -237,8 +237,9 @@ button {
 }
 
 .wijzig-button {
-    background-color: #28a745;
-    color: white;
+    background: transparent;
+    color: dodgerblue;
+    text-decoration: underline;
     padding: 10px 15px;
     border: none;
     border-radius: 8px;
@@ -248,7 +249,7 @@ button {
 }
 
     .wijzig-button:hover {
-        background-color: #218838;
+        background: transparent !important;
     }
 
 .wijzig-formulier {

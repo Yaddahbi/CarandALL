@@ -12,7 +12,7 @@
         // Alleen voor zakelijk
         public string? BedrijfsNaam { get; set; }
         public string? KvkNummer { get; set; }
-        public string AbonnementType { get; set; }
+        public string? AbonnementType { get; set; }
     }
 
 }

@@ -28,6 +28,7 @@ const Navbar = () => {
                             <Link to="/voertuigen">Voertuigen</Link>
                             <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
                             <Link to="/notificaties">Notificaties</Link>
+                            <Link to="/klantgegevens">Mijn gegevens</Link>
                         </>
                     )}
                     {user && user?.role === 'ZakelijkeKlant' && (

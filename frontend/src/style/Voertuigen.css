@@ -36,15 +36,16 @@ body {
     z-index: 2;
 }
 
-.voertuigen-hero h1{
-    color: white ;
-    font-size: 70px;
-    margin-bottom: 5px;
-}
+    .voertuigen-hero h1 {
+        color: #333;
+        font-size: 70px;
+        margin-bottom: 5px;
+    }
 
-.voertuigen-hero p{
-    font-size: 25px;
-}
+    .voertuigen-hero p {
+        font-size: 25px;
+        color: #333;
+    }
 
 .voertuigen-pagina {
   padding: 20px;
@@ -84,14 +85,6 @@ body {
         margin-bottom: 30px;
     }
 
-/* Algemene pagina styling */
-.voertuigen-weergave-container {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #f7f7f7;
-}
-
-
 h1 {
   font-size: 36px;
   font-weight: bold;
@@ -118,6 +111,9 @@ button:focus, input:focus, select:focus {
         font-size: 15px;
         padding: 10px;
         margin-bottom: 10px;
+    }
+    .voertuigen-filters select {
+    color : #333;
     }
     
 .datum-filters {
@@ -164,9 +160,7 @@ button:focus, input:focus, select:focus {
 }
 
 /* Voertuigen lijst styling */
-.voertuigen-weergave {
-  margin-top: 40px;
-}
+
 
 .voertuigen-weergave h3 {
   text-align: center;
@@ -177,9 +171,12 @@ button:focus, input:focus, select:focus {
 
 .voertuigen-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cars per row */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 20px;
     padding: 0;
+    max-width: 100%; 
+    box-sizing: border-box; 
+    margin: 0 auto; 
 }
 
 /* Elke voertuig kaart */
@@ -208,9 +205,9 @@ button:focus, input:focus, select:focus {
 .huur-button {
     background-color: black;
 }
-.huur-button:hover {
-    background-color: grey;
-}
+    .huur-button:hover {
+        background-color: #f9a826 !important;
+    }
 
 .voertuigen-kaart:hover {
   transform: translateY(-5px);
@@ -243,7 +240,7 @@ button:focus, input:focus, select:focus {
   z-index: 1000;
 }
 
-form {
+huurform {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -252,12 +249,12 @@ form {
   max-width: 500px;
    
 }
-    form input, form button {
+    huurform input, form button {
         width: 100%; 
         margin-bottom: 15px;
     }
 
-    form button {
+    huurform button {
         padding: 10px;
         background: black;
         color: white;
@@ -267,35 +264,20 @@ form {
         font-size: 1em;
         transition: background 0.2s;
     }
- form button:hover {
-    background: grey;
+        huurform button:hover {
+            background-color: #f9a826 !important;
         }
-
-.voertuig-formulier label {
-  font-weight: bold;
-}
-
-.voertuig-formulier button {
-  padding: 10px;
-  background: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin : 50px;
-}
-
-.voertuig-formulier button:hover {
-  background: #0056b3;
-}
 
 p.error-message {
   color: red;
   text-align: center;
   font-size: 1.2em;
 }
-
+@media (max-width: 480px) {
+    .voertuigen-grid {
+        grid-template-columns: 1fr; /* Eén kolom per rij voor kleine schermen */
+    }
+}
 
 @media (max-width: 1024px) {
     .voertuigen-grid {
@@ -322,7 +304,7 @@ p.error-message {
 }
 
 .datum-waarschuwing1 {
-    color: pink;
+    color: #333;
     padding: 2px;
     margin: 5px 0;
     text-align: center;

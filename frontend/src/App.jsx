@@ -1,5 +1,5 @@
 import './style/styles.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
@@ -69,7 +69,20 @@ const App = () => {
         naam: 'Jan Janssen',
         rol: 'FrontofficeMedewerker'
     };
+    const FooterWrapper = () => {
+        const location = useLocation();
+        const noFooterRoutes = [
+            '/login',
+            '/registreer-particulier',
+            '/registreer-zakelijk',
+            '/registreer-medewerker',
+            '/klantgegevens',
+            '/kies-account-type'
+        ];
 
+        // Render Footer alleen als het pad NIET in de noFooterRoutes staat
+        return !noFooterRoutes.includes(location.pathname) && <Footer />;
+    };
     return (
         <AuthProvider>
         <Router>
@@ -87,8 +100,7 @@ const App = () => {
 
                     <Route path="/" element={<>
                         <HeroSection />
-                            <FeaturesSection />
-                            <Footer />
+                            <FeaturesSection />       
                     </>
                     } />
 
@@ -131,7 +143,8 @@ const App = () => {
                     <Route path="/voertuig-status-overzicht" element={<VoertuigStatusOverzicht />} />
                     <Route path="/blokkeren-voertuigen" element={<BlokkerenVoertuigen />} />
                 </Routes>
-            </div>
+                </div>
+                <FooterWrapper />
         </Router>
         </AuthProvider>
     );

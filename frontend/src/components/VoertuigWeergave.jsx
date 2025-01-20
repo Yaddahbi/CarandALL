@@ -87,10 +87,11 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
                             <p>Kleur: {voertuig.kleur}</p>
                             <p>Aanschafjaar: {voertuig.aanschafjaar}</p>
                             <p>Prijs per dag: €{voertuig.prijs}</p>
-                            <p>Status: {voertuig.status}</p>
+                            {/*} <p>Status: {voertuig.status}</p> {*/}
                             <button
                                 onClick={() => handleVoertuigKlik(voertuig)}
                                 aria-label={`Huur ${voertuig.merk} ${voertuig.type}`}
+                                className="huur-button"
                             >
                                 Huur voertuig
                             </button>
