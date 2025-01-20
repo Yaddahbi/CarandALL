@@ -70,7 +70,7 @@ namespace WebApplication1.Controllers
                 PhoneNumber = userDto.Telefoonnummer,
                 Rol = userDto.Rol,
                 BedrijfsNaam = userDto.BedrijfsNaam,
-                KvkNummer = userDto.KvkNummer
+                KvkNummer = userDto.KvkNummer      
             };
 
             var result = await _userManager.CreateAsync(user, userDto.Wachtwoord);
@@ -132,6 +132,7 @@ namespace WebApplication1.Controllers
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id), // Gebruikers ID
         new Claim(ClaimTypes.Role, user.Rol), // Rol van de gebruiker
+        new Claim(ClaimTypes.Email, user.Email),
         new Claim("AbonnementId", abonnementId.ToString())
     };
 

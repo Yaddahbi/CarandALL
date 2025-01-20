@@ -8,18 +8,51 @@ body {
 }
 
 .huurgeschiedenis-hero {
+    position: relative;
+    height: 485px; /* Zelfde hoogte als voertuigen */
+    text-align: center;
     background-image: url('../images/Huurgeschiedenis.jpg');
     background-size: cover;
     background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     color: white;
-    text-align: center;
-    padding: 60px 20px;
+    padding: 64px 20px 0;
 }
 
+    .huurgeschiedenis-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
+        z-index: 1;
+    }
+
     .huurgeschiedenis-hero .container {
-       
-        padding: 30px;
-        border-radius: 10px;
+        position: relative;
+        width: 60%; /* Breedte van het witte vlak */
+        padding: 40px 20px;
+        background-color: rgba(255, 255, 255, 0.9); /* Witte achtergrond */
+        border-radius: 16px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 12px 40px, rgba(0, 0, 0, 0.08) 0 8px 32px;
+        z-index: 2;
+    }
+
+    .huurgeschiedenis-hero h1 {
+        font-size: 2.5rem; /* Zelfde grootte als voertuigen */
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .huurgeschiedenis-hero p {
+        font-size: 1.2rem; /* Zelfde grootte als voertuigen */
+        color: #333;
+        margin-bottom: 30px;
     }
 
 .huurgeschiedenis-filters {

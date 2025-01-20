@@ -36,7 +36,7 @@ const AboWijzigAbonnement = ({ huidigType, onWijziging }) => {
                                 value={optie.type}
                                 disabled={optie.type === huidigType}
                             >
-                                {optie.type} - €{optie.kosten}
+                                {optie.type} - &euro; {optie.kosten}
                             </option>
                         ))}
                     </select>

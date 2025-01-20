@@ -143,12 +143,23 @@ const Huurgeschiedenis = () => {
                 ) : error ? (
                     <p className="error-message">{error}</p>
                 ) : (
-                    <div className="status-kaarten">
-                        {['In afwachting', 'Goedgekeurd', 'Afgewezen'].map((status) => (
-                            huurgeschiedenis[status] && huurgeschiedenis[status].length > 0 &&
-                            renderVerzoeken(status, huurgeschiedenis[status])
-                        ))}
-                    </div>
+                    <>
+                        <div className="status-kaarten">
+                            {/* Specifieke controle voor "In afwachting" */}
+                            {'In afwachting' in huurgeschiedenis && huurgeschiedenis['In afwachting'].length > 0 ? (
+                                renderVerzoeken('In afwachting', huurgeschiedenis['In afwachting'])
+                            ) : (
+                                <p>Er zijn geen huurverzoeken in afwachting.</p>
+                            )}
+
+                            {/* Andere statussen */}
+                            {['Goedgekeurd', 'Afgewezen'].map((status) =>
+                                huurgeschiedenis[status] && huurgeschiedenis[status].length > 0 ? (
+                                    renderVerzoeken(status, huurgeschiedenis[status])
+                                ) : null
+                            )}
+                        </div>
+                    </>
                 )}
             </div>
         </>

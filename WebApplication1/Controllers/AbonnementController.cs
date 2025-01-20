@@ -106,6 +106,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> AddMedewerker([FromBody] AddMedewerkerDto medewerkerDto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
             var abonnementIdClaim = User.FindFirst("AbonnementId")?.Value;
 
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(abonnementIdClaim))
@@ -116,6 +117,12 @@ namespace WebApplication1.Controllers
             if (!int.TryParse(abonnementIdClaim, out int abonnementId))
             {
                 return Unauthorized(new { error = "Ongeldig abonnement ID." });
+            }
+
+            // Controleer of de gebruiker zijn eigen e-mailadres probeert toe te voegen
+            if (string.Equals(medewerkerDto.Email, userEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest(new { message = "U kunt uw eigen e-mailadres niet toevoegen." });
             }
 
             var abonnement = await _context.Abonnementen.FindAsync(abonnementId);
@@ -166,6 +173,7 @@ namespace WebApplication1.Controllers
 
             return Ok(new { message = "Medewerker succesvol toegevoegd aan het abonnement." });
         }
+
 
 
 
