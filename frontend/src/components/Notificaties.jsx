@@ -8,7 +8,7 @@ const Notificaties = () => {
     useEffect(() => {
         const fetchNotificaties = async () => {
             try {
-                const token = localStorage.getItem("jwtToken");
+                const token = sessionStorage.getItem("jwtToken");
                 if (!token) throw new Error("Niet ingelogd.");
 
                 const response = await fetch("https://localhost:7040/api/User/notificaties", {

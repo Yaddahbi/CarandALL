@@ -99,7 +99,7 @@ const Huurgeschiedenis = () => {
         <>
             <section className="huurgeschiedenis-hero">
                 <div className="container">
-                    <h1>Mijn Huurgeschiedenis</h1>
+                    <h1>Huurgeschiedenis</h1>
                     <p>Bekijk en beheer je gehuurde voertuigen en aanvragen.</p>
                 </div>
             </section>

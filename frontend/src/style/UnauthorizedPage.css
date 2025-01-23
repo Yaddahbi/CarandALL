@@ -1,0 +1,58 @@
+
+.unauthorized-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #222;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.unauthorized-content {
+    text-align: center;
+    background: #ffffff;
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.unauthorized-icon {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #ff4d4d; /* Rood voor waarschuwing */
+}
+
+/* Heading styles */
+.unauthorized-heading {
+    font-size: 24px;
+    color: #333333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Message styles */
+.unauthorized-message {
+    font-size: 16px;
+    color: #555555;
+    margin-bottom: 25px;
+}
+
+/* Link styles */
+.unauthorized-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Blauw voor een vriendelijke knop */
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+    .unauthorized-link:hover {
+        background-color: #0056b3; /* Donkerder blauw bij hover */
+    }

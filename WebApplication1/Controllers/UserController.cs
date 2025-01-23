@@ -88,7 +88,7 @@ namespace WebApplication1.Controllers
                     var emailDomain = userDto.Email.Substring(userDto.Email.IndexOf('@') + 1);
                     abonnement.BedrijfsDomein = emailDomain.ToLower();
 
-                    abonnement.KostenPerMaand = abonnement.AbonnementType == "Prepaid" ? 200 : 50;
+                    abonnement.KostenPerMaand = abonnement.AbonnementType == "Prepaid" ? 200 : 0;
                     abonnement.MaxMedewerkers = abonnement.AbonnementType == "Prepaid" ? 100 : 50;
 
                     _context.Abonnementen.Add(abonnement);
@@ -133,6 +133,7 @@ namespace WebApplication1.Controllers
         new Claim(ClaimTypes.NameIdentifier, user.Id), // Gebruikers ID
         new Claim(ClaimTypes.Role, user.Rol), // Rol van de gebruiker
         new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Name, user.Naam),
         new Claim("AbonnementId", abonnementId.ToString())
     };
 
@@ -153,7 +154,7 @@ namespace WebApplication1.Controllers
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             // Return de token naar de frontend
-            return Ok(new { message = "Inloggen succesvol.", token = tokenString, role = user.Rol });
+            return Ok(new { message = "Inloggen succesvol.", token = tokenString, role = user.Rol, name = user.Naam });
         }
 
 

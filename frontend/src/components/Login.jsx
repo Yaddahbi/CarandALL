@@ -24,12 +24,14 @@ function Login() {
 
         if (response.ok) {
             const data = await response.json();
-            login({ email: formData.email, role: data.role });
+            login({ email: formData.email, role: data.role, name: data.name });
            /* toast('Inloggen succesvol!', {
                 type: 'success',
             }) */
-            localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('userEmail', formData.email); 
+            sessionStorage.setItem('jwtToken', data.token);
+            sessionStorage.setItem('userEmail', formData.email);
+            sessionStorage.setItem('role', data.role);
+            sessionStorage.setItem('userName', data.name); 
             navigate("/");
         } else {
             const errorData = await response.json();

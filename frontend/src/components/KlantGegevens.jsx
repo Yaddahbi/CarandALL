@@ -14,7 +14,7 @@ const KlantGegevens = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem("jwtToken");
+                const token = sessionStorage.getItem("jwtToken");
                 const response = await fetch(`https://localhost:7040/api/User/details`, {
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -49,7 +49,7 @@ const KlantGegevens = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem("jwtToken");
+            const token = sessionStorage.getItem("jwtToken");
             const response = await fetch(`https://localhost:7040/api/User/update`, {
                 method: "PUT",
                 headers: {

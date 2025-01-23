@@ -19,7 +19,7 @@ const Abonnementen = () => {
     const fetchAbonnementDetails = async () => {
         setLoadingDetails(true);
         try {
-            const token = localStorage.getItem("jwtToken");
+            const token = sessionStorage.getItem("jwtToken");
             if (!token) {
                 throw new Error("Geen token gevonden. Log opnieuw in.");
             }
@@ -72,15 +72,35 @@ const Abonnementen = () => {
                             <li><strong>Maximale aantal medewerkers:</strong> {abonnementDetails.maxMedewerkers}</li>
                             <li><strong>Huidig Abonnement Type:</strong> {abonnementDetails.abonnementType}</li>
                             <li><strong>Bedrijfsdomein:</strong> {abonnementDetails.bedrijfsDomein}</li>
-                            <AboWijzigAbonnement
-                                huidigType={abonnementDetails.abonnementType}
-                                onWijziging={(nieuwType) => console.log("Gekozen type:", nieuwType)}
-                            />
+                            {abonnementDetails.toekomstigAbonnementType && (
+                                <li><strong>Toekomstig Abonnement Type:</strong> {abonnementDetails.toekomstigAbonnementType}</li>
+                            )}
+                            {abonnementDetails.wijzigingIngangsdatum && (
+                                <li><strong>Wijziging ingangsdatum:</strong> {new Date(abonnementDetails.wijzigingIngangsdatum).toLocaleDateString()}</li>
+                            )}
                         </ul>
                     ) : (
                         <p>Geen abonnementdetails beschikbaar.</p>
                     )}
                 </div>
+                {/* Wijzig abonnement */}
+                <section className="wijzig-abonnement-section">
+                    <AboWijzigAbonnement
+                        huidigType={abonnementDetails?.abonnementType || ""} 
+                        toekomstigeWijziging={
+                            abonnementDetails?.toekomstigAbonnementType
+                                ? {
+                                    type: abonnementDetails.toekomstigAbonnementType,
+                                    ingangsdatum: abonnementDetails.wijzigingIngangsdatum,
+                                }
+                                : null
+                        }
+                        onWijziging={(nieuwType) => {
+                            toast.success(`Wijziging naar ${nieuwType} aangevraagd.`);
+                            fetchAbonnementDetails();
+                        }}
+                    />
+                </section>
             </section>
 
 
@@ -97,4 +117,4 @@ const Abonnementen = () => {
     );
 };
 
-    export default Abonnementen;
+export default Abonnementen;
