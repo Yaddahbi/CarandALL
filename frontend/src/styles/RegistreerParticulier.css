@@ -11,24 +11,24 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    text-align: center;
-    color: #343a40;
-    margin-bottom: 20px;
-}
+    .regp-container h2 {
+        text-align: center;
+        color: #343a40;
+        margin-bottom: 20px;
+    }
 
-label {
-    display: block;
-    font-weight: bold;
-    margin: 10px 0 5px;
-    color: #495057;
-}
+    .regp-container label {
+        display: block;
+        font-weight: bold;
+        margin: 10px 0 5px;
+        color: #495057;
+    }
 
-.privacy-consent {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Ruimte tussen de checkbox en de tekst */
-}
+    .regp-container .privacy-consent {
+        display: flex;
+        align-items: center;
+        gap: 8px !important; /* Ruimte tussen de checkbox en de tekst */
+    }
 
     .privacy-consent input[type="checkbox"] {
         margin: 0; /* Verwijder standaard marges */
@@ -52,7 +52,7 @@ label {
 
 
 
-input {
+.regp-container input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -61,7 +61,7 @@ input {
     box-sizing: border-box;
 }
 
-button {
+.regp-container button {
     width: 100%;
     padding: 10px;
     background: #007bff;
@@ -73,6 +73,6 @@ button {
     border-radius: 5px;
 }
 
-button:hover {
-    background: #0056b3;
-}
+    .regp-container button:hover {
+        background: #0056b3;
+    }

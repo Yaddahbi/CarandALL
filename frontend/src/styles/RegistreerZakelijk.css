@@ -15,21 +15,21 @@
 .form-display {
    
 }
-h2 {
+.regz-container h2 {
     text-align: center;
     color: #007bff;
     font-size: 24px;
     margin-bottom: 25px;
 }
 
-label {
+.regz-container label {
     display: block;
     font-weight: bold;
     margin: 10px 0 5px;
     color: #212529;
 }
 
-input {
+.regz-container input {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -39,7 +39,7 @@ input {
     box-sizing: border-box;
 }
 
-button {
+ button {
     width: 100%;
     padding: 12px;
     background: #007bff;
@@ -51,7 +51,40 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.regz-container button:hover {
     background: #0056b3;
     transform: scale(1.02);
+}
+.info-icon {
+    cursor: pointer;
+    margin-left: 8px;
+    font-size: 16px;
+    color: #555;
+}
+
+    .info-icon:hover {
+        color: #007bff;
+    }
+
+.tooltip {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    z-index: 1000;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+    .tooltip p {
+        margin: 4px 0;
+    }
+.regz-container .privacy-consent {
+    display: flex;
+    align-items: center;
+    gap: 8px !important; /* Ruimte tussen de checkbox en de tekst */
 }

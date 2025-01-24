@@ -52,14 +52,19 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
     };
 
     if (!voertuigen || voertuigen.length === 0) {
-        return <p>Geen voertuigen gevonden</p>;
+        return <p className = "loading" >loading...</p>;
     }
+
+    // Filter voertuigen op basis van hun status
+    const gefilterdeVoertuigen = voertuigen.filter(voertuig =>
+        !["Met schade", "Beschadigd", "In reparatie"].includes(voertuig.status)
+    );
 
     return (
         <div className="voertuigen-weergave">
             <h3>Beschikbare Voertuigen</h3>
             <div className="voertuigen-grid">
-                {voertuigen.map((voertuig) => {
+                {gefilterdeVoertuigen.map((voertuig) => {
                     const { jpg, png } = getImagePath(`${voertuig.merk} ${voertuig.type}`);
                     return (
                         <div
@@ -87,7 +92,6 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
                             <p>Kleur: {voertuig.kleur}</p>
                             <p>Aanschafjaar: {voertuig.aanschafjaar}</p>
                             <p>Prijs per dag: €{voertuig.prijs}</p>
-                            {/*} <p>Status: {voertuig.status}</p> {*/}
                             <button
                                 onClick={() => handleVoertuigKlik(voertuig)}
                                 aria-label={`Huur ${voertuig.merk} ${voertuig.type}`}

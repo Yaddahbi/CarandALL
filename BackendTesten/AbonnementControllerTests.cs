@@ -260,6 +260,10 @@ namespace BackendTesten
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal("Medewerker succesvol verwijderd van het abonnement.", okResult.Value.GetType().GetProperty("message")?.GetValue(okResult.Value));
         }
+        public class AddMedewerkerDto
+        {
+            public string Email { get; set; }
+        }
 
     }
 }
