@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchSchades } from "../api";
 import SchadeLijst from "./SchadeLijst";
 import SchadeToevoegen from "./SchadeToevoegen";
-import '../Schadepagina.css';
+import '../style/Schadepagina.css';
 
 const SchadePagina = () => {
     const [schades, setSchades] = useState([]);
@@ -11,8 +11,10 @@ const SchadePagina = () => {
     const [activePage, setActivePage] = useState(null);
 
     const loadSchades = async () => {
+
         setLoading(true);
         setError(null);
+
         try {
             const data = await fetchSchades();
             if (data && data.length === 0) {

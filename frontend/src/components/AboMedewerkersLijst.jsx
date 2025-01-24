@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import "../style/Abonnementen.css";
 
 const AboMedewerkersLijst = ({ refreshKey }) => {
     const [medewerkers, setMedewerkers] = useState([]);
@@ -27,8 +28,6 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
             }
 
             const data = await response.json();
-            console.log("Fetched medewerkers:", data);
-
             const filteredMedewerkers = data.filter(medewerker => medewerker.rol !== "ZakelijkeKlant");
             setMedewerkers(filteredMedewerkers);
         } catch (error) {
@@ -56,7 +55,7 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
 
                                 if (response.ok) {
                                     toast.success("Medewerker succesvol verwijderd.");
-                                    fetchMedewerkers(); // Refresh de lijst
+                                    fetchMedewerkers();
                                 } else {
                                     const data = await response.json();
                                     toast.error(data.message || "Er is iets fout gegaan.");
@@ -64,64 +63,72 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
                             } catch (error) {
                                 toast.error("Er is een netwerkfout opgetreden.");
                             }
-                            toast.dismiss(toastId); // Sluit de toast na actie
+                            toast.dismiss(toastId);
                         }}
                     >
                         Ja, verwijderen
                     </button>
                     <button
-                        onClick={() => toast.dismiss(toastId)} // Zorg ervoor dat de juiste toast wordt gesloten
+                        onClick={() => toast.dismiss(toastId)}
                     >
                         Nee, annuleren
                     </button>
                 </div>
             ),
             {
-                duration: Infinity, // Toast blijft open totdat het wordt gesloten
+                duration: Infinity,
             }
         );
     };
 
-
     useEffect(() => {
-        fetchMedewerkers(); 
+        fetchMedewerkers();
     }, [refreshKey]);
 
     return (
-        <div>
+        <div className="medewerkers-container">
             <h2>Medewerkers</h2>
             {loading ? (
                 <p>Laden...</p>
             ) : (
-                
-                    <table>
-                    <thead>
-                        <tr>
-                            <th>Naam</th>
-                            <th>Email</th>
-                            <th>Rol</th>
-                            <th>Acties</th>
-                        </tr>
+                <div className="tabel-container">
+                    <table className="tabel" role="table">
+                        <thead>
+                            <tr role="row">
+                                <th role="columnheader" tabIndex="0">Naam</th>
+                                <th role="columnheader" tabIndex="0">Email</th>
+                                <th role="columnheader" tabIndex="0">Rol</th>
+                                <th role="columnheader" tabIndex="0">Acties</th>
+                            </tr>
                         </thead>
-                    <tbody>
-                        {medewerkers && medewerkers.length > 0 ? (
-                            medewerkers.map((medewerker) => (
-                                <tr key={medewerker.id}> 
-                                    <td>{medewerker.naam}</td> 
-                                    <td>{medewerker.email}</td>
-                                    <td>{medewerker.rol}</td>
-                                    <td>
-                                        <button onClick={() => handleDelete(medewerker.id)}>Verwijderen</button>
+                        <tbody>
+                            {medewerkers && medewerkers.length > 0 ? (
+                                medewerkers.map((medewerker) => (
+                                    <tr role="row" key={medewerker.id}>
+                                        <td role="cell" tabIndex="0">{medewerker.naam}</td>
+                                        <td role="cell" tabIndex="0">{medewerker.email}</td>
+                                        <td role="cell" tabIndex="0">{medewerker.rol}</td>
+                                        <td role="cell" tabIndex="0">
+                                            <button
+                                                onClick={() => handleDelete(medewerker.id)}
+                                                tabIndex="0"
+                                                aria-label={`Verwijder medewerker ${medewerker.naam}`}
+                                            >
+                                                Verwijderen
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4" className="no-data" role="cell" tabIndex="0">
+                                        Geen medewerkers gevonden.
                                     </td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="4">Geen medewerkers gevonden.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );

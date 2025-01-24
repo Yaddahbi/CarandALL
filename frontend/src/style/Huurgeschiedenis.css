@@ -1,14 +1,17 @@
 body {
-    background-color: #f7f7f7;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
 }
 
-/* Hero Section Styling */
 .huurgeschiedenis-hero {
     position: relative;
-    height: 685px;
+    height: 485px; /* Zelfde hoogte als voertuigen */
     text-align: center;
-    background-image: url('../images/Huurgeschiedenis.jpg'); /* Voeg je eigen afbeelding toe */
+    background-image: url('../images/Huurgeschiedenis.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -26,158 +29,177 @@ body {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5); /* Voor donkerder achtergrond */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
         z-index: 1;
     }
 
     .huurgeschiedenis-hero .container {
         position: relative;
-        width: 60%;
+        width: 60%; /* Breedte van het witte vlak */
         padding: 40px 20px;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.9); /* Witte achtergrond */
         border-radius: 16px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 12px 40px, rgba(0, 0, 0, 0.08) 0 8px 32px;
         z-index: 2;
     }
 
     .huurgeschiedenis-hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* Zelfde grootte als voertuigen */
+        color: #333;
         margin-bottom: 10px;
     }
 
     .huurgeschiedenis-hero p {
-        font-size: 1.2rem;
+        font-size: 1.2rem; /* Zelfde grootte als voertuigen */
+        color: #333;
         margin-bottom: 30px;
     }
 
-/* Filterbalk Styling */
 .huurgeschiedenis-filters {
     display: flex;
     justify-content: center;
     gap: 20px;
-    flex-wrap: wrap;
-    margin: 30px 0;
-    margin-left: 12%;
-    margin-right: 12%;
-
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
     .huurgeschiedenis-filters label {
-        font-size: 1rem;
-        color: #333;
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        color: #555;
     }
 
     .huurgeschiedenis-filters input,
     .huurgeschiedenis-filters select {
         padding: 10px;
-        font-size: 1rem;
         border: 1px solid #ccc;
-        border-radius: 8px;
-        box-sizing: border-box;
-        min-width: 150px;
+        border-radius: 5px;
         margin-top: 5px;
+        font-size: 14px;
     }
 
-        .huurgeschiedenis-filters input[type="date"] {
-            width: 160px;
-        }
-
-    .huurgeschiedenis-filters select {
-        width: 180px;
-    }
 .huurgeschiedenis-container {
-    margin-left: 12%;
-    margin-right: 12%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
 }
-    /* Tabel Styling */
-    table {
-    width: 100%;
-    border-collapse: separate;
-    margin-top: 30px;
-    border-spacing: 10px;
+
+.status-kaarten {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.status-kaart {
+    width: 800px; /* Zelfde breedte als de filters */
     background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    border-left: 8px solid transparent;
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-thead th {
-    padding: 15px 10px;
-    font-size: 1.1rem;
-    text-align: left;
-    border-bottom: 2px solid #ccc;
-    color: #333;
-    background-color: #f8f8f8;
-}
-
-tbody td {
-    padding: 12px 10px;
-    font-size: 1rem;
+.status-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
     border-bottom: 1px solid #ddd;
+}
+
+    .status-label.goedgekeurd {
+        background-color: #e9f7ef;
+        color: #28a745;
+    }
+
+    .status-label.afgewezen {
+        background-color: #f8d7da;
+        color: #dc3545;
+    }
+
+    .status-label.in-afwachting {
+        background-color: #fff3cd;
+        color: #ffc107;
+    }
+
+.status-icon {
+    margin-right: 10px;
+}
+
+.toggle-arrow {
+    font-size: 18px;
     color: #555;
-    text-align: left;
 }
 
-tbody tr:nth-child(even) {
-    background-color: #fafafa;
+.verzoeken-lijst {
+    padding: 20px;
+}
+.verzoek-item h4 {
+    margin: 0;
+    font-size: 18px;
+    color: black !important;
+    font-weight: bold;
 }
 
-tbody tr:hover {
-    background-color: #f1f1f1;
+.verzoek-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-thead {
-    background-color: #f8f8f8;
-}
-.tabelrij:focus {
-    background-color: #e0f7fa; /* Lichte markering voor focus */
-    outline: none; /* Verwijder standaard focus outline */
-}
+    .verzoek-item:last-child {
+        margin-bottom: 0;
+    }
 
-.tabelrij:hover {
-    background-color: #f1f1f1; /* Hover effect voor visuele aanwijzing */
-}
+    .verzoek-item h4 {
+        margin: 0;
+        font-size: 18px;
+        color: #007bff;
+        font-weight: bold;
+    }
 
-/* Link Styling (Download factuur) */
-a {
-    color: #007bff;
+    .verzoek-item p {
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+.factuur-link {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #28a745;
     text-decoration: none;
+    font-weight: bold;
 }
 
-    a:hover {
+    .factuur-link:hover {
         text-decoration: underline;
     }
 
-/* Footer */
-footer {
-    margin-top: 60px;
-    padding: 20px;
-    background-color: #333;
-    color: white;
-    text-align: center;
-}
-
-/* Loading and error messages */
-p {
-    font-size: 1.2rem;
-    color: #333;
-}
-
-/* Loading spinner */
-.loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    color: #007bff;
-}
-
-/* Error Message */
 .error-message {
     color: #f44336;
-    font-size: 1.2rem;
     text-align: center;
-    padding: 10px;
-    background-color: #f8d7da;
-    border-radius: 5px;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+.afwijzing {
+    color: #dc3545;
+    font-size: 14px;
+    font-weight: bold;
 }

@@ -70,7 +70,7 @@ namespace WebApplication1.Controllers
                 PhoneNumber = userDto.Telefoonnummer,
                 Rol = userDto.Rol,
                 BedrijfsNaam = userDto.BedrijfsNaam,
-                KvkNummer = userDto.KvkNummer
+                KvkNummer = userDto.KvkNummer      
             };
 
             var result = await _userManager.CreateAsync(user, userDto.Wachtwoord);
@@ -82,10 +82,13 @@ namespace WebApplication1.Controllers
                 {
                     var abonnement = new Abonnement
                     {
-                        BedrijfsDomein = userDto.BedrijfsNaam.ToLower().Replace(" ", "") + ".com",
-                        AbonnementType = "Pay-as-you-go", // Standaard abonnementstype
+                        AbonnementType = userDto.AbonnementType, 
                     };
 
+                    var emailDomain = userDto.Email.Substring(userDto.Email.IndexOf('@') + 1);
+                    abonnement.BedrijfsDomein = emailDomain.ToLower();
+
+                    abonnement.KostenPerMaand = abonnement.AbonnementType == "Prepaid" ? 200 : 50;
                     abonnement.MaxMedewerkers = abonnement.AbonnementType == "Prepaid" ? 100 : 50;
 
                     _context.Abonnementen.Add(abonnement);
@@ -95,7 +98,6 @@ namespace WebApplication1.Controllers
                     user.BedrijfsAbonnementId = abonnement.Id;
                     await _userManager.UpdateAsync(user);
 
-                    // Maak een melding dat het abonnement is aangemaakt
                     return Ok(new { message = "Zakelijke gebruiker succesvol aangemaakt en abonnement aangemaakt." });
                 }
                 else
@@ -104,7 +106,6 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            // Retourneer eventuele fouten van Identity
             var identityErrors = result.Errors.Select(e => e.Description).ToList();
             return BadRequest(new { errors = identityErrors });
         }
@@ -131,11 +132,12 @@ namespace WebApplication1.Controllers
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id), // Gebruikers ID
         new Claim(ClaimTypes.Role, user.Rol), // Rol van de gebruiker
+        new Claim(ClaimTypes.Email, user.Email),
         new Claim("AbonnementId", abonnementId.ToString())
     };
 
             // Secret key en JWT-instellingen
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JouwGeheimeSleutelVoorDeWebsiteProject123")); 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JouwGeheimeSleutelVoorDeWebsiteProject123"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             // Maak een JWT-token aan
@@ -179,67 +181,68 @@ namespace WebApplication1.Controllers
                 .ToListAsync();
 
             return Ok(notificaties);
-    [Authorize]
-    [HttpPut("update")]
-    public async Task<IActionResult> UpdateUser([FromBody] Updateuserdto userDto)
-    {
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    var user = await _userManager.FindByIdAsync(userId);
-
-    if (user == null)
-    {
-        return NotFound(new { message = "Gebruiker niet gevonden." });
-    }
-
-    user.Naam = userDto.Naam;
-    user.Email = userDto.Email;
-    user.Adres = userDto.Adres;
-    user.PhoneNumber = userDto.Telefoonnummer;
-
-    var result = await _userManager.UpdateAsync(user);
-
-    if (result.Succeeded)
-    {
-        return Ok(new { message = "Gegevens succesvol bijgewerkt." });
-    }
-
-    var errors = result.Errors.Select(e => e.Description);
-    return BadRequest(new { errors });
-}
-        [Authorize]
-        [HttpGet("details")]
-        public async Task<IActionResult> GetUserDetails()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
-            }
-
-            var user = await _userManager.Users
-                .Where(u => u.Id == userId)
-                .Select(u => new
-                {
-                    u.Id,
-                    u.Naam,
-                    u.Email,
-                    u.Adres,
-                    u.PhoneNumber,
-                    u.Rol,
-                    u.BedrijfsNaam,
-                    u.KvkNummer
-                })
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                return NotFound(new { message = "Gebruiker niet gevonden." });
-            }
-
-            return Ok(user);
         }
+            [Authorize]
+            [HttpPut("update")]
+            public async Task<IActionResult> UpdateUser([FromBody] Updateuserdto userDto)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId);
+
+                if (user == null)
+                {
+                    return NotFound(new { message = "Gebruiker niet gevonden." });
+                }
+
+                user.Naam = userDto.Naam;
+                user.Email = userDto.Email;
+                user.Adres = userDto.Adres;
+                user.PhoneNumber = userDto.Telefoonnummer;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new { message = "Gegevens succesvol bijgewerkt." });
+                }
+
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new { errors });
+            }
+            [Authorize]
+            [HttpGet("details")]
+            public async Task<IActionResult> GetUserDetails()
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized(new { error = "Gebruiker is niet geauthenticeerd." });
+                }
+
+                var user = await _userManager.Users
+                    .Where(u => u.Id == userId)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.Naam,
+                        u.Email,
+                        u.Adres,
+                        u.PhoneNumber,
+                        u.Rol,
+                        u.BedrijfsNaam,
+                        u.KvkNummer
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return NotFound(new { message = "Gebruiker niet gevonden." });
+                }
+
+                return Ok(user);
+            }
 
 
+        }
     }
-}

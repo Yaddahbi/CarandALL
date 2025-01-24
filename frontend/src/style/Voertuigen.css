@@ -1,0 +1,313 @@
+body {
+     background-color: #f7f7f7;
+ }
+
+/* Hero Section Styling */
+.voertuigen-hero {
+    position: relative;
+    height: 485px;
+    text-align: center;
+    background-image: url('../images/Voertuig-Hero.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    padding: 64px 20px 0;
+}
+
+    .voertuigen-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
+        z-index: 1;
+    }
+
+.voertuigen-hero .container {
+    padding: 40px 20px;
+    border-radius: 16px;
+    text-align: center;
+    z-index: 2;
+}
+
+    .voertuigen-hero h1 {
+        color: #333;
+        font-size: 70px;
+        margin-bottom: 5px;
+    }
+
+    .voertuigen-hero p {
+        font-size: 25px;
+        color: #333;
+    }
+
+.voertuigen-pagina {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  max-width: 1300px;
+  margin: 0 auto; 
+  color: #222222; 
+}
+  
+.container.voertuigen{
+        margin-bottom: 50px;
+    }
+
+.page-header {
+    color: #f7f7f7;
+    padding: 15px;
+    text-align: center;
+}
+
+    .voertuigen-hero .container {
+        position: relative;
+        width: 60%;
+        padding: 40px 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 12px 40px, rgba(0, 0, 0, 0.08) 0 8px 32px;
+        z-index: 2;
+    }
+
+    .voertuigen-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .voertuigen-hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* Focus styling */
+button:focus, input:focus, select:focus {
+  outline: 3px solid #007BFF;
+  outline-offset: 2px;
+}
+
+/* Filters styling */
+.voertuigen-filters {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 80px;
+}
+
+    .voertuigen-filters label {
+        font-weight: bold;
+        font-size: 15px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    .voertuigen-filters select {
+    color : #333;
+    }
+    
+.datum-filters {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    
+}
+
+.overige-filters {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+    }
+
+
+.voertuigen-filters label {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+}
+
+.voertuigen-filters select,
+.voertuigen-filters input {
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  font-size: 1em;
+}
+
+/* Voertuigen lijst styling */
+
+
+.voertuigen-weergave h3 {
+  text-align: center;
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.voertuigen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px;
+    padding: 0;
+    max-width: 100%; 
+    box-sizing: border-box; 
+    margin: 0 auto; 
+}
+
+/* Elke voertuig kaart */
+.voertuigen-kaart {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 400px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voertuigen-kaart img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.huur-button {
+    background-color: black;
+}
+    .huur-button:hover {
+        background-color: #f9a826 !important;
+    }
+
+.voertuigen-kaart:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.voertuigen-kaart strong {
+  display: block;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.voertuigen-kaart p {
+  font-size: 1em;
+  margin: 5px 0;
+  color: #666;
+}
+
+.form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+huurform {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: auto; 
+  max-width: 500px;
+   
+}
+    huurform input, form button {
+        width: 100%; 
+        margin-bottom: 15px;
+    }
+
+    huurform button {
+        padding: 10px;
+        background: black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background 0.2s;
+    }
+        huurform button:hover {
+            background-color: #f9a826 !important;
+        }
+
+p.error-message {
+  color: red;
+  text-align: center;
+  font-size: 1.2em;
+}
+@media (max-width: 480px) {
+    .voertuigen-grid {
+        grid-template-columns: 1fr; /* Eén kolom per rij voor kleine schermen */
+    }
+}
+
+@media (max-width: 1024px) {
+    .voertuigen-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cars per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .voertuigen-grid {
+        grid-template-columns: 1fr; /* 1 car per row on small screens */
+    }
+
+}
+.datum-waarschuwing {
+    background-color: lightgrey;
+    color: black;
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.datum-waarschuwing1 {
+    color: #333;
+    padding: 2px;
+    margin: 5px 0;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}

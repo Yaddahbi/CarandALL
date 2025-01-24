@@ -7,21 +7,21 @@ body {
     box-sizing: border-box;
 }
 
-/* Hero Section Styling */
 .abonnementen-hero {
     position: relative;
-    height: 600px;
+    height: 485px;
     text-align: center;
-    background-image: url("../images/Abonnementen.webp");
+    background-image: url('../images/Abonnementen.webp');
+
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    
+    justify-content: flex-start;
     align-items: center;
     color: white;
-    padding: 0 20px;
-    background-attachment: fixed;
+    padding: 64px 20px 0;
 }
 
     .abonnementen-hero::before {
@@ -31,7 +31,8 @@ body {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4);
+
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
         z-index: 1;
     }
 
@@ -161,5 +162,142 @@ button {
 
     .add-medewerker-section, .medewerkers-lijst-section {
         min-width: 100%;
+        padding: 40px 20px;
+        border-radius: 16px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .abonnementen-hero h1 {
+        color: white;
+        font-size: 70px;
+        margin-bottom: 5px;
+    }
+
+    .abonnementen-hero p {
+        font-size: 25px;
     }
 }
+/* Hoofdcontainer voor de medewerkerslijst */
+.medewerkers-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* Scrollbare tabelcontainer */
+.tabel-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Tabelstijl */
+.tabel {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    /* Koptekststijl van de tabel */
+    .tabel thead th {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Rijstijl van de tabel */
+    .tabel tbody td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Centraal uitgelijnde rij voor lege data */
+    .tabel tbody .no-data {
+        text-align: center;
+    }
+
+    /* Verwijderknopstijl */
+    .tabel tbody button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+        .tabel tbody button:hover {
+            background-color: #d32f2f;
+        }
+
+.wijzig-abonnement-container {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.wijzig-button {
+    background: transparent;
+    color: dodgerblue;
+    text-decoration: underline;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .wijzig-button:hover {
+        background: transparent !important;
+    }
+
+.wijzig-formulier {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .wijzig-formulier h3 {
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    .wijzig-formulier select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .wijzig-formulier p {
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .wijzig-formulier button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .wijzig-formulier button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .wijzig-formulier button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
