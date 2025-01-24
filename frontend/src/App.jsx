@@ -1,5 +1,5 @@
 import './style/styles.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
@@ -32,20 +32,28 @@ import Unauthorized from './UnauthorizedPage';
 
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 
-const HeroSection = () => (
-    <section className="hero">
-        <div className="container">
-            <h1>Welkom bij CarAndAll</h1>
-            <p>Reserveer eenvoudig en snel je volgende huurauto, caravan of camper.</p>
-            <div className="search-bar">
-                <input className="Ophaallocatie" type="text" placeholder="Ophaallocatie" />
-                <input className="Ophaaldatum" type="date" placeholder="Ophaaldatum" />
-                <input className="Inleverdatum" type="date" placeholder="Inleverdatum" />
-                <button>Zoeken</button>
+const HeroSection = () => {
+    const navigate = useNavigate();
+
+    const handleZoekVoertuig = () => {
+        navigate('/voertuigen');
+    };
+
+    return (
+        <section className="hero">
+            <div className="container">
+                <h1>Welkom bij CarAndAll</h1>
+                <p>Reserveer eenvoudig en snel je volgende huurauto, caravan of camper.</p>
+                <div className="search-bar">
+                    <input className="Ophaallocatie" type="text" placeholder="Ophaallocatie" />
+                    <input className="Ophaaldatum" type="date" placeholder="Ophaaldatum" />
+                    <input className="Inleverdatum" type="date" placeholder="Inleverdatum" />
+                    <button onClick={handleZoekVoertuig}>Zoeken</button>
+                </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
 
 const FeaturesSection = () => (
     <section className="features">
@@ -66,7 +74,6 @@ const FeaturesSection = () => (
 
 const FooterWrapper = () => {
     const location = useLocation();
-    const { user } = useAuth();
 
     const noFooterRoutes = [
         '/login',
@@ -77,9 +84,6 @@ const FooterWrapper = () => {
         '/unauthorized',
         '/privacy'
     ];
-    if (user === null) {
-        return <div></div>;
-    }
    
     return !noFooterRoutes.includes(location.pathname) && <Footer />;
 };

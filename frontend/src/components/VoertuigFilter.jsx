@@ -37,7 +37,6 @@ const VoertuigFilter = ({ filters, setFilters, isZakelijk }) => {
                     id="soort"
                     value={filters.soort}
                     onChange={handleFilterChange}
-                    disabled={isZakelijk}
                     aria-label="Kies voertuigsoort"
                     tabIndex="0"
                 >

@@ -52,7 +52,7 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
     };
 
     if (!voertuigen || voertuigen.length === 0) {
-        return <p>Geen voertuigen gevonden</p>;
+        return <p className = "loading" >loading...</p>;
     }
 
     // Filter voertuigen op basis van hun status

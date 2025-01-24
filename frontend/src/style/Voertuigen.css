@@ -272,3 +272,7 @@ p.error-message {
     font-weight: bold;
     margin-bottom: 100px;
 }
+
+.loading{
+    text-align: center;
+}
