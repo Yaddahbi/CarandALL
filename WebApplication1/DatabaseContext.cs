@@ -10,6 +10,7 @@ namespace WebApplication1
             : base(options)
         {
         }
+
         public DbSet<Huurder> Huurders { get; set; }
         public DbSet<Bedrijf> Bedrijven { get; set; }
         public DbSet<Voertuig> Voertuigen { get; set; }
@@ -19,55 +20,18 @@ namespace WebApplication1
         public DbSet<Medewerker> Medewerkers { get; set; }
         public DbSet<Inname> Innames { get; set; }
         public DbSet<Uitgifte> Uitgiftes { get; set; }
-        public DbSet<Schadeclaim> Schadeclaims { get; set; }
-          public DbSet<Gebruiker> Gebruikers { get; set; }
-  
-        
+        public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
 
-        public List<Schade> GetAllSchades()
-        {
-            return Schades.ToList(); 
-        }
-
-        public Schade GetSchadeById(int id)
-        {
-            return Schades.FirstOrDefault(s => s.SchadeId == id); 
-        }
-
-        public void CreateSchade(Schade schade)
-        {
-            Schades.Add(schade);
-            SaveChanges(); 
-        }
-
-        public void UpdateSchade(Schade schade)
-        {
-            Schades.Update(schade); 
-            SaveChanges();
-        }
-
-        public void DeleteSchade(int id)
-        {
-            var schade = GetSchadeById(id); 
-            if (schade != null)
-            {
-                Schades.Remove(schade); 
-                SaveChanges();
-            }
-        }
-
-       
-         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-           // modelBuilder.Entity<Bedrijf>()
-              //  .HasOne(b => b.Abonnement)
-               // .WithOne(a => a.Bedrijf)
-               // .HasForeignKey<Abonnement>(a => a.BedrijfId);
+            // modelBuilder.Entity<Bedrijf>()
+            //  .HasOne(b => b.Abonnement)
+            // .WithOne(a => a.Bedrijf)
+            // .HasForeignKey<Abonnement>(a => a.BedrijfId);
 
             modelBuilder.Entity<Huurder>()
                 .HasOne(h => h.Bedrijf)
@@ -78,17 +42,17 @@ namespace WebApplication1
                 .HasOne(hv => hv.Voertuig)
                 .WithMany(v => v.Huurverzoeken)
                 .HasForeignKey(hv => hv.VoertuigId);
-            
+
             modelBuilder.Entity<Huurverzoek>()
                 .HasOne(hv => hv.Huurder)
                 .WithMany(h => h.Huurverzoeken)
                 .HasForeignKey(hv => hv.HuurderId);
-            
+
             modelBuilder.Entity<Schade>()
                 .HasOne(s => s.Voertuig)
                 .WithMany(v => v.Schades)
                 .HasForeignKey(s => s.VoertuigId);
-            
+
             modelBuilder.Entity<Uitgifte>()
                 .HasOne(u => u.Voertuig)
                 .WithMany(v => v.Uitgiftes)
@@ -102,12 +66,43 @@ namespace WebApplication1
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.Voertuig)
                 .WithMany(v => v.Innames)
-                .HasForeignKey(i => i.VoertuigID); 
+                .HasForeignKey(i => i.VoertuigID);
 
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.Huurder)
                 .WithMany(h => h.Innames)
                 .HasForeignKey(i => i.HuurderID);
+        }
+
+        public List<Schade> GetAllSchades() 
+        {
+            return Schades
+                .Include(s => s.Voertuig) 
+                .ToList();
+        }
+
+        public Schade GetSchadeById(int id) => Schades.FirstOrDefault(s => s.SchadeId == id);
+
+        public void CreateSchade(Schade schade)
+        {
+            Schades.Add(schade);
+            SaveChanges();
+        }
+
+        public void UpdateSchade(Schade schade)
+        {
+            Schades.Update(schade);
+            SaveChanges();
+        }
+
+        public void DeleteSchade(int id)
+        {
+            var schade = GetSchadeById(id);
+            if (schade != null)
+            {
+                Schades.Remove(schade);
+                SaveChanges();
+            }
         }
     }
 }

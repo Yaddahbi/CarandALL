@@ -1,72 +1,143 @@
 import React, { useState, useEffect } from "react";
-import { fetchSchades } from "../api";
-import SchadeLijst from "./SchadeLijst";
 import SchadeToevoegen from "./SchadeToevoegen";
+import SchadeDetails from "./SchadeDetails";
+import { useNavigate} from "react-router-dom";
+import { fetchSchademeldingen } from "../api";
 import '../Schadepagina.css';
 
 const SchadePagina = () => {
-    const [schades, setSchades] = useState([]);
+    const [schademeldingen, setSchademeldingen] = useState([]);
+    const [filters, setFilters] = useState({
+        status: '',
+        datumVan: '',
+        datumTot: '',
+    });
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [activePage, setActivePage] = useState(null);
+    const navigate = useNavigate();
 
-    const loadSchades = async () => {
-        try {
-            const data = await fetchSchades();
-            if (data && data.length === 0) {
-                setError("Er zijn momenteel geen schades beschikbaar.");
-            } else {
-                setSchades(data);
-            }
-        } catch (error) {
-            setError("Fout bij het ophalen van schades: " + error.message);
-            console.error("Fout bij het ophalen van schades:", error);
-        } finally {
-            setLoading(false);
-        }
+    const applyFilters = () => {
+        const queryFilters = {
+            status: filters.status,
+            datumVan: filters.datumVan,
+            datumTot: filters.datumTot,
+        };
+        fetchSchademeldingen(queryFilters)
+            .then(response => {
+                setSchademeldingen(response.data);
+            })
+            .catch(error => {
+                setError("Er is een fout opgetreden bij het ophalen van de schademeldingen.");
+            });
+    };
+    
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const schademeldingen = await fetchSchademeldingen(filters);
+                    setSchademeldingen(schademeldingen);
+                } catch (error) {
+                    setError("Er is een fout opgetreden bij het ophalen van de schademeldingen.");
+                }
+            };
+            fetchData();
+            }, [filters]);
+
+        const handleFilterChange = (e) => {
+            setFilters({
+                ...filters,
+                [e.target.name]: e.target.value,
+            });
+        };
+
+    const handleAddSchade = () => {
+        navigate('toevoegen');
+    };
+    const handleClick = (id) => {
+        navigate(`/schade/${id}`);
     };
 
-    const handleSchadeToevoegen = async (newSchade) => {
-        try {
-            const addedSchade = await voegSchadeToe(newSchade);
-            setSchades((prevSchades) => [...prevSchades, addedSchade]);
-            setActivePage("Lijst");
-        } catch (err) {
-            setError("Fout bij het toevoegen van schade: " + err.message);
-            console.error("Fout bij het toevoegen van schade:", err);
-        }
-    };
-    useEffect(() => {
-        if (activePage === "lijst") {
-            loadSchades();
-        }
-    }, [activePage]);
+        return (
+            <div className="SchadeBeheer">
+                {/* Button voor schade toevoegen */}
+                <div className="add-schade-button">
+                    <button onClick={handleAddSchade}>Voeg Schade Toe</button>
+                </div>
 
-    return (
-        <div className="Schades">
-            <h1>Schades</h1>
+                <div className="layout">
+                    {/* Sidebar met filters */}
+                    <div className="sidebar">
+                        <h3>Filter Schademeldingen</h3>
+                        <form>
+                            <br/>
+                            <label>Status:</label>
+                            <select name="status" value={filters.status} onChange={handleFilterChange}>
+                                <option value="">Alle statussen</option>
+                                <option value="open">Open</option>
+                                <option value="afgesloten">Afgesloten</option>
+                            </select>
+                            <br/>
+                            <label>Van Datum:</label>
+                            <input
+                                type="date"
+                                name="datumVan"
+                                value={filters.datumVan}
+                                onChange={handleFilterChange}
+                            />
+                            <br/>
+                            <label>Tot Datum:</label>
+                            <input
+                                type="date"
+                                name="datumTot"
+                                value={filters.datumTot}
+                                onChange={handleFilterChange}
+                            />
+                            <br/>
+                            {/* Filter button */}
+                            <button type="button" onClick={applyFilters}>Filter</button>
+                        </form>
+                    </div>
 
-            <div>
-                <button onClick={() => setActivePage("lijst")}>Schade Lijst</button>
-                <button onClick={() => setActivePage("toevoegen")}>Voeg Schade Toe</button>
+                    {/* Foutmelding */}
+                    {error && <div className="error">{error}</div>}
+
+                    {/* Tabel van schademeldingen */}
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Voertuig</th>
+                            <th>Beschrijving</th>
+                            <th>Datum</th>
+                            <th>Foto</th>
+                            <th>Status</th>
+                            <th>Acties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {schademeldingen.map((melding) => (
+                            <tr key={melding.id}>
+                                <td>{melding.voertuig}</td>
+                                <td>{melding.beschrijving}</td>
+                                <td>{melding.datum}</td>
+                                <td>
+                                    {melding.foto && (
+                                        <a href={melding.foto} target="_blank" rel="noopener noreferrer">
+                                            Bekijk Foto
+                                        </a>
+                                    )}
+                                </td>
+                                <td>{melding.status}</td>
+                                <td>
+                                    <button onClick={() => handleClick(melding.id)}>
+                                        Bekijk Details
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {activePage === "lijst" && (
-                <>
-                    {loading ? (
-                        <div>Schades worden geladen...</div>
-                    ) : (
-                        <SchadeLijst schades={schades} />
-                    )}
-                </>
-            )}
-
-            {activePage === "toevoegen" && (
-                <SchadeToevoegen onSchadeToevoegen={handleSchadeToevoegen} />
-            )}
-        </div>
-    );
+        );
 };
-
 
 export default SchadePagina;

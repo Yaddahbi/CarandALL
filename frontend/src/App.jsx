@@ -6,7 +6,6 @@ import Verhuuraanvraag from './components/Verhuuraanvraag';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
 import GebruikerAanmaken from './GebruikerAanmaken';
-import SchadeLijst from './components/SchadeLijst';  
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
@@ -26,6 +25,7 @@ import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
 import { AuthProvider } from "./AuthContext";
 
 import { Toaster } from 'sonner';
+import SchadeDetails from "./components/SchadeDetails.jsx";
   
 
 //const Login = () => <h1>Login Page</h1>;
@@ -105,9 +105,9 @@ const App = () => {
                     <Route path="/uitgifte" element={<UitgifteVoertuig />} />
                     <Route path="/inname" element={<InnameVoertuig />} />
                    
-                    <Route path="/schades" element={<SchadePagina />} />
-                    <Route path="/schades/lijst" element={<SchadeLijst />} /> 
-                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> 
+                    <Route path="/schade" element={<SchadePagina />} />
+                    <Route path="/schade/details" element={<SchadeDetails />} /> 
+                    <Route path="/schade/toevoegen" element={<SchadeToevoegen />} /> 
 
                     <Route path="/kies-account-type" element={<KiesAccountType />} />
                     <Route path="/registreer-particulier" element={<RegistreerParticulier />} />
