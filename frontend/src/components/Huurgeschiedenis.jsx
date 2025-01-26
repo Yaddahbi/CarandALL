@@ -118,7 +118,7 @@ const Huurgeschiedenis = () => {
                                                 <td>
                                                     {item.voertuigMerk} ({item.voertuigType})
                                                 </td>
-                                                <td>€{item.kosten.toFixed(2)}</td>
+                                                <td>ï¿½{item.kosten.toFixed(2)}</td>
                                                 <td>
                                                     <a
                                                         href={item.factuurUrl}

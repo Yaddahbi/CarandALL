@@ -13,6 +13,8 @@
         public string? Afwijzingsreden { get; set; }
         public int HuurderId { get; set; }
         public Huurder Huurder { get; set; }
+        public string Opmerkingen { get; set; }
+        
     }
 }
 

@@ -50,7 +50,7 @@ const SchadePagina = () => {
         };
 
     const handleAddSchade = () => {
-        navigate('toevoegen');
+        navigate('/toevoegen');
     };
     const handleClick = (id) => {
         navigate(`/schade/${id}`);

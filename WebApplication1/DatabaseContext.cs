@@ -73,6 +73,12 @@ namespace WebApplication1
                 .WithMany(h => h.Innames)
                 .HasForeignKey(i => i.HuurderID);
         }
+        public List<Voertuig> GetAllVoertuigen()
+        {
+            return Voertuigen.ToList();
+        }
+
+        public Voertuig GetVoertuigById(int id) => Voertuigen.FirstOrDefault(v => v.VoertuigId == id);
 
         public List<Schade> GetAllSchades() 
         {
@@ -104,6 +110,16 @@ namespace WebApplication1
                 SaveChanges();
             }
         }
+        public List<Inname> ListInnames()
+        {
+            return Innames.Include(i => i.Voertuig).Include(i => i.Huurder).ToList();
+        }
+       
+        public List<Uitgifte> GetAllUitgiftes()
+        {
+            return Uitgiftes.Include(u => u.Voertuig).Include(u => u.Huurder).ToList();
+        }
+        
     }
 }
 

@@ -1,8 +1,7 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
-const INNAME_API_URL = "https://localhost:7040/api/Inname";
-const UITGIFTE_API_URL = "https://localhost:7040/api/Uitgifte";
+const UITGIFTE_INNAME_API_URL = "https://localhost:7040/api/UitgifteInnameBeheren";
 const BASE_URL = "https://localhost:7040/api";
 
 export const voegGebruikerToe = async (gebruikerData) => {
@@ -230,8 +229,7 @@ export const uploadSchadeFoto = async (file) => {
 
         return response.json();
     };
-
-
+    
     export const fetchHuurgeschiedenis = async (filters) => {
         try {
             const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
@@ -264,46 +262,37 @@ export const uploadSchadeFoto = async (file) => {
         }
     };
     export const createInname = async (innameData) => {
-        try {
-            const response = await fetch(INNAME_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(innameData),
-            });
+    const response = await fetch("/api/Inname", {
+        method: "POST",
+        body: JSON.stringify(innameData),
+        headers: { "Content-Type": "application/json" }
+    });
 
-            if (!response.ok) {
-                throw new Error("Fout bij het registreren van de inname");
-            }
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Fout bij het registreren: ${errorData.message || 'Onbekende fout'}`);
+    }
 
-            return await response.json();
-        } catch (error) {
-            console.error("Fout bij het registreren van inname:", error);
-            throw error;
-        }
+    return await response.json();
     };
+    export const bevestigUitgifte = async (uitgifteId) => {
+    try {
+        const response = await fetch(`${UITGIFTE_API_URL}/${uitgifteId}/bevestigen`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-    export const createUitgifte = async (uitgifteData) => {
-        try {
-            const response = await fetch(UITGIFTE_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(uitgifteData),
-            });
-
-            if (!response.ok) {
-                throw new Error("Fout bij het registreren van de uitgifte");
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error("Fout bij het registreren van uitgifte:", error);
-            throw error;
-
+        if (!response.ok) {
+            throw new Error("Fout bij het bevestigen van de uitgifte");
         }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het bevestigen van uitgifte:", error);
+        throw error;
+    }
     };
     export const fetchHuurgeschiedenisBedrijf = async (filters) => {
         try {
