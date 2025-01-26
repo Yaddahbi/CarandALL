@@ -18,6 +18,7 @@ namespace WebApplication1
         public DbSet<Uitgifte> Uitgiftes { get; set; }
         public DbSet<Schadeclaim> Schadeclaims { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<DeletedUser> DeletedUsers { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
 
         public List<Schade> GetAllSchades()

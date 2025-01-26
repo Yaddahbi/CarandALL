@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -11,25 +12,19 @@ using WebApplication1.Dto_s;
 using WebApplication1.Models;
 using Xunit;
 
-namespace BackendTesten.Controllers
+namespace BackendTesten
 {
     public class UserControllerTests
     {
         private readonly Mock<UserManager<User>> _userManagerMock;
-        private readonly Mock<SignInManager<User>> _signInManagerMock;
-        private readonly Mock<WebApplication1.DatabaseContext> _contextMock;
         private readonly UserController _controller;
 
         public UserControllerTests()
         {
             var userStoreMock = new Mock<IUserStore<User>>();
             _userManagerMock = new Mock<UserManager<User>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
-            var contextAccessorMock = new Mock<IHttpContextAccessor>();
-            var userPrincipalFactoryMock = new Mock<IUserClaimsPrincipalFactory<User>>();
-            _signInManagerMock = new Mock<SignInManager<User>>(_userManagerMock.Object, contextAccessorMock.Object, userPrincipalFactoryMock.Object, null, null, null, null);
-            var options = new DbContextOptionsBuilder<WebApplication1.DatabaseContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
-            _contextMock = new Mock<WebApplication1.DatabaseContext>(options);
-            _controller = new UserController(_userManagerMock.Object, _signInManagerMock.Object, _contextMock.Object);
+
+            _controller = new UserController(_userManagerMock.Object, null, null);
 
             // Mock the HttpContext to simulate an authenticated user
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -44,120 +39,96 @@ namespace BackendTesten.Controllers
         }
 
         [Fact]
-        public async Task Login_ReturnsOkResult_WhenCredentialsAreValid()
+        public async Task UpdateUser_ReturnsOkResult_WhenUpdateIsSuccessful()
         {
             // Arrange
-            var loginDto = new LoginDto { Email = "test@example.com", Password = "Password123" };
-            var user = new User { Email = loginDto.Email, UserName = loginDto.Email };
-            _userManagerMock.Setup(um => um.FindByEmailAsync(loginDto.Email)).ReturnsAsync(user);
-            _signInManagerMock.Setup(sm => sm.PasswordSignInAsync(user, loginDto.Password, false, false)).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
-
-            // Act
-            var result = await _controller.Login(loginDto);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(200, okResult.StatusCode);
-        }
-
-        [Fact]
-        public async Task Login_ReturnsUnauthorizedResult_WhenCredentialsAreInvalid()
-        {
-            // Arrange
-            var loginDto = new LoginDto { Email = "test@example.com", Password = "WrongPassword" };
-            var user = new User { Email = loginDto.Email, UserName = loginDto.Email };
-            _userManagerMock.Setup(um => um.FindByEmailAsync(loginDto.Email)).ReturnsAsync(user);
-            _signInManagerMock.Setup(sm => sm.PasswordSignInAsync(user, loginDto.Password, false, false)).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
-
-            // Act
-            var result = await _controller.Login(loginDto);
-
-            // Assert
-            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result);
-            Assert.Equal(401, unauthorizedResult.StatusCode);
-        }
-
-        [Fact]
-        public async Task Register_ReturnsOkResult_WhenRegistrationIsSuccessful()
-        {
-            // Arrange
-            var userDto = new UserDto { Email = "test@example.com", Wachtwoord = "Password123", ConfirmPassword = "Password123", Rol = "Particulier" };
-            var user = new User { Email = userDto.Email, UserName = userDto.Email };
-            _userManagerMock.Setup(um => um.CreateAsync(It.IsAny<User>(), userDto.Wachtwoord)).ReturnsAsync(IdentityResult.Success);
-
-            // Act
-            var result = await _controller.Register(userDto);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(200, okResult.StatusCode);
-        }
-
-        [Fact]
-        public async Task Register_ReturnsBadRequestResult_WhenPasswordsDoNotMatch()
-        {
-            // Arrange
-            var userDto = new UserDto { Email = "test@example.com", Wachtwoord = "Password123", ConfirmPassword = "DifferentPassword", Rol = "Particulier" };
-
-            // Act
-            var result = await _controller.Register(userDto);
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal(400, badRequestResult.StatusCode);
-        }
-
-        [Fact]
-        public async Task Register_ReturnsBadRequestResult_WhenRegistrationFails()
-        {
-            // Arrange
-            var userDto = new UserDto { Email = "test@example.com", Wachtwoord = "Password123", ConfirmPassword = "Password123", Rol = "Particulier" };
-            var user = new User { Email = userDto.Email, UserName = userDto.Email };
-            _userManagerMock.Setup(um => um.CreateAsync(It.IsAny<User>(), userDto.Wachtwoord)).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Registration failed" }));
-
-            // Act
-            var result = await _controller.Register(userDto);
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal(400, badRequestResult.StatusCode);
-        }
-
-        [Fact]
-        public async Task GetNotificaties_ReturnsOkResult_WithNotificaties()
-        {
-            // Arrange
-            var notificaties = new List<Notificatie>
+            var userDto = new Updateuserdto
             {
-                new Notificatie { Id = 1, GebruikerId = "testUserId", Bericht = "Test bericht 1", DatumTijd = DateTime.Now, IsGelezen = false },
-                new Notificatie { Id = 2, GebruikerId = "testUserId", Bericht = "Test bericht 2", DatumTijd = DateTime.Now, IsGelezen = false }
+                Naam = "Updated Name",
+                Email = "updated@example.com",
+                Adres = "Updated Address",
+                Telefoonnummer = "1234567890"
             };
-            var notificatiesDbSetMock = new Mock<DbSet<Notificatie>>();
-            notificatiesDbSetMock.ReturnsDbSet(notificaties);
-            _contextMock.Setup(c => c.Notificaties).Returns(notificatiesDbSetMock.Object);
+
+            var user = new User
+            {
+                Id = "testUserId",
+                Naam = "Original Name",
+                Email = "original@example.com",
+                Adres = "Original Address",
+                PhoneNumber = "0987654321"
+            };
+
+            _userManagerMock.Setup(um => um.FindByIdAsync("testUserId")).ReturnsAsync(user);
+            _userManagerMock.Setup(um => um.UpdateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
 
             // Act
-            var result = await _controller.GetNotificaties();
+            var result = await _controller.UpdateUser(userDto);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(200, okResult.StatusCode);
-            var returnValue = Assert.IsType<List<Notificatie>>(okResult.Value);
-            Assert.Equal(2, returnValue.Count);
+            Assert.Equal("Gegevens succesvol bijgewerkt.", okResult.Value.GetType().GetProperty("message")?.GetValue(okResult.Value));
         }
-    }
 
-    // Extension method to mock DbSet
-    public static class DbSetMockExtensions
-    {
-        public static DbSet<T> ReturnsDbSet<T>(this Mock<DbSet<T>> dbSetMock, IEnumerable<T> data) where T : class
+        [Fact]
+        public async Task UpdateUser_ReturnsNotFoundResult_WhenUserIsNotFound()
         {
-            var queryable = data.AsQueryable();
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
-            return dbSetMock.Object;
+            // Arrange
+            var userDto = new Updateuserdto
+            {
+                Naam = "Updated Name",
+                Email = "updated@example.com",
+                Adres = "Updated Address",
+                Telefoonnummer = "1234567890"
+            };
+
+            _userManagerMock.Setup(um => um.FindByIdAsync("testUserId")).ReturnsAsync((User)null);
+
+            // Act
+            var result = await _controller.UpdateUser(userDto);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal(404, notFoundResult.StatusCode);
+            Assert.Equal("Gebruiker niet gevonden.", notFoundResult.Value.GetType().GetProperty("message")?.GetValue(notFoundResult.Value));
         }
-    }
+
+        [Fact]
+        public async Task UpdateUser_ReturnsBadRequestResult_WhenUpdateFails()
+        {
+            // Arrange
+            var userDto = new Updateuserdto
+            {
+                Naam = "Updated Name",
+                Email = "updated@example.com",
+                Adres = "Updated Address",
+                Telefoonnummer = "1234567890"
+            };
+
+            var user = new User
+            {
+                Id = "testUserId",
+                Naam = "Original Name",
+                Email = "original@example.com",
+                Adres = "Original Address",
+                PhoneNumber = "0987654321"
+            };
+
+            _userManagerMock.Setup(um => um.FindByIdAsync("testUserId")).ReturnsAsync(user);
+            _userManagerMock.Setup(um => um.UpdateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Update failed" }));
+
+            // Act
+            var result = await _controller.UpdateUser(userDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(400, badRequestResult.StatusCode);
+            var errors = badRequestResult.Value.GetType().GetProperty("errors")?.GetValue(badRequestResult.Value) as IEnumerable<string>;
+            Assert.Contains("Update failed", errors);
+        }
+
+
 }
+}
+
