@@ -19,23 +19,22 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Uitgifte>>> GetUitgiftes()
         {
             return await _context.Uitgiftes
                 .Include(u => u.Voertuig)
-                .Include(u => u.Huurder)
+                .Include(u => u.User)
                 .ToListAsync();
         }
         
-        // Haal specifieke uitgifte op
         [HttpGet("{id}")]
         public async Task<ActionResult<Uitgifte>> GetUitgifte(int id)
         {
             var uitgifte = await _context.Uitgiftes
                 .Include(u => u.Voertuig)
-                .Include(u => u.Huurder)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(u => u.UitgifteID == id);
 
             if (uitgifte == null)
@@ -47,9 +46,9 @@ namespace WebApplication1.Controllers
                 uitgifte.UitgifteID,
                 uitgifte.VoertuigID,
                 Voertuig = uitgifte.Voertuig.Soort,
-                uitgifte.Huurder.Naam,
-                uitgifte.Huurder.Email,
-                uitgifte.Huurder.Telefoonnummer,
+                uitgifte.User.Naam,
+                uitgifte.User.Email,
+                uitgifte.User.Telefoonnummer,
                 uitgifte.Status,
                 uitgifte.DatumUitgifte,
                 uitgifte.BeginKilometerstand,

@@ -14,7 +14,7 @@ public class Inname
     public bool HeeftSchade { get; set; }
     public string Status { get; set; }
     public Voertuig Voertuig { get; set; }
-    public Huurder Huurder { get; set; }
+    public User User { get; set; }
     public List<Schade> Schades { get; set; } = new List<Schade>();
 
     public Inname()

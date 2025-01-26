@@ -24,8 +24,8 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<IEnumerable<Inname>>> GetInnames()
         {
             var innames = await _context.Innames
-                .Include(i => i.Voertuig) 
-                .Include(i => i.Huurder)  
+                .Include(i => i.Voertuig)
+                .Include(i => i.User)
                 .ToListAsync();
 
             if (!innames.Any())
@@ -39,12 +39,13 @@ namespace WebApplication1.Controllers
         {
             var inname = await _context.Innames
                 .Include(i => i.Voertuig)
-                .Include(i => i.Huurder)
+                .Include(i => i.User)
                 .FirstOrDefaultAsync(i => i.InnameID == id);
 
             if (inname == null)
+            {
                 return NotFound("Inname niet gevonden.");
-
+            }
             return Ok(inname);
         }
 

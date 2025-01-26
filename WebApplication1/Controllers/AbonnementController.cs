@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using WebApplication1.Models;
 
@@ -72,7 +73,10 @@ namespace WebApplication1.Controllers
                 {
                     a.MaxMedewerkers,
                     a.AbonnementType,
-                    a.BedrijfsDomein
+                    a.BedrijfsDomein,
+                    a.ToekomstigAbonnementType,
+                    a.ToekomstigeKosten,
+                    a.WijzigingIngangsdatum
                 })
                 .FirstOrDefaultAsync();
 
@@ -101,8 +105,8 @@ namespace WebApplication1.Controllers
         [HttpPost("add-medewerker")]
         public async Task<IActionResult> AddMedewerker([FromBody] AddMedewerkerDto medewerkerDto)
         {
-            // Haal het gebruikers ID en abonnement ID uit de claims
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
             var abonnementIdClaim = User.FindFirst("AbonnementId")?.Value;
 
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(abonnementIdClaim))
@@ -110,20 +114,23 @@ namespace WebApplication1.Controllers
                 return Unauthorized(new { error = "Gebruiker of abonnement niet geauthenticeerd." });
             }
 
-            // Probeer het abonnementId om te zetten naar een integer
             if (!int.TryParse(abonnementIdClaim, out int abonnementId))
             {
                 return Unauthorized(new { error = "Ongeldig abonnement ID." });
             }
 
-            // Zoek het abonnement op via het abonnementId
+            // Controleer of de gebruiker zijn eigen e-mailadres probeert toe te voegen
+            if (string.Equals(medewerkerDto.Email, userEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest(new { message = "U kunt uw eigen e-mailadres niet toevoegen." });
+            }
+
             var abonnement = await _context.Abonnementen.FindAsync(abonnementId);
             if (abonnement == null)
             {
                 return NotFound(new { message = "Abonnement niet gevonden." });
             }
 
-            // Dynamische controle van bedrijfsdomein
             string bedrijfsDomein = abonnement.BedrijfsDomein;
             if (!medewerkerDto.Email.EndsWith($"@{bedrijfsDomein}", StringComparison.OrdinalIgnoreCase))
             {
@@ -166,6 +173,7 @@ namespace WebApplication1.Controllers
 
             return Ok(new { message = "Medewerker succesvol toegevoegd aan het abonnement." });
         }
+
 
 
 
@@ -222,12 +230,82 @@ namespace WebApplication1.Controllers
 
             return Ok(new { message = "Medewerker succesvol verwijderd van het abonnement." });
         }
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateAbonnement([FromBody] UpdateAbonnementDto abonnementDto)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var abonnementIdClaim = User.FindFirst("AbonnementId")?.Value;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(abonnementIdClaim))
+            {
+                return Unauthorized(new { error = "Gebruiker of abonnement niet geauthenticeerd." });
+            }
+
+            if (!int.TryParse(abonnementIdClaim, out int abonnementId))
+            {
+                return Unauthorized(new { error = "Ongeldig abonnement ID." });
+            }
+
+            var abonnement = await _context.Abonnementen.FindAsync(abonnementId);
+            if (abonnement == null)
+            {
+                return NotFound(new { message = "Abonnement niet gevonden." });
+            }
+
+            // Controleer of er al een toekomstige wijziging gepland is
+            if (abonnement.ToekomstigAbonnementType != null && abonnement.WijzigingIngangsdatum > DateTime.UtcNow)
+            {
+                return BadRequest(new
+                {
+                    message = "Er is al een wijziging gepland die van kracht wordt op " + abonnement.WijzigingIngangsdatum?.ToString("dd-MM-yyyy")
+                });
+            }
+
+            // Bereken de eerste dag van de volgende maand
+            DateTime eersteDagVolgendeMaand = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).AddMonths(1);
+
+            abonnement.ToekomstigAbonnementType = abonnementDto.NieuwAbonnementType;
+            abonnement.ToekomstigeKosten = abonnementDto.NieuweKosten;
+            abonnement.WijzigingIngangsdatum = eersteDagVolgendeMaand;
+            abonnement.LaatstGewijzigdOp = DateTime.UtcNow;
+
+            var notificatie = new Notificatie
+            {
+                GebruikerId = userId,
+                Bericht = $"Uw abonnement wordt gewijzigd naar '{abonnementDto.NieuwAbonnementType}' met een maandelijkse kost van €{abonnementDto.NieuweKosten:F2}. " +
+              $"Deze wijziging gaat in op {eersteDagVolgendeMaand:dd-MM-yyyy}.",
+            };
+
+            _context.Notificaties.Add(notificatie);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Abonnement succesvol bijgewerkt. Wijzigingen worden actief op de eerste dag van de volgende maand.",
+                toekomstigeWijzigingen = new
+                {
+                    abonnement.ToekomstigAbonnementType,
+                    abonnement.ToekomstigeKosten,
+                    abonnement.WijzigingIngangsdatum
+                }
+            });
+        }
+
+        public class UpdateAbonnementDto
+        {
+            [Required]
+            public string NieuwAbonnementType { get; set; }
+
+            [Required]
+            [Range(0, double.MaxValue)]
+            public decimal NieuweKosten { get; set; }
+        }
+
+        public class AddMedewerkerDto
+        {
+            public string Email { get; set; }
+        }
 
     }
-
-    public class AddMedewerkerDto
-    {
-        public string Email { get; set; }
-    }
-
 }

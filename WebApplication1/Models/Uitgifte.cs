@@ -4,17 +4,17 @@ public class Uitgifte
 {
     public int UitgifteID { get; set; }
     public int VoertuigID { get; set; }
-    public int HuurderID { get; set; }
-    public string HuurderNaam { get; set; }
-    public string HuurderEmail { get; set; }
-    public string HuuderTelefoonnummer { get; set; }
+    public int UserID { get; set; }
+    public string UserNaam { get; set; }
+    public string UserEmail { get; set; }
+    public string UserTelefoonnummer { get; set; }
     public DateTime DatumUitgifte { get; set; }
     public string BeginKilometerstand { get; set; }
     public string Opmerkingen { get; set; }
     public string Status { get; set; } = "Uitgegeven";
 
     public Voertuig Voertuig { get; set; }
-    public Huurder Huurder { get; set; }
+    public  User User { get; set; }
     public Huurverzoek Huurverzoek { get; set; }
     
     public Uitgifte()
@@ -53,15 +53,15 @@ public class Uitgifte
         }
     }
 
-    public void StelHuurderIn(Huurder huurder)
+    public void StelUserIn(User user)
     {
-        if (huurder != null)
+        if (user != null)
         {
-            Huurder = huurder;
-            HuurderID = huurder.HuurderId;
-            HuurderNaam = huurder.Naam;
-            HuurderEmail = huurder.Email;
-            HuuderTelefoonnummer = huurder.Telefoonnummer;
+            user = user;
+            UserID = User.ID; 
+            UserNaam = User.Naam;
+            UserEmail = User.Email;
+            UserTelefoonnummer = User.Telefoonnummer;
         }
     }
 }

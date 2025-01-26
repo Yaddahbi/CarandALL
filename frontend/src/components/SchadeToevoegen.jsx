@@ -1,4 +1,5 @@
 import { useState } from "react";
+import '../style/Schadetoevoegen.css';
 import { voegSchadetoe } from "../api";
 import { useNavigate } from "react-router-dom";
 import { uploadSchadeFoto } from "../api";

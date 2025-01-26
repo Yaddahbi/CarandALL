@@ -3,7 +3,7 @@ import SchadeToevoegen from "./SchadeToevoegen";
 import SchadeDetails from "./SchadeDetails";
 import { useNavigate} from "react-router-dom";
 import { fetchSchademeldingen } from "../api";
-import '../Schadepagina.css';
+import '../style/Schadepagina.css';
 
 const SchadePagina = () => {
     const [schademeldingen, setSchademeldingen] = useState([]);
@@ -48,6 +48,25 @@ const SchadePagina = () => {
                 [e.target.name]: e.target.value,
             });
         };
+    const loadSchades = async () => {
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const data = await fetchSchades();
+            if (data && data.length === 0) {
+                setError("Er zijn momenteel geen schades beschikbaar.");
+            } else {
+                setSchades(data);
+            }
+        } catch (error) {
+            setError("Fout bij het ophalen van schades: " + error.message);
+            console.error("Fout bij het ophalen van schades:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleAddSchade = () => {
         navigate('/toevoegen');

@@ -24,12 +24,14 @@ function Login() {
 
         if (response.ok) {
             const data = await response.json();
-            login({ email: formData.email, role: data.role });
-            toast('Inloggen succesvol!', {
+            login({ email: formData.email, role: data.role, name: data.name });
+           /* toast('Inloggen succesvol!', {
                 type: 'success',
-            })
-            localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('userEmail', formData.email); 
+            }) */
+            sessionStorage.setItem('jwtToken', data.token);
+            sessionStorage.setItem('userEmail', formData.email);
+            sessionStorage.setItem('role', data.role);
+            sessionStorage.setItem('userName', data.name); 
             navigate("/");
         } else {
             const errorData = await response.json();
@@ -41,7 +43,8 @@ function Login() {
     };
 
     return (
-        <div className="form-container">
+        <div className="login-pagina">
+        <div className="loginform-container">
             <h2>Inloggen</h2>
             <form onSubmit={handleSubmit}>
                 <label>E-mail:</label>
@@ -62,12 +65,13 @@ function Login() {
                     required
                 />
 
-                <button type="submit">Inloggen</button>
+                <button className= "loginbtn" type="submit">Inloggen</button>
             </form>
             { /*} {error && <p className="error">{error}</p>} { */}
             <p>
                 Nog geen account? <a onClick={() => navigate("/kies-account-type")}>Account aanmaken</a>
             </p>
+            </div>
         </div>
     );
 }

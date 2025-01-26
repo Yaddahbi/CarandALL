@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AboAddMedewerker from "./AboAddMedewerker";
 import AboMedewerkersLijst from "./AboMedewerkersLijst";
+import AboWijzigAbonnement from "./AboWijzigAbonnement";
 import "../style/Abonnementen.css";
 import { toast } from "sonner";
 
@@ -11,14 +12,14 @@ const Abonnementen = () => {
 
     // Functie om de medewerkerslijst opnieuw op te halen
     const refreshMedewerkers = () => {
-        setRefreshKey((prevKey) => prevKey + 1); // Verhoog de key om de lijst opnieuw te laden
+        setRefreshKey((prevKey) => prevKey + 1);
     };
 
     // Functie om abonnement details op te halen
     const fetchAbonnementDetails = async () => {
         setLoadingDetails(true);
         try {
-            const token = localStorage.getItem("jwtToken");
+            const token = sessionStorage.getItem("jwtToken");
             if (!token) {
                 throw new Error("Geen token gevonden. Log opnieuw in.");
             }
@@ -26,19 +27,17 @@ const Abonnementen = () => {
             const response = await fetch("https://localhost:7040/api/Abonnement/details", {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             });
 
-            // Controleer of de response een succesvolle status heeft
             if (!response.ok) {
                 const data = await response.json();
                 throw new Error(data.message || "Fout bij het ophalen van abonnementdetails.");
             }
 
             const data = await response.json();
-            // Zorg ervoor dat je de juiste data uit de API haalt
             setAbonnementDetails(data);
         } catch (error) {
             console.error("Fout bij het ophalen van gegevens:", error.message);
@@ -53,8 +52,7 @@ const Abonnementen = () => {
     }, []);
 
     return (
-        <>
-            <div className="abo-container">
+        <div className="abo-container">
             {/* Hero-sectie */}
             <section className="abonnementen-hero">
                 <div className="container abonnementen">
@@ -72,14 +70,39 @@ const Abonnementen = () => {
                     ) : abonnementDetails ? (
                         <ul>
                             <li><strong>Maximale aantal medewerkers:</strong> {abonnementDetails.maxMedewerkers}</li>
-                            <li><strong>Abonnement Type:</strong> {abonnementDetails.abonnementType}</li>
+                            <li><strong>Huidig Abonnement Type:</strong> {abonnementDetails.abonnementType}</li>
                             <li><strong>Bedrijfsdomein:</strong> {abonnementDetails.bedrijfsDomein}</li>
+                            {abonnementDetails.toekomstigAbonnementType && (
+                                <li><strong>Toekomstig Abonnement Type:</strong> {abonnementDetails.toekomstigAbonnementType}</li>
+                            )}
+                            {abonnementDetails.wijzigingIngangsdatum && (
+                                <li><strong>Wijziging ingangsdatum:</strong> {new Date(abonnementDetails.wijzigingIngangsdatum).toLocaleDateString()}</li>
+                            )}
                         </ul>
                     ) : (
                         <p>Geen abonnementdetails beschikbaar.</p>
                     )}
                 </div>
+                {/* Wijzig abonnement */}
+                <section className="wijzig-abonnement-section">
+                    <AboWijzigAbonnement
+                        huidigType={abonnementDetails?.abonnementType || ""} 
+                        toekomstigeWijziging={
+                            abonnementDetails?.toekomstigAbonnementType
+                                ? {
+                                    type: abonnementDetails.toekomstigAbonnementType,
+                                    ingangsdatum: abonnementDetails.wijzigingIngangsdatum,
+                                }
+                                : null
+                        }
+                        onWijziging={(nieuwType) => {
+                            toast.success(`Wijziging naar ${nieuwType} aangevraagd.`);
+                            fetchAbonnementDetails();
+                        }}
+                    />
+                </section>
             </section>
+
 
             {/* Content-sectie */}
             <div className="abonnementen-content">
@@ -89,11 +112,9 @@ const Abonnementen = () => {
                 <div className="medewerkers-lijst-section">
                     <AboMedewerkersLijst refreshKey={refreshKey} />
                 </div>
-                </div>
             </div>
-        </>
+        </div>
     );
-
 };
 
 export default Abonnementen;

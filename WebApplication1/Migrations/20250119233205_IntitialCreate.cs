@@ -6,11 +6,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApplication1.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IntitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Abonnementen",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BedrijfsDomein = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    AbonnementType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MaxMedewerkers = table.Column<int>(type: "int", nullable: false),
+                    KostenPerMaand = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AangemaaktOp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LaatstGewijzigdOp = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ToekomstigAbonnementType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ToekomstigeKosten = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    WijzigingIngangsdatum = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Abonnementen", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -26,54 +47,19 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bedrijven",
-                columns: table => new
-                {
-                    BedrijfId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KvkNummer = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bedrijven", x => x.BedrijfId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Gebruikers",
+                name: "Notificaties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Wachtwoord = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefoonnummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BedrijfsNaam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KvkNummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GebruikerId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Bericht = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DatumTijd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsGelezen = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Gebruikers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Medewerkers",
-                columns: table => new
-                {
-                    MedewerkerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Wachtwoord = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medewerkers", x => x.MedewerkerId);
+                    table.PrimaryKey("PK_Notificaties", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,11 +75,48 @@ namespace WebApplication1.Migrations
                     Kleur = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Aanschafjaar = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prijs = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Prijs = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Opmerkingen = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Voertuigen", x => x.VoertuigId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BedrijfsNaam = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KvkNummer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BedrijfsAbonnementId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Abonnementen_BedrijfsAbonnementId",
+                        column: x => x.BedrijfsAbonnementId,
+                        principalTable: "Abonnementen",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -118,65 +141,6 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Abonnementen",
-                columns: table => new
-                {
-                    AbonnementId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AbonnementType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kosten = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Startdatum = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Einddatum = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BedrijfId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Abonnementen", x => x.AbonnementId);
-                    table.ForeignKey(
-                        name: "FK_Abonnementen_Bedrijven_BedrijfId",
-                        column: x => x.BedrijfId,
-                        principalTable: "Bedrijven",
-                        principalColumn: "BedrijfId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BedrijfsNaam = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KvkNummer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BedrijfId = table.Column<int>(type: "int", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Bedrijven_BedrijfId",
-                        column: x => x.BedrijfId,
-                        principalTable: "Bedrijven",
-                        principalColumn: "BedrijfId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Schades",
                 columns: table => new
                 {
@@ -186,7 +150,9 @@ namespace WebApplication1.Migrations
                     Beschrijving = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Kosten = table.Column<double>(type: "float", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FotoUrls = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Opmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -314,11 +280,88 @@ namespace WebApplication1.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Abonnementen_BedrijfId",
-                table: "Abonnementen",
-                column: "BedrijfId",
-                unique: true);
+            migrationBuilder.CreateTable(
+                name: "Innames",
+                columns: table => new
+                {
+                    InnameID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VoertuigID = table.Column<int>(type: "int", nullable: false),
+                    HuurderID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DatumInname = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SchadeOpmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HeeftSchade = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Innames", x => x.InnameID);
+                    table.ForeignKey(
+                        name: "FK_Innames_AspNetUsers_HuurderID",
+                        column: x => x.HuurderID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Innames_Voertuigen_VoertuigID",
+                        column: x => x.VoertuigID,
+                        principalTable: "Voertuigen",
+                        principalColumn: "VoertuigId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Uitgiftes",
+                columns: table => new
+                {
+                    UitgifteID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VoertuigID = table.Column<int>(type: "int", nullable: false),
+                    HuurderID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DatumUitgifte = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Opmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Uitgiftes", x => x.UitgifteID);
+                    table.ForeignKey(
+                        name: "FK_Uitgiftes_AspNetUsers_HuurderID",
+                        column: x => x.HuurderID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Uitgiftes_Voertuigen_VoertuigID",
+                        column: x => x.VoertuigID,
+                        principalTable: "Voertuigen",
+                        principalColumn: "VoertuigId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Schadeclaims",
+                columns: table => new
+                {
+                    SchadeclaimId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SchadeId = table.Column<int>(type: "int", nullable: false),
+                    ClaimDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Beschrijving = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FotoUrls = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReparatieDetails = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schadeclaims", x => x.SchadeclaimId);
+                    table.ForeignKey(
+                        name: "FK_Schadeclaims_Schades_SchadeId",
+                        column: x => x.SchadeId,
+                        principalTable: "Schades",
+                        principalColumn: "SchadeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -353,9 +396,9 @@ namespace WebApplication1.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_BedrijfId",
+                name: "IX_AspNetUsers_BedrijfsAbonnementId",
                 table: "AspNetUsers",
-                column: "BedrijfId");
+                column: "BedrijfsAbonnementId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -375,17 +418,39 @@ namespace WebApplication1.Migrations
                 column: "VoertuigId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Innames_HuurderID",
+                table: "Innames",
+                column: "HuurderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Innames_VoertuigID",
+                table: "Innames",
+                column: "VoertuigID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schadeclaims_SchadeId",
+                table: "Schadeclaims",
+                column: "SchadeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Schades_VoertuigId",
                 table: "Schades",
                 column: "VoertuigId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Uitgiftes_HuurderID",
+                table: "Uitgiftes",
+                column: "HuurderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Uitgiftes_VoertuigID",
+                table: "Uitgiftes",
+                column: "VoertuigID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Abonnementen");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -402,19 +467,25 @@ namespace WebApplication1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Gebruikers");
-
-            migrationBuilder.DropTable(
                 name: "Huurverzoeken");
 
             migrationBuilder.DropTable(
-                name: "Medewerkers");
+                name: "Innames");
 
             migrationBuilder.DropTable(
-                name: "Schades");
+                name: "Notificaties");
+
+            migrationBuilder.DropTable(
+                name: "Schadeclaims");
+
+            migrationBuilder.DropTable(
+                name: "Uitgiftes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Schades");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
@@ -423,7 +494,7 @@ namespace WebApplication1.Migrations
                 name: "Voertuigen");
 
             migrationBuilder.DropTable(
-                name: "Bedrijven");
+                name: "Abonnementen");
         }
     }
 }

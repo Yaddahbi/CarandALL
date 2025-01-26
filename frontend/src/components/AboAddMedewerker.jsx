@@ -8,7 +8,7 @@ const AboAddMedewerker = ({ refreshMedewerkers }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const token = localStorage.getItem('jwtToken');
+        const token = sessionStorage.getItem('jwtToken');
         try {
             const response = await fetch('https://localhost:7040/api/Abonnement/add-medewerker', {
                 method: "POST",

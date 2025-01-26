@@ -168,21 +168,38 @@ namespace WebApplication1.Migrations
 
                     b.Property<string>("AbonnementType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("BedrijfsDomein")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("KostenPerMaand")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("LaatstGewijzigdOp")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MaxMedewerkers")
                         .HasColumnType("int");
+
+                    b.Property<string>("ToekomstigAbonnementType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ToekomstigeKosten")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("WijzigingIngangsdatum")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Abonnementen");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Bedrijf", b =>
+            /*modelBuilder.Entity("WebApplication1.Models.Bedrijf", b =>
                 {
                     b.Property<int>("BedrijfId")
                         .ValueGeneratedOnAdd()
@@ -255,44 +272,7 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Gebruikers");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Huurder", b =>
-                {
-                    b.Property<int>("HuurderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HuurderId"));
-
-                    b.Property<string>("Adres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("BedrijfId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsZakelijk")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Naam")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefoonnummer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("HuurderId");
-
-                    b.HasIndex("BedrijfId");
-
-                    b.ToTable("Huurders");
-                });
+                });*/
 
             modelBuilder.Entity("WebApplication1.Models.Huurverzoek", b =>
                 {
@@ -378,33 +358,42 @@ namespace WebApplication1.Migrations
                     b.ToTable("Innames");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Medewerker", b =>
+            modelBuilder.Entity("WebApplication1.Models.Inname", b =>
                 {
-                    b.Property<int>("MedewerkerId")
+                    b.Property<int>("InnameID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MedewerkerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InnameID"));
 
-                    b.Property<string>("Email")
+                    b.Property<DateTime>("DatumInname")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("HeeftSchade")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HuurderID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SchadeOpmerkingen")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Naam")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Rol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("VoertuigID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Wachtwoord")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("InnameID");
 
-                    b.HasKey("MedewerkerId");
+                    b.HasIndex("HuurderID");
 
-                    b.ToTable("Medewerkers");
+                    b.HasIndex("VoertuigID");
+
+                    b.ToTable("Innames");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Notificatie", b =>
@@ -630,6 +619,10 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Opmerkingen")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal>("Prijs")
                         .HasColumnType("decimal(18, 2)");
 
@@ -701,17 +694,6 @@ namespace WebApplication1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Bedrijf", b =>
-                {
-                    b.HasOne("WebApplication1.Models.Abonnement", "Abonnement")
-                        .WithMany()
-                        .HasForeignKey("AbonnementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Abonnement");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.Huurder", b =>
                 {
                     b.HasOne("WebApplication1.Models.Bedrijf", "Bedrijf")
@@ -750,7 +732,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Inname", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Huurder", "Huurder")
+                    b.HasOne("WebApplication1.Models.User", "Huurder")
                         .WithMany("Innames")
                         .HasForeignKey("HuurderID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -766,7 +748,7 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Huurder");
+                    b.Navigation("User");
 
                     b.Navigation("Voertuig");
                 });
@@ -788,9 +770,9 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Uitgifte", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Huurder", "Huurder")
+                    b.HasOne("WebApplication1.Models.User", "Huurder")
                         .WithMany("Uitgiftes")
-                        .HasForeignKey("HuurderID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -804,7 +786,7 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Huurder");
+                    b.Navigation("User");
 
                     b.Navigation("Voertuig");
                 });
@@ -822,34 +804,22 @@ namespace WebApplication1.Migrations
                 {
                     b.Navigation("Medewerkers");
                 });
-
-            modelBuilder.Entity("WebApplication1.Models.Bedrijf", b =>
-                {
-                    b.Navigation("Werknemers");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Huurder", b =>
-                {
-                    b.Navigation("Huurverzoeken");
-
-                    b.Navigation("Innames");
-
-                    b.Navigation("Uitgiftes");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Medewerker", b =>
-                {
-                    b.Navigation("Innames");
-
-                    b.Navigation("Schademeldingen");
-
-                    b.Navigation("Uitgiftes");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.User", b =>
                 {
                     b.Navigation("Huurverzoeken");
+
+                    b.Navigation("Innames");
+
+                    b.Navigation("Uitgiftes");
                 });
+            modelBuilder.Entity("WebApplication1.Models.Medewerker", b =>
+            {
+                b.Navigation("Innames");
+
+                b.Navigation("Schademeldingen");
+
+                b.Navigation("Uitgiftes");
+            });
 
             modelBuilder.Entity("WebApplication1.Models.Voertuig", b =>
                 {

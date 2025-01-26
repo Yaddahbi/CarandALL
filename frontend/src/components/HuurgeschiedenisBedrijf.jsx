@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchHuurgeschiedenisBedrijf, fetchMedewerkers } from '../api';
+import { fetchHuurgeschiedenisBedrijf } from '../api';
 import '../style/Huurgeschiedenis.css';
 
 const formatDate = (date) => {
@@ -14,7 +14,7 @@ const HuurgeschiedenisBedrijf = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const voertuigTypen = ['Auto', 'Caravan', 'Camper'];
+    const voertuigTypen = ['Auto'];
 
     // Functie om de huurgeschiedenis op te halen
     const loadHuurgeschiedenis = async () => {
@@ -22,12 +22,15 @@ const HuurgeschiedenisBedrijf = () => {
         setError(null);
 
         try {
-            console.log(filters); 
             const data = await fetchHuurgeschiedenisBedrijf(filters);
-            console.log(data); 
-
-            // Gegevens verwerken
             setHuurgeschiedenis(data);
+
+            // Extract unieke medewerkersnamen
+            const uniekeMedewerkers = Object.keys(data).map((medewerkerNaam) => ({
+                id: medewerkerNaam,
+                naam: medewerkerNaam,
+            }));
+            setMedewerkers(uniekeMedewerkers);
         } catch (err) {
             setError('Er is een fout opgetreden bij het ophalen van de huurgeschiedenis.');
             console.error(err);
@@ -35,19 +38,6 @@ const HuurgeschiedenisBedrijf = () => {
             setLoading(false);
         }
     };
-
-    const loadMedewerkers = async () => {
-        try {
-            const data = await fetchMedewerkers();
-            setMedewerkers(data);
-        } catch (err) {
-            setError('Er is een fout opgetreden bij het ophalen van de medewerkers.');
-        }
-    };
-
-    useEffect(() => {
-        loadMedewerkers();
-    }, []);
 
     useEffect(() => {
         loadHuurgeschiedenis();
@@ -61,7 +51,8 @@ const HuurgeschiedenisBedrijf = () => {
         <>
             <section className="huurgeschiedenis-hero">
                 <div className="container huurgeschiedenis">
-                    <h1>Huurgeschiedenis Beheerder</h1>
+                    <h1>Huurgeschiedenis</h1>
+                    <h2>medewerkers</h2>
                     <p>Bekijk de huurgeschiedenis van medewerkers en beheer hun huuraanvragen.</p>
                 </div>
             </section>
@@ -74,7 +65,6 @@ const HuurgeschiedenisBedrijf = () => {
                         name="startDatum"
                         value={filters.startDatum}
                         onChange={handleFilterChange}
-                        tabIndex="0" 
                     />
                 </label>
                 <label>
@@ -84,7 +74,6 @@ const HuurgeschiedenisBedrijf = () => {
                         name="eindDatum"
                         value={filters.eindDatum}
                         onChange={handleFilterChange}
-                        tabIndex="0" 
                     />
                 </label>
                 <label>
@@ -93,8 +82,7 @@ const HuurgeschiedenisBedrijf = () => {
                         name="voertuigType"
                         value={filters.voertuigType}
                         onChange={handleFilterChange}
-                        disabled={true}
-                        tabIndex="-1" 
+                       
                     >
                         {voertuigTypen.map((type) => (
                             <option key={type} value={type}>
@@ -109,7 +97,6 @@ const HuurgeschiedenisBedrijf = () => {
                         name="medewerkerId"
                         value={filters.medewerkerId}
                         onChange={handleFilterChange}
-                        tabIndex="0" 
                     >
                         <option value="">Alle medewerkers</option>
                         {medewerkers.map((medewerker) => (
@@ -128,12 +115,10 @@ const HuurgeschiedenisBedrijf = () => {
                     <p style={{ color: 'red' }}>{error}</p>
                 ) : (
                     <div>
-                        {/* Als de medewerkerId is geselecteerd, filteren we de verzoeken op die medewerker */}
                         {Object.keys(huurgeschiedenis).length > 0 ? (
                             Object.keys(huurgeschiedenis).map((medewerkerNaam) => {
                                 const verzoeken = huurgeschiedenis[medewerkerNaam];
 
-                                // Als er een medewerker filter is geselecteerd, alleen de verzoeken van die medewerker tonen
                                 if (filters.medewerkerId && medewerkerNaam !== filters.medewerkerId) {
                                     return null;
                                 }
@@ -141,7 +126,7 @@ const HuurgeschiedenisBedrijf = () => {
                                 return (
                                     <div key={medewerkerNaam}>
                                         <h3>Huurverzoeken voor {medewerkerNaam}</h3>
-                                        <table>
+                                        <table className="tabel">
                                             <thead>
                                                 <tr>
                                                     <th>Huurperiode</th>
@@ -151,7 +136,7 @@ const HuurgeschiedenisBedrijf = () => {
                                             </thead>
                                             <tbody>
                                                 {verzoeken.map((item) => (
-                                                    <tr key={item.huurverzoekId} tabIndex="0" className="tabelrij">
+                                                    <tr key={item.huurverzoekId}>
                                                         <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
                                                         <td>{item.voertuigMerk} ({item.voertuigType})</td>
                                                         <td>{item.status}</td>
@@ -163,7 +148,7 @@ const HuurgeschiedenisBedrijf = () => {
                                 );
                             })
                         ) : (
-                            <p>Geen huurverzoeken gevonden.</p>
+                            <p className= "pgeenhv">Geen huurverzoeken gevonden.</p>
                         )}
                     </div>
                 )}

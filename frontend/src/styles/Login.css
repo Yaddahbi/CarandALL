@@ -1,4 +1,11 @@
-.form-container {
+.login-pagina {
+    background-color: #222;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.loginform-container {
     max-width: 400px;
     margin: auto;
     padding: 20px;
@@ -28,10 +35,10 @@ input {
     border-radius: 5px;
 }
 
-button {
+loginbtn {
     width: 100%;
     padding: 10px;
-    background: #007bff;
+    background: #222 !important;
     border: none;
     color: white;
     font-size: 16px;
@@ -40,6 +47,6 @@ button {
     border-radius: 5px;
 }
 
-button:hover {
-    background: #0056b3;
+loginbtn:hover {
+    background: red!important;
 }

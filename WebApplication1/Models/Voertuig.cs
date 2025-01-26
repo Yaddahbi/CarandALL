@@ -53,6 +53,9 @@ namespace WebApplication1.Models
             Huurverzoeken = new List<Huurverzoek>();
             Schades = new List<Schade>();
         }
+
+        [StringLength(500, ErrorMessage = "Opmerkingen mogen maximaal 500 tekens bevatten")]
+        public string? Opmerkingen { get; set; }
     }
 
     public enum StatusType

@@ -82,6 +82,45 @@ const UitgifteVoertuig = ({ geselecteerdeAanvraag }) => {
             </button>
             <button onClick={() => navigate('/uitgifteinnamebeheren')}>Terug
             </button>
+        <div>
+            <h2>Uitgifte Voertuig Registreren</h2>
+            <form onSubmit={handleUitgifteSubmit}>
+                <label>
+                    Huurder ID:
+                    <input
+                        type="text"
+                        value={uitgifteData.huurderId}
+                        onChange={(e) =>
+                            setUitgifteData({ ...uitgifteData, huurderId: e.target.value })
+                        }
+                        required
+                    />
+                </label>
+                <br />
+                <label>
+                    Voertuig ID:
+                    <input
+                        type="number"
+                        value={uitgifteData.voertuigId}
+                        onChange={(e) =>
+                            setUitgifteData({ ...uitgifteData, voertuigId: e.target.value })
+                        }
+                        required
+                    />
+                </label>
+                <br />
+                <label>
+                    Opmerkingen:
+                    <textarea
+                        value={uitgifteData.opmerkingen}
+                        onChange={(e) =>
+                            setUitgifteData({ ...uitgifteData, opmerkingen: e.target.value })
+                        }
+                    />
+                </label>
+                <br />
+                <button type="submit">Voertuig Uitgeven</button>
+            </form>
         </div>
     );
 };

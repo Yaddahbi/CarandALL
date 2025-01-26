@@ -10,9 +10,6 @@ namespace WebApplication1
             : base(options)
         {
         }
-
-        public DbSet<Huurder> Huurders { get; set; }
-        public DbSet<Bedrijf> Bedrijven { get; set; }
         public DbSet<Voertuig> Voertuigen { get; set; }
         public DbSet<Abonnement> Abonnementen { get; set; }
         public DbSet<Huurverzoek> Huurverzoeken { get; set; }
@@ -20,23 +17,19 @@ namespace WebApplication1
         public DbSet<Medewerker> Medewerkers { get; set; }
         public DbSet<Inname> Innames { get; set; }
         public DbSet<Uitgifte> Uitgiftes { get; set; }
-        public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            
             // modelBuilder.Entity<Bedrijf>()
             //  .HasOne(b => b.Abonnement)
             // .WithOne(a => a.Bedrijf)
             // .HasForeignKey<Abonnement>(a => a.BedrijfId);
-
-            modelBuilder.Entity<Huurder>()
-                .HasOne(h => h.Bedrijf)
-                .WithMany(b => b.Werknemers)
-                .HasForeignKey(h => h.BedrijfId);
+            modelBuilder.Entity<Voertuig>()
+            .Ignore(v => v.Schades);
 
             modelBuilder.Entity<Huurverzoek>()
                 .HasOne(hv => hv.Voertuig)
@@ -44,9 +37,9 @@ namespace WebApplication1
                 .HasForeignKey(hv => hv.VoertuigId);
 
             modelBuilder.Entity<Huurverzoek>()
-                .HasOne(hv => hv.Huurder)
+                .HasOne(hv => hv.User)
                 .WithMany(h => h.Huurverzoeken)
-                .HasForeignKey(hv => hv.HuurderId);
+                .HasForeignKey(hv => hv.UserId);
 
             modelBuilder.Entity<Schade>()
                 .HasOne(s => s.Voertuig)
@@ -59,9 +52,9 @@ namespace WebApplication1
                 .HasForeignKey(u => u.VoertuigID);
 
             modelBuilder.Entity<Uitgifte>()
-                .HasOne(u => u.Huurder)
+                .HasOne(u => u.User)
                 .WithMany(h => h.Uitgiftes)
-                .HasForeignKey(u => u.HuurderID);
+                .HasForeignKey(u => u.UserID);
 
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.Voertuig)
@@ -69,9 +62,9 @@ namespace WebApplication1
                 .HasForeignKey(i => i.VoertuigID);
 
             modelBuilder.Entity<Inname>()
-                .HasOne(i => i.Huurder)
+                .HasOne(i => i.User)
                 .WithMany(h => h.Innames)
-                .HasForeignKey(i => i.HuurderID);
+                .HasForeignKey(i => i.userID);
         }
         public List<Voertuig> GetAllVoertuigen()
         {
@@ -118,6 +111,26 @@ namespace WebApplication1
         public List<Uitgifte> GetAllUitgiftes()
         {
             return Uitgiftes.Include(u => u.Voertuig).Include(u => u.Huurder).ToList();
+        }
+        public Huurverzoek UpdateHuurverzoekStatus(int id, string status, string? afwijzingsreden)
+        {
+            var huurverzoek = Huurverzoeken.Find(id);
+            if (huurverzoek == null)
+                throw new Exception("Huurverzoek not found.");
+
+           
+            if (status == "Afgewezen" && string.IsNullOrWhiteSpace(afwijzingsreden))
+            {
+                throw new Exception("Afwijzingsreden is required when rejecting a request.");
+            }
+
+           
+            huurverzoek.Status = status;
+            huurverzoek.Afwijzingsreden = status == "Afgewezen" ? afwijzingsreden : null;
+
+           
+            SaveChanges();
+            return huurverzoek;
         }
         
     }

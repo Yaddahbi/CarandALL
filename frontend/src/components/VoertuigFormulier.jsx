@@ -17,7 +17,7 @@ const VoertuigFormulier = ({ voertuig, startDatum, eindDatum, onClose, onSubmit 
 
     return (
         <div className="form-container">
-            <form onSubmit={handleSubmit}>
+            <form className= "huurform" onSubmit={handleSubmit}>
                 <h4>Bevestig uw reservering voor {voertuig.merk} {voertuig.type}</h4>
                 <p><strong>Startdatum:</strong> {formatDate(startDatum)}</p>
                 <p><strong>Einddatum:</strong> {formatDate(eindDatum)}</p>

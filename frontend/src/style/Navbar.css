@@ -10,13 +10,26 @@
     color: white;
     top: 0;
     z-index: 1000;
-      
 }
-
 
 /* Logo styling */
 .logo {
     margin-right: 10px;
+}
+.home-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none; 
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.home-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    position: relative;
+    top: -2px;
 }
 
 /* Dropdown menu styling */
@@ -43,15 +56,17 @@
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
-.dropdown-content a {
+
+    .dropdown-content a {
         color: black;
         padding: 12px 16px;
         text-decoration: none;
         display: block;
- }
-.dropdown-content a:hover {
+    }
+
+        .dropdown-content a:hover {
             background-color: #ddd;
- }
+        }
 
 .dropdown:hover .dropdown-content {
     display: block;
@@ -66,8 +81,8 @@
     align-items: center;
 }
 
-/* Login/Register links styling */
-.navbar-right a {
+/* Styling voor links in de menu */
+.menu a, .navbar-right a {
     color: white;
     text-decoration: none;
     margin-left: 20px;
@@ -75,33 +90,57 @@
     position: relative;
 }
 
-.navbar-right a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background: white;
-    left: 0;
-    bottom: -4px; 
-    transition: width 0.3s ease-in-out; 
+    /* Onderstreping bij hover */
+    .menu a:hover, .navbar-right a:hover {
+        text-decoration: underline; /* Voeg onderstreping toe bij hover */
+    }
+
+    /* Smooth hover effect met ::after */
+    .navbar-right a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: white;
+        left: 0;
+        bottom: -4px;
+        transition: width 0.3s ease-in-out;
     }
 
     .navbar-right a:hover::after {
-        width: 100%; 
-    }
-/* Responsive navbar for small screens */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px;
+        width: 100%;
     }
 
-    .navbar-right a {
-        margin: 5px 0;
-    }
+.user-info {
+    display: flex;
+    flex-direction: column; /* Zorgt ervoor dat items gestapeld worden */
+    align-items: center; /* Centreert de inhoud horizontaal */
+    gap: 5px; /* Ruimte tussen de gebruikersnaam en de knop */
 }
+
+.gebruikersnaam {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    text-align: center; /* Zorgt voor gecentreerde tekst */
+}
+
+
+/* Styling voor de logout-knop */
 .button-logout {
+    font-size: 14px;
+    font-weight: bold;
     color: white;
     background: transparent;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: -5px;
 }
+
+    .button-logout:hover {
+        background-color: white!important; /* Knop wordt wit bij hover */
+        color: black; /* Tekst wordt zwart bij hover */
+    }
