@@ -89,7 +89,16 @@ body {
     .add-medewerker-section:hover, .medewerkers-lijst-section:hover {
         transform: translateY(-10px);
     }
+    .medewerkers-lijst-section h2{
+        color: #333;
 
+    }
+.add-medewerker-section h2{
+    color: #333;
+}
+    .add-medewerker-section label {
+        color: #333;
+    }
 .abonnement-details {
     padding: 30px;
     background-color: #fff;
@@ -100,7 +109,6 @@ body {
     margin-bottom: 20px;
     margin-left: 12%;
     margin-right: 12%;
-
 }
 
 

@@ -61,7 +61,7 @@ const Abonnementen = () => {
                 </div>
             </section>
 
-            {/* Abonnement Details - direct na de hero sectie */}
+            {/*Abonnement Details */}
             <section className="abonnement-details">
                 <div className="container">
                     <h2>Abonnement Details</h2>

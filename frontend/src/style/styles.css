@@ -91,7 +91,7 @@ body {
 .hero .container {
     width: 70%;
     
-    margin-top: 0;
+    margin-top: 10px;
     padding:50px 24px;
     color: black;
     background-color: white;

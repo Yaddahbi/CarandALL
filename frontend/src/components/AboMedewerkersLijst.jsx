@@ -92,26 +92,30 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
                 <p>Laden...</p>
             ) : (
                 <div className="tabel-container">
-                    <table className="tabel" role="table">
+                    <table className="tabel" role="table" aria-label="Overzicht van medewerkers">
                         <thead>
                             <tr role="row">
-                                <th role="columnheader" tabIndex="0">Naam</th>
-                                <th role="columnheader" tabIndex="0">Email</th>
-                                <th role="columnheader" tabIndex="0">Rol</th>
-                                <th role="columnheader" tabIndex="0">Acties</th>
+                                <th role="columnheader">Naam</th>
+                                <th role="columnheader">Email</th>
+                                <th role="columnheader">Rol</th>
+                                <th role="columnheader">Acties</th>
                             </tr>
                         </thead>
                         <tbody>
                             {medewerkers && medewerkers.length > 0 ? (
                                 medewerkers.map((medewerker) => (
-                                    <tr role="row" key={medewerker.id}>
-                                        <td role="cell" tabIndex="0">{medewerker.naam}</td>
-                                        <td role="cell" tabIndex="0">{medewerker.email}</td>
-                                        <td role="cell" tabIndex="0">{medewerker.rol}</td>
-                                        <td role="cell" tabIndex="0">
+                                    <tr
+                                        role="row"
+                                        key={medewerker.id}
+                                        tabIndex="0"
+                                        aria-label={`Medewerker: ${medewerker.naam}, Email: ${medewerker.email}, Rol: ${medewerker.rol}`}
+                                    >
+                                        <td role="cell">{medewerker.naam}</td>
+                                        <td role="cell">{medewerker.email}</td>
+                                        <td role="cell">{medewerker.rol}</td>
+                                        <td role="cell">
                                             <button
                                                 onClick={() => handleDelete(medewerker.id)}
-                                                tabIndex="0"
                                                 aria-label={`Verwijder medewerker ${medewerker.naam}`}
                                             >
                                                 Verwijderen
@@ -121,7 +125,7 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="no-data" role="cell" tabIndex="0">
+                                    <td colSpan="4" className="no-data" role="cell">
                                         Geen medewerkers gevonden.
                                     </td>
                                 </tr>

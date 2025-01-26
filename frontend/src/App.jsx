@@ -116,7 +116,7 @@ const routesConfig = [
     { path: '/privacy', component: Privacyverklaring },
     { path: '/unauthorized', component: Unauthorized },
 ];
-
+// chatgpt prompt: Geef functie om alle routes met path + component to omringen met ProtectedRoute
 const generateRoutes = () => {
     return routesConfig.map(({ path, component: Component, roles }, index) => {
         if (roles) {
