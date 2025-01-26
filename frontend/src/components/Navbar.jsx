@@ -2,6 +2,7 @@ import React , { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../style/Navbar.css';
 import { FaBars } from 'react-icons/fa';
+import { FaHome } from 'react-icons/fa'; 
 import { useAuth } from "../AuthContext";
 import { toast } from 'sonner';
 const Navbar = () => {
@@ -18,8 +19,10 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-left">
-                 <div className="logo">
-                <Link to="/">Car And All</Link>{/* Logo */}
+                <div className="logo">
+                    <Link to="/" className="home-link">
+                        <FaHome className="home-icon" /> Car And All
+                    </Link>
                 </div>
 
                 <div className="menu">
@@ -28,24 +31,26 @@ const Navbar = () => {
                             <Link to="/voertuigen">Voertuigen</Link>
                             <Link to="/huurgeschiedenis">Huurgeschiedenis</Link>
                             <Link to="/notificaties">Notificaties</Link>
+                            <Link to="/klantgegevens">Mijn gegevens</Link>
                         </>
                     )}
                     {user && user?.role === 'ZakelijkeKlant' && (
                         <>
-                        <Link to="/abonnementen">Abonnementen</Link>
+                        <Link to="/abonnementen">Abonnement</Link>
+                        <Link to="/huurgeschiedenisBedrijf">Huurgeschiedenis medewerkers</Link>
                         <Link to="/notificaties">Notificaties</Link>
-                        <Link to="/huurgeschiedenisBedrijf">Huurgeschiedenis Medewerkers</Link>
+                        <Link to="/klantgegevens">Mijn gegevens</Link>
                         </>
                     )}
                     {user?.role === 'BackofficeMedewerker' && (
                         <>
                             <Link to="/wagenparkbeheer">Wagenparkbeheer</Link>
                             <Link to="/mijn-verhuuraanvraag">Aanvragen</Link>
+                            <Link to="/schades">Schades</Link>
                         </>
                     )}
                     {user?.role === 'FrontofficeMedewerker' && (
                         <>
-                        <Link to="/schades">Schades</Link>
                         <Link to="/uitgifte">Uitgifte Voertuig</Link>
                         <Link to="/inname">Inname Voertuig</Link>
                         </>
@@ -69,9 +74,10 @@ const Navbar = () => {
                     </>
                 ) : (
                         <>
-                            { /*}  <span className="gebruikersnaam">Welkom, {user.naam}</span> {*/ }
+                            <div className="user-info">
+                            <span className="gebruikersnaam">{user.name}</span>
                             <button className="button-logout" onClick={handleLogout}>Logout -></button> 
-                            
+                            </div>
                         </>
                 )}
             </div>

@@ -1,7 +1,7 @@
 describe('AboMedewerkersLijst Component', () => {
     beforeEach(() => {
-        // Mock token in localStorage
-        localStorage.setItem('jwtToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjU4MmIwYmFlLTBmNjItNDc3Ny1hZTczLTFiMDEzNjM1NjI2NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ilpha2VsaWprZUtsYW50IiwiQWJvbm5lbWVudElkIjoiMSIsImV4cCI6MTczNjYwOTI5MCwiaXNzIjoieW91cl9pc3N1ZXIiLCJhdWQiOiJ5b3VyX2F1ZGllbmNlIn0.Rq3le_8WG5pPVknOmUcLkX7E2aHyShrm4SRXroE29i0');
+        // Mock token in sessionStorage
+        sessionStorage.setItem('jwtToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjU4MmIwYmFlLTBmNjItNDc3Ny1hZTczLTFiMDEzNjM1NjI2NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Ilpha2VsaWprZUtsYW50IiwiQWJvbm5lbWVudElkIjoiMSIsImV4cCI6MTczNjYwOTI5MCwiaXNzIjoieW91cl9pc3N1ZXIiLCJhdWQiOiJ5b3VyX2F1ZGllbmNlIn0.Rq3le_8WG5pPVknOmUcLkX7E2aHyShrm4SRXroE29i0');
 
         // Mock API endpoint voor medewerkers ophalen
         cy.intercept('GET', 'https://localhost:7040/api/Abonnement/medewerkers', {

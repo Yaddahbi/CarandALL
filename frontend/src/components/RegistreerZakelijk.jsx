@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RegistreerZakelijk.css";
 import { toast } from "sonner";
@@ -13,10 +13,11 @@ function RegistreerZakelijk() {
         telefoonnummer: "",
         bedrijfsNaam: "",
         kvkNummer: "",
-        abonnementType: "PayAsYouGo", // default waarde
+        abonnementType: "Pay-as-you-go", // default waarde
     });
 
     const [isChecked, setIsChecked] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -90,19 +91,43 @@ function RegistreerZakelijk() {
                         <input id="kvkNummer" type="text" name="kvkNummer" onChange={handleChange} required />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="abonnementType">Abonnementstype:</label>
-                        <select id="abonnementType" name="abonnementType" onChange={handleChange} required>
-                            <option value="PayAsYouGo">Pay-As-You-Go</option>
-                            <option value="Prepaid">Prepaid</option>
-                        </select>
-                    </div>
+                    <label>
+                        Abonnementstype:
+                        <span
+                            className="info-icon"
+                            onMouseEnter={() => setShowTooltip(true)}
+                            onMouseLeave={() => setShowTooltip(false)}
+                            aria-label="Meer informatie over abonnementen"
+                        >
+                            ℹ️
+                        </span>
+                        {showTooltip && (
+                            <div className="tooltip">
+                                <p><strong>Pay-as-you-go:</strong> Betaal alleen voor wat u gebruikt, ideaal voor flexibel gebruik.</p>
+                                <p><strong>Prepaid:</strong> Betaal vooraf en geniet van korting. (€200 per maand)</p>
+                            </div>
+                        )}
+                    </label>
+                    <select name="abonnementType" onChange={handleChange} required>
+                        <option value="PayAsYouGo">Pay-as-you-go</option>
+                        <option value="Prepaid">Prepaid</option>
+                    </select>
 
-                    <div className="form-group privacy-consent">
-                        <label>
-                            <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
+                    <label className="privacy-consent">
+                        <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={handleCheckboxChange}
+                        />
+                        <span>
                             Ik ga akkoord met de{" "}
-                            <span className="privacy-link" onClick={() => navigate("/privacy")}>
+                            <span
+                                className="privacy-link"
+                                onClick={() => {
+                                    navigate('/privacy');
+                                    window.scrollTo(0, 0);
+                                }}
+                            >
                                 privacyverklaring
                             </span>.
                         </label>

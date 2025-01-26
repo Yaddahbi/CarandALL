@@ -142,7 +142,7 @@ export const deleteSchade = async (id) => {
 
 /** HUURVERZOEK FUNCTIONS **/
 export const createHuurverzoek = async (huurverzoek) => {
-    const token = localStorage.getItem('jwtToken');
+    const token = sessionStorage.getItem('jwtToken');
     if (!token) {
         throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
     }
@@ -168,7 +168,7 @@ export const createHuurverzoek = async (huurverzoek) => {
 
 export const fetchHuurgeschiedenis = async (filters) => {
     try {
-        const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+        const token = sessionStorage.getItem('jwtToken'); // Haal het JWT-token op uit sessionStorage
         if (!token) {
             throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
         }
@@ -204,7 +204,7 @@ export const fetchHuurgeschiedenis = async (filters) => {
 
 export const fetchHuurgeschiedenisBedrijf = async (filters) => {
     try {
-        const token = localStorage.getItem('jwtToken');
+        const token = sessionStorage.getItem('jwtToken');
         if (!token) {
             throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
         }
@@ -241,7 +241,7 @@ export const fetchMedewerkers = async () => {
         const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Zet de juiste token als header
+                'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`, // Zet de juiste token als header
             },
         });
 

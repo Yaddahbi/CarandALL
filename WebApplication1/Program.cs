@@ -44,18 +44,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Configure authorization policies
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("MedewerkerOnly", policy => policy.RequireRole("Medewerker"));
-    options.AddPolicy("UserRoles", policy => policy.RequireRole("Particulier", "Zakelijk", "Medewerker"));
+    options.AddPolicy("role", policy => policy.RequireRole("Particulier", "Zakelijk", "Medewerker"));
 });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("MedewerkerOnly", policy => policy.RequireRole("Medewerker"));
-});
 
 var app = builder.Build();
 

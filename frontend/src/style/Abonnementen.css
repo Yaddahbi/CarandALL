@@ -11,7 +11,7 @@ body {
     position: relative;
     height: 485px;
     text-align: center;
-    background-image: url('../images/Abonnementen-Hero.png');
+    background-image: url('../images/Abonnementen.webp');
 
     background-size: cover;
     background-position: center;
@@ -40,9 +40,8 @@ body {
         position: relative;
         max-width: 800px;
         padding: 40px;
-        background-color: rgba(255, 255, 255, 0.8);
         border-radius: 16px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 40px, rgba(0, 0, 0, 0.08) 0px 8px 32px;
+        box-shadow: none;
         z-index: 2;
         text-align: center;
     }
@@ -51,6 +50,7 @@ body {
         font-size: 2.8rem;
         font-weight: 700;
         margin-bottom: 15px;
+        color:white;
     }
 
     .abonnementen-hero p {
@@ -58,6 +58,7 @@ body {
         font-weight: 300;
         margin-bottom: 30px;
         line-height: 1.5;
+        color: white;
     }
 
 /* Content Section Styling */
@@ -103,7 +104,7 @@ body {
 
 
     .abonnement-details h2 {
-        font-size: 2rem;
+        font-size: 1.7rem;
         font-weight: 600;
         color: #333;
         margin-bottom: 15px;
@@ -237,8 +238,9 @@ button {
 }
 
 .wijzig-button {
-    background-color: #28a745;
-    color: white;
+    background: transparent;
+    color: dodgerblue;
+    text-decoration: underline;
     padding: 10px 15px;
     border: none;
     border-radius: 8px;
@@ -248,7 +250,7 @@ button {
 }
 
     .wijzig-button:hover {
-        background-color: #218838;
+        background: transparent !important;
     }
 
 .wijzig-formulier {
@@ -300,3 +302,46 @@ button {
         .wijzig-formulier button:hover:not(:disabled) {
             background-color: #0056b3;
         }
+.explanation {
+    position: relative; /* Maakt het mogelijk om de tooltip relatief te positioneren */
+    display: inline-block;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+    /* Tooltip-styling */
+    .explanation::after {
+        content: attr(data-tooltip); /* Tooltip-tekst komt uit het attribuut data-tooltip */
+        visibility: hidden;
+        opacity: 0;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1000;
+        bottom: 125%; /* Plaatst de tooltip boven het element */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px; /* Breedte van de tooltip */
+        font-size: 14px;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Driehoekje onder de tooltip */
+    .explanation::before {
+        content: "";
+        position: absolute;
+        bottom: 100%; /* Plaatst de driehoek precies onder de tooltip */
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #333 transparent;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }

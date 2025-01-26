@@ -106,6 +106,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> AddMedewerker([FromBody] AddMedewerkerDto medewerkerDto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
             var abonnementIdClaim = User.FindFirst("AbonnementId")?.Value;
 
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(abonnementIdClaim))
@@ -116,6 +117,12 @@ namespace WebApplication1.Controllers
             if (!int.TryParse(abonnementIdClaim, out int abonnementId))
             {
                 return Unauthorized(new { error = "Ongeldig abonnement ID." });
+            }
+
+            // Controleer of de gebruiker zijn eigen e-mailadres probeert toe te voegen
+            if (string.Equals(medewerkerDto.Email, userEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest(new { message = "U kunt uw eigen e-mailadres niet toevoegen." });
             }
 
             var abonnement = await _context.Abonnementen.FindAsync(abonnementId);
@@ -166,6 +173,7 @@ namespace WebApplication1.Controllers
 
             return Ok(new { message = "Medewerker succesvol toegevoegd aan het abonnement." });
         }
+
 
 
 
@@ -245,15 +253,31 @@ namespace WebApplication1.Controllers
                 return NotFound(new { message = "Abonnement niet gevonden." });
             }
 
+            // Controleer of er al een toekomstige wijziging gepland is
+            if (abonnement.ToekomstigAbonnementType != null && abonnement.WijzigingIngangsdatum > DateTime.UtcNow)
+            {
+                return BadRequest(new
+                {
+                    message = "Er is al een wijziging gepland die van kracht wordt op " + abonnement.WijzigingIngangsdatum?.ToString("dd-MM-yyyy")
+                });
+            }
+
             // Bereken de eerste dag van de volgende maand
             DateTime eersteDagVolgendeMaand = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).AddMonths(1);
 
             abonnement.ToekomstigAbonnementType = abonnementDto.NieuwAbonnementType;
             abonnement.ToekomstigeKosten = abonnementDto.NieuweKosten;
             abonnement.WijzigingIngangsdatum = eersteDagVolgendeMaand;
-
             abonnement.LaatstGewijzigdOp = DateTime.UtcNow;
 
+            var notificatie = new Notificatie
+            {
+                GebruikerId = userId,
+                Bericht = $"Uw abonnement wordt gewijzigd naar '{abonnementDto.NieuwAbonnementType}' met een maandelijkse kost van €{abonnementDto.NieuweKosten:F2}. " +
+              $"Deze wijziging gaat in op {eersteDagVolgendeMaand:dd-MM-yyyy}.",
+            };
+
+            _context.Notificaties.Add(notificatie);
             await _context.SaveChangesAsync();
 
             return Ok(new

@@ -9,7 +9,7 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
     const fetchMedewerkers = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem("jwtToken");
+            const token = sessionStorage.getItem("jwtToken");
             if (!token) {
                 throw new Error("Geen token gevonden. Log opnieuw in.");
             }
@@ -45,7 +45,7 @@ const AboMedewerkersLijst = ({ refreshKey }) => {
                     <button
                         onClick={async () => {
                             try {
-                                const token = localStorage.getItem("jwtToken");
+                                const token = sessionStorage.getItem("jwtToken");
                                 const response = await fetch(`https://localhost:7040/api/Abonnement/remove-medewerker/${medewerkerId}`, {
                                     method: "DELETE",
                                     headers: {
