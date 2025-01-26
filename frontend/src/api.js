@@ -1,7 +1,7 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
-const UITGIFTE_INNAME_API_URL = "https://localhost:7040/api/UitgifteInnameBeheren";const UITGIFTE_API_URL = "https://localhost:7040/api/Uitgifte";
+const UITGIFTE_INNAME_API_URL = "https://localhost:7040/api/UitgifteInnameBeheren";
 const API_BASE_URL = "https://localhost:7040/api/Gebruikers";
 const BASE_URL = "https://localhost:7040/api";
 
@@ -137,6 +137,7 @@ export const deleteSchade = async (id) => {
         console.error("Fout bij het verwijderen van schade:", error);
         throw error;
     }
+};
     /* export const uploadSchadeFoto = async (file) => {
         if (!file) {
             throw new Error("Geen bestand geselecteerd");
@@ -157,34 +158,36 @@ export const deleteSchade = async (id) => {
     const data = await response.json();
     return data.url;
 };*/
- 
-    /** HUURVERZOEK FUNCTIONS **/export const createHuurverzoek = async (huurverzoek) => {
+
+    /** HUURVERZOEK FUNCTIONS **/
+    export const createHuurverzoek = async (huurverzoek) => {
         const token = sessionStorage.getItem('jwtToken');
         if (!token) {
             throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
-        }try {
-        const response = await fetch(HUURVERZOEK_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`, 
-            },
-            body: JSON.stringify(huurverzoek),
-        });
-
-        if (!response.ok) {
-            
-            throw new Error("Fout bij het maken van huurverzoek");
         }
-        return awaitresponse.json();
-    }catch (error) {
-        console.error("Fout bij het maken van huurverzoek:", error);
-        throw error;
-    }
+        try {
+            const response = await fetch(HUURVERZOEK_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(huurverzoek),
+            });
+
+            if (!response.ok) {
+
+                throw new Error("Fout bij het maken van huurverzoek");
+            }
+            return awaitresponse.json();
+        } catch (error) {
+            console.error("Fout bij het maken van huurverzoek:", error);
+            throw error;
+        }
     };
     export const fetchHuurgeschiedenis = async (filters) => {
         try {
-            const token = sessionStorage.getItem('jwtToken'); // Haal het JWT-token op uit sessionStorage
+            const token = sessionStorage.getItem('jwtToken');
             if (!token) {
                 throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
             }
@@ -201,29 +204,29 @@ export const deleteSchade = async (id) => {
             }
 
             const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis?${params.toString()}`, {
-            method: 'GET',
-            headers: {
-                "Authorization": `Bearer ${token}`, // Voeg het JWT-token toe in de header
-            },
-        });
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`, // Voeg het JWT-token toe in de header
+                },
+            });
 
             if (!response.ok) {
                 throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
             }
 
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-export const fetchHuurgeschiedenisBedrijf = async (filters) => {
-    try {
-        const token = sessionStorage.getItem('jwtToken');
-        if (!token) {
-            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
+    };
+
+    export const fetchHuurgeschiedenisBedrijf = async (filters) => {
+        try {
+            const token = sessionStorage.getItem('jwtToken');
+            if (!token) {
+                throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+            }
 
             const params = new URLSearchParams();
 
@@ -231,7 +234,7 @@ export const fetchHuurgeschiedenisBedrijf = async (filters) => {
             if (filters.startDatum) params.append('startDatum', filters.startDatum);
             if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
 
-            
+
             if (filters.voertuigType && filters.voertuigType !== '') {
                 params.append('voertuigType', filters.voertuigType);
             }
@@ -271,43 +274,44 @@ export const fetchHuurgeschiedenisBedrijf = async (filters) => {
             console.error(error);
             throw error;
         }
-    };/** INNAME & UITGIFTE FUNCTIONS **/
-export const createInname = async (innameData) => {
-    try {
-        const response = await fetch(INNAME_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(innameData),
-        });
+    };
+    /** INNAME & UITGIFTE FUNCTIONS **/
+    export const createInname = async (innameData) => {
+        try {
+            const response = await fetch(UITGIFTE_INNAME_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(innameData),
+            });
 
-        if (!response.ok) {
-            throw new Error("Fout bij het registreren van de inname");
+            if (!response.ok) {
+                throw new Error("Fout bij het registreren van de inname");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Fout bij het registreren van inname:", error);
+            throw error;
         }
-        return await response.json();
-    } catch (error) {
-        console.error("Fout bij het registreren van inname:", error);
-        throw error;
-    }
-};
+    };
 
-export const createUitgifte = async (uitgifteData) => {
-    try {
-        const response = await fetch(UITGIFTE_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(uitgifteData),
-        });
+    export const createUitgifte = async (uitgifteData) => {
+        try {
+            const response = await fetch(UITGIFTE_INNAME_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(uitgifteData),
+            });
 
-        if (!response.ok) {
-            throw new Error("Fout bij het registreren van de uitgifte");
+            if (!response.ok) {
+                throw new Error("Fout bij het registreren van de uitgifte");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Fout bij het registreren van uitgifte:", error);
+            throw error;
         }
-        return await response.json();
-    } catch (error) {
-        console.error("Fout bij het registreren van uitgifte:", error);
-        throw error;
-    }
-};
+    };

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import SchadeToevoegen from "./SchadeToevoegen";
 import SchadeDetails from "./SchadeDetails";
 import { useNavigate} from "react-router-dom";
-import { fetchSchademeldingen } from "../api";
-import '../style/Schadepagina.css';
+import '../style/SchadePagina.css';
 
 const SchadePagina = () => {
     const [schademeldingen, setSchademeldingen] = useState([]);

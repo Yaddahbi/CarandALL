@@ -41,7 +41,7 @@ public class Uitgifte
     public string Samenvatting()
     {
         return
-            $"UitgifteID: {UitgifteID}, VoertuigID: {VoertuigID}, HuurderNaam: {HuurderNaam}, Status: {Status}, Datum: {DatumUitgifte.ToShortDateString()}, BeginKilometerstand: {BeginKilometerstand}";
+            $"UitgifteID: {UitgifteID}, VoertuigID: {VoertuigID}, HuurderNaam: {UserNaam}, Status: {Status}, Datum: {DatumUitgifte.ToShortDateString()}, BeginKilometerstand: {BeginKilometerstand}";
     }
 
     public void StelVoertuigIn(Voertuig voertuig)

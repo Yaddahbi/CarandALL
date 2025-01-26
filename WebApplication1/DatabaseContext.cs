@@ -64,7 +64,7 @@ namespace WebApplication1
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.User)
                 .WithMany(h => h.Innames)
-                .HasForeignKey(i => i.userID);
+                .HasForeignKey(i => i.HuurderID);
         }
         public List<Voertuig> GetAllVoertuigen()
         {
@@ -105,12 +105,12 @@ namespace WebApplication1
         }
         public List<Inname> ListInnames()
         {
-            return Innames.Include(i => i.Voertuig).Include(i => i.Huurder).ToList();
+            return Innames.Include(i => i.Voertuig).Include(i => i.User).ToList();
         }
        
         public List<Uitgifte> GetAllUitgiftes()
         {
-            return Uitgiftes.Include(u => u.Voertuig).Include(u => u.Huurder).ToList();
+            return Uitgiftes.Include(u => u.Voertuig).Include(u => u.User).ToList();
         }
         public Huurverzoek UpdateHuurverzoekStatus(int id, string status, string? afwijzingsreden)
         {

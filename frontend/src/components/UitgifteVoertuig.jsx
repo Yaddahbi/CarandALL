@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../style/UitgifteInname.css'
 
 const UitgifteVoertuig = ({ geselecteerdeAanvraag }) => {
-    const [Huurgeschiedenis, setHuurgeschiedenis] = useState(null);
     const [kilometerstand, setKilometerstand] = useState('');
     const [opmerkingen, setOpmerkingen] = useState('');
     const [status, setStatus] = useState('Uitgegeven');
@@ -43,6 +42,7 @@ const UitgifteVoertuig = ({ geselecteerdeAanvraag }) => {
 
             if (response.ok) {
                 toast('Voertuig is uitgegeven!', { type: 'success' });
+                navigate('/uitgifteinnamebeheren');
             } else {
                 toast('Er is iets misgegaan bij de uitgifte.', { type: 'error' });
             }
@@ -58,9 +58,9 @@ const UitgifteVoertuig = ({ geselecteerdeAanvraag }) => {
             <p>Voertuig Soort: {geselecteerdeAanvraag?.voertuigSoort}</p> 
             <p>Voertuig Type: {geselecteerdeAanvraag?.voertuigType}</p>
             <p>Voertuig Kenteken: {geselecteerdeAanvraag?.voertuigKenteken}</p>
-            <p>Huurder Naam: {geselecteerdeAanvraag?.huurderNaam}</p>
-            <p>Huurder Email: {geselecteerdeAanvraag?.huurderEmail}</p>
-            <p>Huurder Telefoon: {geselecteerdeAanvraag?.huurderTelefoonnummer}</p>
+            <p>Huurder Naam: {geselecteerdeAanvraag?.user.naam}</p>
+            <p>Huurder Email: {geselecteerdeAanvraag?.user.email}</p>
+            <p>Huurder Telefoon: {geselecteerdeAanvraag?.user.telefoonnummer}</p>
             <p>Begindatum Huurverzoek: {geselecteerdeAanvraag?.startDatum}</p>
             <p>Einddatum Huurverzoek: {geselecteerdeAanvraag?.eindDatum}</p>
             <input
@@ -78,49 +78,8 @@ const UitgifteVoertuig = ({ geselecteerdeAanvraag }) => {
                 <option value="Uitgegeven">Uitgegeven</option>
                 <option value="In Afwachting">In Afwachting</option>
             </select>
-            <button onClick={handleUitgifte}>Bevestigen Uitgifte
-            </button>
-            <button onClick={() => navigate('/uitgifteinnamebeheren')}>Terug
-            </button>
-        <div>
-            <h2>Uitgifte Voertuig Registreren</h2>
-            <form onSubmit={handleUitgifteSubmit}>
-                <label>
-                    Huurder ID:
-                    <input
-                        type="text"
-                        value={uitgifteData.huurderId}
-                        onChange={(e) =>
-                            setUitgifteData({ ...uitgifteData, huurderId: e.target.value })
-                        }
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Voertuig ID:
-                    <input
-                        type="number"
-                        value={uitgifteData.voertuigId}
-                        onChange={(e) =>
-                            setUitgifteData({ ...uitgifteData, voertuigId: e.target.value })
-                        }
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Opmerkingen:
-                    <textarea
-                        value={uitgifteData.opmerkingen}
-                        onChange={(e) =>
-                            setUitgifteData({ ...uitgifteData, opmerkingen: e.target.value })
-                        }
-                    />
-                </label>
-                <br />
-                <button type="submit">Voertuig Uitgeven</button>
-            </form>
+            <button onClick={handleUitgifte}>Bevestigen Uitgifte</button>
+            <button onClick={() => navigate('/uitgifteinnamebeheren')}>Terug</button>
         </div>
     );
 };
