@@ -19,6 +19,7 @@ const AboWijzigAbonnement = ({ huidigType, toekomstigeWijziging, onWijziging }) 
     volgendeMaand.setMonth(volgendeMaand.getMonth() + 1);
     volgendeMaand.setDate(1);
 
+    // chatgpt prompt : Maak een functie voor wijzigen abonnement
     const handleWijziging = async () => {
         if (!gekozenType) {
             toast.error("Geen geldig abonnementstype geselecteerd.");

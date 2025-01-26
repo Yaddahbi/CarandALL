@@ -36,33 +36,50 @@ const Verhuuraanvraag = () => {
 
     const updateAanvraag = async (id, actie, reden = '') => {
         try {
+            // Controleer en log de data die wordt verstuurd
+            const payload = {
+                status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen',
+                reden: actie === 'afwijzen' ? reden : null, // Null als geen reden nodig is
+            };
+
+            console.log("Verzonden payload:", payload); // Debugging
+
             const response = await fetch(`https://localhost:7040/api/Huurverzoeken/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen',
-                    reden: actie === 'afgewezen' ? reden : ''
-                })
+                body: JSON.stringify(payload), // Correcte payload
             });
 
             if (response.ok) {
+                // Update lokale staat
                 setAanvragen(prev =>
                     prev.map(aanvraag =>
                         aanvraag.huurverzoekId === id
-                            ? { ...aanvraag, status: actie === 'goedkeuren' ? 'Goedgekeurd' : 'Afgewezen', reden }
+                            ? { ...aanvraag, status: payload.status, reden: payload.reden }
                             : aanvraag
                     )
                 );
+
                 toast(`Aanvraag ${actie === 'goedkeuren' ? 'goedgekeurd' : 'afgewezen'}!`, {
                     type: 'success',
-                })
+                });
+
+                // Reset geselecteerde aanvraag en fetch vernieuwde data
                 setGeselecteerdeAanvraag(null);
                 await fetchAanvragen();
             } else {
-                console.error("Failed to update request");
+                // Foutafhandeling
+                const errorText = await response.text();
+                console.error("Error response:", errorText);
+                toast(`Fout bij verwerken: ${errorText}`, {
+                    type: 'error',
+                });
             }
         } catch (error) {
             console.error("Error:", error);
+            toast(`Er is een fout opgetreden: ${error.message}`, {
+                type: 'error',
+            });
         }
     };
 

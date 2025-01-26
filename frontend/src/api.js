@@ -143,9 +143,17 @@ export const deleteSchade = async (id) => {
 /** HUURVERZOEK FUNCTIONS **/
 export const createHuurverzoek = async (huurverzoek) => {
     const token = sessionStorage.getItem('jwtToken');
+    const role = sessionStorage.getItem('role');
     if (!token) {
-        throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+        throw new Error("U bent niet ingelogd. Log in om een auto te kunnen huren.");
     }
+
+    // Controleer of de gebruiker een geldige rol heeft
+    if (!role || (role !== "Particulier" && role !== "Zakelijk")) {
+        throw new Error("Geen toestemming om een huurverzoek te maken. Alleen 'Particulier' en 'Zakelijk' rollen zijn toegestaan.");
+    }
+
+
     try {
         const response = await fetch(HUURVERZOEK_API_URL, {
             method: "POST",

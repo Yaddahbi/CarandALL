@@ -114,7 +114,7 @@ const VoertuigWeergave = ({ voertuigen, filters }) => {
                 />
             )}
 
-            {error && <p style={{ color: "red" }} aria-live="assertive">{error}</p>}
+            {/* }   {error && <p style={{ color: "red" }} aria-live="assertive">{error}</p>} {*/}
         </div>
     );
 };

@@ -20,7 +20,7 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-
+        // Een API-endpoint GET om alle huurverzoeken op te halen.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetAllHuurverzoeken()
         {
@@ -31,11 +31,17 @@ namespace WebApplication1.Controllers
                     h.HuurverzoekId,
                     h.StartDatum,
                     h.EindDatum,
-                    h.Status
+                    h.Status,
+                    UserNaam = h.User.Naam, 
+                    VoertuigMerk = h.Voertuig.Merk,
+                    VoertuigType = h.Voertuig.Type,
+                    VoertuigStatus = h.Voertuig.Status,
+                    reden= h.Afwijzingsreden
                 })
                 .ToListAsync();
             return Ok(huurverzoeken);
         }
+
 
 
         [HttpGet("{id}")]
@@ -50,7 +56,7 @@ namespace WebApplication1.Controllers
 
             return huurverzoek;
         }
-
+        // Een API-endpoint PUT om de status van een huurverzoek te goed of af te keuren.
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHuurverzoekStatus(int id, [FromBody] HuurverzoekUpdateDto updateDto)
         {
@@ -76,8 +82,6 @@ namespace WebApplication1.Controllers
             {
                 huurverzoek.Afwijzingsreden = null;
             }
-
-            // Maak de notificatie voor de gebruiker
             string bericht = string.Empty;
             if (updateDto.Status == "Goedgekeurd")
             {
@@ -88,7 +92,6 @@ namespace WebApplication1.Controllers
                 bericht = $"Je huurverzoek voor het voertuig {huurverzoek.Voertuig.Merk} {huurverzoek.Voertuig.Type} is afgewezen. Afwijzingsreden: {huurverzoek.Afwijzingsreden}.";
             }
 
-            // Maak een notificatie object en voeg deze toe aan de context
             var notificatie = new Notificatie
             {
                 GebruikerId = huurverzoek.UserId,
@@ -97,20 +100,19 @@ namespace WebApplication1.Controllers
 
             _context.Notificaties.Add(notificatie);
 
-            // Werk het huurverzoek bij in de database
             _context.Huurverzoeken.Update(huurverzoek);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-
+        // Een API-endpoint GET om de huurgeschiedenis van een zakelijke klant op te halen.
         [Authorize]  
         [HttpGet("bedrijf/huurgeschiedenis")]
         public async Task<ActionResult<IEnumerable<HuurgeschiedenisDtoBedrijf>>> GetHuurGeschiedenisVanMedewerkers(
-     [FromQuery] DateTime? startDatum,
-     [FromQuery] DateTime? eindDatum,
-     [FromQuery] string voertuigType)
+        [FromQuery] DateTime? startDatum,
+        [FromQuery] DateTime? eindDatum,
+        [FromQuery] string voertuigType)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
@@ -156,7 +158,7 @@ namespace WebApplication1.Controllers
                 .ToDictionary(g => g.Key, g => g.ToList()));
         }
 
-
+        // Een API-endpoint GET om de huurgeschiedenis van een klant op te halen.
         [Authorize]
         [HttpGet("geschiedenis")]
         public async Task<ActionResult<IEnumerable<HuurGeschiedenisDto>>> GetHuurGeschiedenis([FromQuery] DateTime? startDatum, [FromQuery] DateTime? eindDatum, [FromQuery] string voertuigType)
@@ -193,7 +195,6 @@ namespace WebApplication1.Controllers
                 })
                 .ToListAsync();
 
-            // Groepeer de verzoeken op basis van de status
             var verzoekenGroupedByStatus = huurGeschiedenis
                 .GroupBy(h => h.Status)
                 .ToDictionary(g => g.Key, g => g.ToList());
@@ -201,9 +202,8 @@ namespace WebApplication1.Controllers
             return Ok(verzoekenGroupedByStatus);
         }
 
-
+        // Een API-endpoint POST om een huurverzoek te plaatsen.
         [Authorize]
-
         [HttpPost]
         public async Task<IActionResult> PostHuurverzoek(HuurverzoekDTO huurverzoekDto)
         {

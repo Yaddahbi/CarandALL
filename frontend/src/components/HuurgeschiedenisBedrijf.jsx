@@ -43,6 +43,7 @@ const HuurgeschiedenisBedrijf = () => {
         loadHuurgeschiedenis();
     }, [filters]);
 
+    // chatgpt prompt- Add a function to handle filter changes
     const handleFilterChange = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };

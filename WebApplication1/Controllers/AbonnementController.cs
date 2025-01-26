@@ -20,7 +20,7 @@ namespace WebApplication1.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        //Een API-endpoint GET om alle medewerkers van een bedrijfsabonnement op te halen.
         [Authorize]
         [HttpGet("medewerkers")]
         public async Task<IActionResult> GetMedewerkers()
@@ -55,6 +55,7 @@ namespace WebApplication1.Controllers
 
             return Ok(medewerkers);
         }
+        //Een API-endpoint GET om de details van een bedrijfsabonnement op te halen.
         [Authorize]
         [HttpGet("details")]
         public async Task<IActionResult> GetAbonnementDetails()
@@ -89,7 +90,7 @@ namespace WebApplication1.Controllers
         }
 
 
-
+        //Een API-endpoint POST om een bedrijfsabonnement aan te maken.
         [HttpPost("create")]
         public async Task<IActionResult> CreateAbonnement([FromBody] Abonnement abonnement)
         {
@@ -100,7 +101,7 @@ namespace WebApplication1.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Bedrijfsabonnement succesvol aangemaakt." });
         }
-
+        //Een API-endpoint POST om een medewerker toe te voegen aan een bedrijfsabonnement.
         [Authorize]
         [HttpPost("add-medewerker")]
         public async Task<IActionResult> AddMedewerker([FromBody] AddMedewerkerDto medewerkerDto)
@@ -174,9 +175,7 @@ namespace WebApplication1.Controllers
             return Ok(new { message = "Medewerker succesvol toegevoegd aan het abonnement." });
         }
 
-
-
-
+        //  Een API-endpoint DELETE om een medewerker te verwijderen van een bedrijfsabonnement.
         [Authorize]
         [HttpDelete("remove-medewerker/{medewerkerId}")]
         public async Task<IActionResult> RemoveMedewerker(string medewerkerId)
@@ -230,6 +229,8 @@ namespace WebApplication1.Controllers
 
             return Ok(new { message = "Medewerker succesvol verwijderd van het abonnement." });
         }
+
+        //Een API-endpoint PUT om een bedrijfsabonnement te updaten.
         [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> UpdateAbonnement([FromBody] UpdateAbonnementDto abonnementDto)
