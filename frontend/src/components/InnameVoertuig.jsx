@@ -42,7 +42,7 @@ const InnameVoertuig = ({ geselecteerdeUitgifte }) => {
 
             if (response.ok) {
                 toast.success('Voertuig is ingekomen!');
-                navigate('/uitgifte-inname-beheren');
+                navigate('/uitgifteinnamebeheren');
             } else {
                 toast.error('Er is iets misgegaan bij de inname.');
             }
@@ -93,7 +93,7 @@ const InnameVoertuig = ({ geselecteerdeUitgifte }) => {
                 <option value="In Afwachting">In Afwachting</option>
             </select>
             <button onClick={handleInname}>Bevestigen Inname</button>
-            <button onClick={() => navigate('/uitgifte-inname-beheren')}>Terug</button>
+            <button onClick={() => navigate('/uitgifteinnamebeheren')}>Terug</button>
         </div>
     );
 };

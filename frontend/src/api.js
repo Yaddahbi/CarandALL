@@ -261,39 +261,6 @@ export const uploadSchadeFoto = async (file) => {
             return response.json();
         }
     };
-    export const createInname = async (innameData) => {
-    const response = await fetch("/api/Inname", {
-        method: "POST",
-        body: JSON.stringify(innameData),
-        headers: { "Content-Type": "application/json" }
-    });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Fout bij het registreren: ${errorData.message || 'Onbekende fout'}`);
-    }
-
-    return await response.json();
-    };
-    export const bevestigUitgifte = async (uitgifteId) => {
-    try {
-        const response = await fetch(`${UITGIFTE_API_URL}/${uitgifteId}/bevestigen`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error("Fout bij het bevestigen van de uitgifte");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error("Fout bij het bevestigen van uitgifte:", error);
-        throw error;
-    }
-    };
     export const fetchHuurgeschiedenisBedrijf = async (filters) => {
         try {
             const token = localStorage.getItem('jwtToken');

@@ -80,7 +80,7 @@ const UitgifteVoertuig = ({ geselecteerdeAanvraag }) => {
             </select>
             <button onClick={handleUitgifte}>Bevestigen Uitgifte
             </button>
-            <button onClick={() => navigate('/uitgifte-inname-beheren')}>Terug
+            <button onClick={() => navigate('/uitgifteinnamebeheren')}>Terug
             </button>
         </div>
     );

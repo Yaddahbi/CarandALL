@@ -23,9 +23,9 @@ import VerhuurdeVoertuigen from './components/VerhuurdeVoertuigen';
 import VoertuigStatusOverzicht from './components/VoertuigStatusOverzicht';
 import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
 import { AuthProvider } from "./AuthContext";
-
 import { Toaster } from 'sonner';
 import SchadeDetails from "./components/SchadeDetails.jsx";
+import UitgifteInnameBeheren from "./components/UitgifteInnameBeheren.jsx";
   
 
 //const Login = () => <h1>Login Page</h1>;
@@ -102,6 +102,7 @@ const App = () => {
                     {/* New routes for login and account creation */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<GebruikerAanmaken />} />
+                    <Route path="/uitgifteinnamebeheren" element={<UitgifteInnameBeheren />} />
                     <Route path="/uitgifte" element={<UitgifteVoertuig />} />
                     <Route path="/inname" element={<InnameVoertuig />} />
                    
