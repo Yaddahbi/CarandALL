@@ -1,6 +1,7 @@
 import { useState } from "react";
-import '../style/Schadetoevoegen.css';
-
+import '../style/SchadePagina.css';
+import { voegSchadetoe } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const SchadeToevoegen = ({ onSchadeToevoegen }) => {
     const [beschrijving, setBeschrijving] = useState("");
@@ -8,15 +9,65 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
     const [kosten, setKosten] = useState(0);
     const [status, setStatus] = useState("Open");
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    const handleFotoChange = (e) => {
+        const selectedFiles = e.target.files;
+        const validFiles = [];
+        let errorMessage = "";
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const file = selectedFiles[i];
+            if (file.size > 5000000) {
+                errorMessage = "Een of meer foto's zijn te groot (max. 5MB).";
+                break;
+            } else if (!file.type.startsWith("image/")) {
+                errorMessage = "Alle bestanden moeten afbeeldingen zijn.";
+                break;
+            } else {
+                validFiles.push(file);
+            }
+        }
+
+        if (errorMessage) {
+            setError(errorMessage);
+        } else {
+            setError(null);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const schadeData = { beschrijving, datum, kosten, status };
+
+        if (!Array.isArray(foto) || foto.length === 0) {
+            setError("Je moet minstens één foto toevoegen.");
+            return;
+        }
 
         try {
+           
+            const fotoUrls = await Promise.all(foto.map((file) => uploadSchadeFoto(file)));
+
+            console.log("Geüploade foto's:", fotoUrls);
+
+            
+            const schadeData = {
+                beschrijving,
+                datum,
+                kosten,
+                status,
+            };
+
+            console.log("Gegevens die worden verzonden:", schadeData);
+
+            
             const newSchade = await voegSchadetoe(schadeData);
             console.log("Nieuwe schade toegevoegd:", newSchade);
+
+            
             onSchadeToevoegen(newSchade);
+
+            
             setBeschrijving("");
             setDatum("");
             setKosten(0);

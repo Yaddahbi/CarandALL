@@ -1,51 +1,61 @@
 import './style/styles.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Verhuuraanvraag from './components/Verhuuraanvraag';
 import BeheerAanvragen from './components/BeheerAanvragen';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
-import GebruikerAanmaken from './GebruikerAanmaken';
 import Wagenparkbeheer from './components/Wagenparkbeheer';
-import SchadeLijst from './components/SchadeLijst';  
 import SchadeToevoegen from './components/SchadeToevoegen'; 
 import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
-import UitgifteVoertuig from './components/UitgifteVoertuig'; 
+import UitgifteVoertuig from './components/UitgifteVoertuig';
 import InnameVoertuig from './components/InnameVoertuig';
 import HuurgeschiedenisBedrijf from './components/HuurgeschiedenisBedrijf';
 import KiesAccountType from './components/KiesAccountType';
 import Login from './components/Login';
 import RegistreerMedewerker from './components/RegistreerMedewerker';
 import RegistreerParticulier from './components/RegistreerParticulier';
-import RegistreerZakelijk from './components/RegistreerZakelijk'; 
+import RegistreerZakelijk from './components/RegistreerZakelijk';
 import Notificaties from './components/Notificaties';
 import Privacyverklaring from './components/Privacyverklaring';
 import Klantgegevens from './components/KlantGegevens';
 import VerhuurdeVoertuigen from './components/VerhuurdeVoertuigen';
 import VoertuigStatusOverzicht from './components/VoertuigStatusOverzicht';
 import BlokkerenVoertuigen from './components/BlokkerenVoertuigen';
-import { AuthProvider } from "./AuthContext";
+import { useAuth } from './AuthContext';
 import { Toaster } from 'sonner';
+import ProtectedRoute from './ProtectedRoute';
+import Unauthorized from './UnauthorizedPage';
+import SchadeDetails from "./components/SchadeDetails.jsx";
+import UitgifteInnameBeheren from "./components/UitgifteInnameBeheren.jsx";
+  
 
-
-///const Login = () => <h1>Login Page</h1>;
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
-const HeroSection = () => (
-    <section className="hero">
-        <div className="container">
-        <h1>Welkom bij CarAndAll</h1>
-        <p>Reserveer eenvoudig en snel je volgende huurauto, caravan of camper.</p>
-            <div className="search-bar">
-                <input className="Ophaallocatie" type="text" placeholder="Ophaallocatie" />
-                <input className="Ophaaldatum"  type="date" placeholder="Ophaaldatum" />
-                <input className="Inleverdatum" type="date" placeholder="Inleverdatum" />
-            <button>Zoeken</button>
+
+const HeroSection = () => {
+    const navigate = useNavigate();
+
+    const handleZoekVoertuig = () => {
+        navigate('/voertuigen');
+    };
+
+    return (
+        <section className="hero">
+            <div className="container">
+                <h1>Welkom bij CarAndAll</h1>
+                <p>Reserveer eenvoudig en snel je volgende huurauto, caravan of camper.</p>
+                <div className="search-bar">
+                    <input className="Ophaallocatie" type="text" placeholder="Ophaallocatie" />
+                    <input className="Ophaaldatum" type="date" placeholder="Ophaaldatum" />
+                    <input className="Inleverdatum" type="date" placeholder="Inleverdatum" />
+                    <button onClick={handleZoekVoertuig}>Zoeken</button>
+                </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
 
 const FeaturesSection = () => (
     <section className="features">
@@ -64,90 +74,96 @@ const FeaturesSection = () => (
     </section>
 );
 
-const App = () => {
-    const gebruiker = {
-        naam: 'Jan Janssen',
-        rol: 'FrontofficeMedewerker'
-    };
-    const FooterWrapper = () => {
-        const location = useLocation();
-        const noFooterRoutes = [
-            '/login',
-            '/registreer-particulier',
-            '/registreer-zakelijk',
-            '/registreer-medewerker',
-            '/klantgegevens',
-            '/kies-account-type'
-        ];
+const FooterWrapper = () => {
+    const location = useLocation();
 
-        // Render Footer alleen als het pad NIET in de noFooterRoutes staat
-        return !noFooterRoutes.includes(location.pathname) && <Footer />;
-    };
+    const noFooterRoutes = [
+        '/login',
+        '/registreer-particulier',
+        '/registreer-zakelijk',
+        '/registreer-medewerker',
+        '/kies-account-type',
+        '/unauthorized',
+        '/privacy'
+    ];
+   
+    return !noFooterRoutes.includes(location.pathname) && <Footer />;
+};
+
+const routesConfig = [
+    { path: '/mijn reserveringen', component: Reserveringen },
+    { path: '/voertuigen', component: VoertuigenPagina },
+    { path: '/huurgeschiedenis', component: Huurgeschiedenis, roles: ['Particulier', 'Zakelijk'] },
+    { path: '/huurgeschiedenisBedrijf', component: HuurgeschiedenisBedrijf, roles: ['ZakelijkeKlant'] },
+    { path: '/klantgegevens', component: Klantgegevens, roles: ['Particulier', 'Zakelijk', 'ZakelijkeKlant'] },
+    { path: '/mijn-verhuuraanvraag', component: Verhuuraanvraag, roles: ['BackofficeMedewerker'] },
+    { path: '/aanvraag-beheer', component: BeheerAanvragen, roles: ['BackofficeMedewerker'] },
+    { path: '/abonnementen', component: Abonnementen, roles: ['ZakelijkeKlant'] },
+    { path: '/notificaties', component: Notificaties, roles: ['Particulier', 'Zakelijk', 'ZakelijkeKlant'] },
+    { path: '/schades', component: SchadePagina, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
+    { path: '/wagenparkbeheer', component: Wagenparkbeheer, roles: ['BackofficeMedewerker'] },
+    { path: '/uitgifte', component: UitgifteVoertuig, roles: ['FrontofficeMedewerker'] },
+    { path: '/inname', component: InnameVoertuig, roles: ['FrontofficeMedewerker'] },
+    { path: '/uitgifteinnamebeheren', component: UitgifteInnameBeheren, roles: ['FrontofficeMedewerker'] },
+    { path: '/schades/Details', component: SchadeDetails, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
+    { path: '/schades/toevoegen', component: SchadeToevoegen, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
+    { path: '/overzicht-verhuurde-voertuigen', component: VerhuurdeVoertuigen, roles: ['Wagenparkbeheerder'] },
+    { path: '/voertuigstatus', component: VoertuigStatusOverzicht, roles: ['Wagenparkbeheerder'] },
+    { path: '/blokkeren-voertuigen', component: BlokkerenVoertuigen, roles: ['Wagenparkbeheerder', 'BackofficeMedewerker'] },
+
+    { path: '/login', component: Login },
+    { path: '/kies-account-type', component: KiesAccountType },
+    { path: '/registreer-particulier', component: RegistreerParticulier },
+    { path: '/registreer-zakelijk', component: RegistreerZakelijk },
+    { path: '/registreer-medewerker', component: RegistreerMedewerker },
+    { path: '/privacy', component: Privacyverklaring },
+    { path: '/unauthorized', component: Unauthorized },
+];
+
+const generateRoutes = () => {
+    return routesConfig.map(({ path, component: Component, roles }, index) => {
+        if (roles) {
+            return (
+                <Route
+                    key={index}
+                    path={path}
+                    element={<ProtectedRoute allowedRoles={roles}><Component /></ProtectedRoute>}
+                />
+            );
+        }
+        return <Route key={index} path={path} element={<Component />} />;
+    });
+};
+
+const App = () => {
+    const { loading } = useAuth(); 
+
+    if (loading) {
+        return (
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+                <p>Loading...</p> 
+            </div>
+        );
+    } 
     return (
-        <AuthProvider>
-        <Router>
+            <Router>
                 <Toaster
                     position="top-center"
                     richColors
-                    aria-live="assertive" 
-                    aria-atomic="true"    
-                    duration={5000}       
+                    aria-live="assertive"
+                    aria-atomic="true"
+                    duration={5000}
                 />
-            <Navbar />
-            <Navbar gebruiker={gebruiker} />
-            <div className="container mt-4">
-                <Routes>
-
-                    <Route path="/" element={<>
-                        <HeroSection />
-                            <FeaturesSection />       
-                    </>
-                    } />
-
-                    <Route path="/mijn-reservingen" element={<Reserveringen />} />
-                  
-                    <Route path="/voertuigen" element={<VoertuigenPagina  />} />
-                    <Route path="/Huurgeschiedenis" element={<Huurgeschiedenis  />} />
-                    <Route path="/voertuigen" element={<VoertuigenPagina />} />
-
-                    <Route path="/klantgegevens" element={<Klantgegevens />} />
-                    <Route path="/mijn-verhuuraanvraag" element={<Verhuuraanvraag />} />
-
-                    <Route path="/aanvraag-beheer" element={<BeheerAanvragen />} />
-                    <Route path="/abonnementen" element={<Abonnementen />} />
-                    <Route path="/HuurgeschiedenisBedrijf" element={<HuurgeschiedenisBedrijf />} />
-
-                    <Route path="/notificaties" element={<Notificaties />} />
-
-                    {/* New routes for login and account creation */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<GebruikerAanmaken />} />
-                    <Route path="/schades" element={<SchadePagina />} />
-                    <Route path="/wagenparkbeheer" element={<Wagenparkbeheer />} />
-                   
-                    <Route path="/uitgifte" element={<UitgifteVoertuig />} />
-                    <Route path="/inname" element={<InnameVoertuig />} />
-                   
-                    <Route path="/schades" element={<SchadePagina />} />
-                    <Route path="/schades/lijst" element={<SchadeLijst />} /> 
-                    <Route path="/schades/toevoegen" element={<SchadeToevoegen />} /> 
-
-                    <Route path="/kies-account-type" element={<KiesAccountType />} />
-                    <Route path="/registreer-particulier" element={<RegistreerParticulier />} />
-                    <Route path="/registreer-zakelijk" element={<RegistreerZakelijk />} />
-                    <Route path="/registreer-medewerker" element={<RegistreerMedewerker />} />
-
-                    <Route path="/privacy" element={<Privacyverklaring />} />
-
-                    <Route path="/verhuurde-voertuigen" element={<VerhuurdeVoertuigen />} />
-                    <Route path="/voertuig-status-overzicht" element={<VoertuigStatusOverzicht />} />
-                    <Route path="/blokkeren-voertuigen" element={<BlokkerenVoertuigen />} />
-                </Routes>
+                <Navbar />
+                <div className="container mt-4">
+                    <Routes>
+                        <Route path="/" element={<><HeroSection /><FeaturesSection /></>} />
+                        {generateRoutes()}
+                    </Routes>
                 </div>
                 <FooterWrapper />
-        </Router>
-        </AuthProvider>
+            </Router>
     );
 };
 
-export default App;                                                                                                 
+export default App;

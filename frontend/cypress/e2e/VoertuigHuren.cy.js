@@ -1,6 +1,6 @@
 describe('VoertuigenPagina', () => {
     beforeEach(() => {
-        // Bezoek de pagina VoertuigenPagina
+        sessionStorage.setItem('jwtToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjU0MzMwYjkzLWZlZWUtNDA0Zi04Nzc3LTJjYjNlMjcxYzU2YyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlBhcnRpY3VsaWVyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiaWJyb0B2b29yYmVlbGQuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Iklicm9vIHRlc3QiLCJBYm9ubmVtZW50SWQiOiIiLCJleHAiOjE3Mzc1OTk4OTYsImlzcyI6InlvdXJfaXNzdWVyIiwiYXVkIjoieW91cl9hdWRpZW5jZSJ9.D7k3wOj0cbCrm3q4e-16uMw1wLD5NkjsokULzIG3AyE');
         cy.visit('http://localhost:58899/voertuigen');
     });
 
@@ -10,9 +10,6 @@ describe('VoertuigenPagina', () => {
 
         // Voer de einddatum in
         cy.get('input[name="eindDatum"]').type('2025-01-10');
-
-        // Klik op de filterknop om de voertuigen te laden
-        cy.get('button[type="submit"]').click();
 
         // Controleer of de waarschuwing voor ontbrekende datums niet meer zichtbaar is
         cy.get('.datum-waarschuwing1').should('not.exist');

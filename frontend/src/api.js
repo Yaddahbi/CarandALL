@@ -1,8 +1,7 @@
 const API_URL = "https://localhost:7040/api/Voertuigs";
 const SCHADE_API_URL = "https://localhost:7040/api/Schade";
 const HUURVERZOEK_API_URL = "https://localhost:7040/api/Huurverzoeken";
-const INNAME_API_URL = "https://localhost:7040/api/Inname";
-const UITGIFTE_API_URL = "https://localhost:7040/api/Uitgifte";
+const UITGIFTE_INNAME_API_URL = "https://localhost:7040/api/UitgifteInnameBeheren";
 const API_BASE_URL = "https://localhost:7040/api/Gebruikers";
 const BASE_URL = "https://localhost:7040/api";
 
@@ -139,161 +138,180 @@ export const deleteSchade = async (id) => {
         throw error;
     }
 };
-
-/** HUURVERZOEK FUNCTIONS **/
-export const createHuurverzoek = async (huurverzoek) => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-        throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
-    }
-    try {
-        const response = await fetch(HUURVERZOEK_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify(huurverzoek),
-        });
-
-        if (!response.ok) {
-            throw new Error("Fout bij het maken van huurverzoek");
+    /* export const uploadSchadeFoto = async (file) => {
+        if (!file) {
+            throw new Error("Geen bestand geselecteerd");
         }
-        return await response.json();
-    } catch (error) {
-        console.error("Fout bij het maken van huurverzoek:", error);
-        throw error;
     }
-};
+    const formData = new FormData();
+    formData.append("file", file); 
 
-export const fetchHuurgeschiedenis = async (filters) => {
-    try {
-        const token = localStorage.getItem('jwtToken'); // Haal het JWT-token op uit localStorage
+    const response = await fetch("/api/schade/upload", {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!response.ok) {
+        throw new Error("Fout bij het uploaden van foto");
+    }
+
+    const data = await response.json();
+    return data.url;
+};*/
+
+    /** HUURVERZOEK FUNCTIONS **/
+    export const createHuurverzoek = async (huurverzoek) => {
+        const token = sessionStorage.getItem('jwtToken');
         if (!token) {
             throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
         }
+        try {
+            const response = await fetch(HUURVERZOEK_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(huurverzoek),
+            });
 
-        const params = new URLSearchParams();
+            if (!response.ok) {
 
-        // Voeg alleen filters toe als ze een waarde hebben
-        if (filters.startDatum) params.append('startDatum', filters.startDatum);
-        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
-
-        // Voeg voertuigType alleen toe als het niet leeg is
-        if (filters.voertuigType && filters.voertuigType !== '') {
-            params.append('voertuigType', filters.voertuigType);
+                throw new Error("Fout bij het maken van huurverzoek");
+            }
+            return awaitresponse.json();
+        } catch (error) {
+            console.error("Fout bij het maken van huurverzoek:", error);
+            throw error;
         }
+    };
+    export const fetchHuurgeschiedenis = async (filters) => {
+        try {
+            const token = sessionStorage.getItem('jwtToken');
+            if (!token) {
+                throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+            }
 
-        const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis?${params.toString()}`, {
-            method: 'GET',
-            headers: {
-                "Authorization": `Bearer ${token}`, // Voeg het JWT-token toe in de header
-            },
-        });
+            const params = new URLSearchParams();
 
-        if (!response.ok) {
-            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+            // Voeg alleen filters toe als ze een waarde hebben
+            if (filters.startDatum) params.append('startDatum', filters.startDatum);
+            if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+            // Voeg voertuigType alleen toe als het niet leeg is
+            if (filters.voertuigType && filters.voertuigType !== '') {
+                params.append('voertuigType', filters.voertuigType);
+            }
+
+            const response = await fetch(`${BASE_URL}/Huurverzoeken/geschiedenis?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`, // Voeg het JWT-token toe in de header
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
+    };
 
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
+    export const fetchHuurgeschiedenisBedrijf = async (filters) => {
+        try {
+            const token = sessionStorage.getItem('jwtToken');
+            if (!token) {
+                throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+            }
 
-export const fetchHuurgeschiedenisBedrijf = async (filters) => {
-    try {
-        const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
+            const params = new URLSearchParams();
+
+
+            if (filters.startDatum) params.append('startDatum', filters.startDatum);
+            if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
+
+
+            if (filters.voertuigType && filters.voertuigType !== '') {
+                params.append('voertuigType', filters.voertuigType);
+            }
+
+            const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
+    };
+    export const fetchMedewerkers = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`, // Zet de juiste token als header
+                },
+            });
 
-        const params = new URLSearchParams();
+            if (!response.ok) {
+                throw new Error('Er is een probleem met het ophalen van de medewerkers.');
+            }
 
-        if (filters.startDatum) params.append('startDatum', filters.startDatum);
-        if (filters.eindDatum) params.append('eindDatum', filters.eindDatum);
-
-        if (filters.voertuigType && filters.voertuigType !== '') {
-            params.append('voertuigType', filters.voertuigType);
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
+    };
+    /** INNAME & UITGIFTE FUNCTIONS **/
+    export const createInname = async (innameData) => {
+        try {
+            const response = await fetch(UITGIFTE_INNAME_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(innameData),
+            });
 
-        const response = await fetch(`${BASE_URL}/Huurverzoeken/bedrijf/huurgeschiedenis?${params.toString()}`, {
-            method: 'GET',
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Fout bij ophalen huurgeschiedenis: ${response.statusText}`);
+            if (!response.ok) {
+                throw new Error("Fout bij het registreren van de inname");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Fout bij het registreren van inname:", error);
+            throw error;
         }
+    };
 
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
+    export const createUitgifte = async (uitgifteData) => {
+        try {
+            const response = await fetch(UITGIFTE_INNAME_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(uitgifteData),
+            });
 
-export const fetchMedewerkers = async () => {
-    try {
-        const response = await fetch(`${BASE_URL}/Abonnement/medewerkers`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Zet de juiste token als header
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Er is een probleem met het ophalen van de medewerkers.');
+            if (!response.ok) {
+                throw new Error("Fout bij het registreren van de uitgifte");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Fout bij het registreren van uitgifte:", error);
+            throw error;
         }
-
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-
-/** INNAME & UITGIFTE FUNCTIONS **/
-export const createInname = async (innameData) => {
-    try {
-        const response = await fetch(INNAME_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(innameData),
-        });
-
-        if (!response.ok) {
-            throw new Error("Fout bij het registreren van de inname");
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Fout bij het registreren van inname:", error);
-        throw error;
-    }
-};
-
-export const createUitgifte = async (uitgifteData) => {
-    try {
-        const response = await fetch(UITGIFTE_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(uitgifteData),
-        });
-
-        if (!response.ok) {
-            throw new Error("Fout bij het registreren van de uitgifte");
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Fout bij het registreren van uitgifte:", error);
-        throw error;
-    }
-};
+    };

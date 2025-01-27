@@ -253,15 +253,31 @@ namespace WebApplication1.Controllers
                 return NotFound(new { message = "Abonnement niet gevonden." });
             }
 
+            // Controleer of er al een toekomstige wijziging gepland is
+            if (abonnement.ToekomstigAbonnementType != null && abonnement.WijzigingIngangsdatum > DateTime.UtcNow)
+            {
+                return BadRequest(new
+                {
+                    message = "Er is al een wijziging gepland die van kracht wordt op " + abonnement.WijzigingIngangsdatum?.ToString("dd-MM-yyyy")
+                });
+            }
+
             // Bereken de eerste dag van de volgende maand
             DateTime eersteDagVolgendeMaand = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).AddMonths(1);
 
             abonnement.ToekomstigAbonnementType = abonnementDto.NieuwAbonnementType;
             abonnement.ToekomstigeKosten = abonnementDto.NieuweKosten;
             abonnement.WijzigingIngangsdatum = eersteDagVolgendeMaand;
-
             abonnement.LaatstGewijzigdOp = DateTime.UtcNow;
 
+            var notificatie = new Notificatie
+            {
+                GebruikerId = userId,
+                Bericht = $"Uw abonnement wordt gewijzigd naar '{abonnementDto.NieuwAbonnementType}' met een maandelijkse kost van €{abonnementDto.NieuweKosten:F2}. " +
+              $"Deze wijziging gaat in op {eersteDagVolgendeMaand:dd-MM-yyyy}.",
+            };
+
+            _context.Notificaties.Add(notificatie);
             await _context.SaveChangesAsync();
 
             return Ok(new

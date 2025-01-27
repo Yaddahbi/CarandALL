@@ -103,6 +103,89 @@ namespace WebApplication1.Controllers
 
             return NoContent();
         }
+        [HttpPut("{id}/uitgifte")]
+        public async Task<IActionResult> GeefVoertuigUit(int id, [FromBody] UitgifteInnameDto uitgifteInnameDto)
+        {
+            var huurverzoek = await _context.Huurverzoeken
+                .Include(h => h.Voertuig)
+                .FirstOrDefaultAsync(h => h.HuurverzoekId == id);
+
+            if (huurverzoek == null)
+            {
+                return NotFound("Huurverzoek niet gevonden.");
+            }
+
+            if (huurverzoek.Status != "Goedgekeurd")
+            {
+                return BadRequest("Huurverzoek moet goedgekeurd zijn voordat het voertuig kan worden uitgegeven.");
+            }
+
+            huurverzoek.Status = "Uitgegeven";
+            huurverzoek.Voertuig.Kilometerstand = uitgifteInnameDto.Kilometerstand ?? huurverzoek.Voertuig.Kilometerstand;
+
+            if (!string.IsNullOrEmpty(uitgifteInnameDto.Opmerkingen))
+            {
+                huurverzoek.Opmerkingen = uitgifteInnameDto.Opmerkingen;
+            }
+
+            _context.Huurverzoeken.Update(huurverzoek);
+            _context.Voertuigen.Update(huurverzoek.Voertuig);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        
+        [HttpPut("{id}/inname")]
+        public async Task<IActionResult> VerwerkVoertuigIntake(int id, [FromBody] UitgifteInnameDto UitgifteInnameDto)
+        {
+            var huurverzoek = await _context.Huurverzoeken
+                .Include(h => h.Voertuig)
+                .FirstOrDefaultAsync(h => h.HuurverzoekId == id);
+
+            if (huurverzoek == null)
+            {
+                return NotFound("Huurverzoek niet gevonden.");
+            }
+
+            if (huurverzoek.Status != "Uitgegeven")
+            {
+                return BadRequest("Voertuig moet zijn uitgegeven voordat het kan worden ingenomen.");
+            }
+
+            huurverzoek.Status = "Teruggebracht";
+            huurverzoek.Voertuig.Kilometerstand = UitgifteInnameDto.Kilometerstand;
+
+            if (!string.IsNullOrEmpty(UitgifteInnameDto.Opmerkingen))
+            {
+                huurverzoek.Opmerkingen += $" Intake opmerkingen: {UitgifteInnameDto.Opmerkingen}";
+            }
+
+            _context.Huurverzoeken.Update(huurverzoek);
+            _context.Voertuigen.Update(huurverzoek.Voertuig);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        
+        [HttpGet("goedgekeurd")]
+        public async Task<ActionResult<IEnumerable<Huurverzoek>>> GetGoedgekeurdeHuurverzoeken()
+        {
+            var goedgekeurdeHuurverzoeken = await _context.Huurverzoeken
+                .Include(h => h.Voertuig)
+                .Where(h => h.Status == "Goedgekeurd")
+                .Select(h => new
+                {
+                    h.HuurverzoekId,
+                    h.StartDatum,
+                    h.EindDatum,
+                    h.VoertuigId,
+                    VoertuigMerk = h.Voertuig.Merk,
+                    VoertuigType = h.Voertuig.Type,
+                })
+                .ToListAsync();
+
+            return Ok(goedgekeurdeHuurverzoeken);
+        }
 
 
         [Authorize]  
@@ -200,8 +283,6 @@ namespace WebApplication1.Controllers
 
             return Ok(verzoekenGroupedByStatus);
         }
-
-
         [Authorize]
 
         [HttpPost]

@@ -18,7 +18,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    background: url('../images/notificatie.jpg') 
+    background: url('../images/notificatie.jpg'); 
+    margin-bottom: 0px !important;
 }
 .notificaties-container {
     max-width: 800px;

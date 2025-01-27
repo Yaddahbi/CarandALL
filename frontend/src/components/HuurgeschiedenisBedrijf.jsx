@@ -51,7 +51,8 @@ const HuurgeschiedenisBedrijf = () => {
         <>
             <section className="huurgeschiedenis-hero">
                 <div className="container huurgeschiedenis">
-                    <h1>Huurgeschiedenis Beheerder</h1>
+                    <h1>Huurgeschiedenis</h1>
+                    <h2>medewerkers</h2>
                     <p>Bekijk de huurgeschiedenis van medewerkers en beheer hun huuraanvragen.</p>
                 </div>
             </section>
@@ -147,7 +148,7 @@ const HuurgeschiedenisBedrijf = () => {
                                 );
                             })
                         ) : (
-                            <p>Geen huurverzoeken gevonden.</p>
+                            <p className= "pgeenhv">Geen huurverzoeken gevonden.</p>
                         )}
                     </div>
                 )}
