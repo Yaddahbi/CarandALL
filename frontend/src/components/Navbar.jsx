@@ -62,6 +62,11 @@ const Navbar = () => {
                             <Link to="/voertuigstatus">Voertuigstatus Overzicht</Link>
                         </>
                     )}
+                    {!user && (
+                        <>
+                            <Link to="/voertuigen">Voertuigen</Link>
+                        </>
+                    )}
                   
                 </div>
             </div>

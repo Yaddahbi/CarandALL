@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import "../style/Notificatie.css"; 
+import "../style/Notificatie.css";
 
 const Notificaties = () => {
     const [notificaties, setNotificaties] = useState([]);
@@ -33,21 +33,33 @@ const Notificaties = () => {
     }, []);
 
     return (
-        <div className="notificaties-page-wrapper">
+        <main className="notificaties-page-wrapper" aria-labelledby="notificaties-title">
             <div className="notificaties-container">
-                <h2 className="notificaties-title">Uw Notificaties</h2>
-                <ul className="notificaties-list">
-                    {notificaties.map((notificatie) => (
-                        <li className="notificatie-item" key={notificatie.id}>
-                            <span className="notificatie-bericht">{notificatie.bericht}</span>
-                            <span className="notificatie-datum">{new Date(notificatie.datumTijd).toLocaleString()}</span>
-                        </li>
-                    ))}
-                </ul>
+                <h2 id="notificaties-title" className="notificaties-title">Uw Notificaties</h2>
+                {notificaties.length > 0 ? (
+                    <ul className="notificaties-list" role="list">
+                        {notificaties.map((notificatie) => (
+                            <li
+                                className="notificatie-item"
+                                key={notificatie.id}
+                                tabIndex={0}
+                                aria-label={`Notificatie: ${notificatie.bericht}, Datum: ${new Date(notificatie.datumTijd).toLocaleString()}`}
+                            >
+                                <span className="notificatie-bericht">
+                                    {notificatie.bericht}
+                                </span>
+                                <span className="notificatie-datum">
+                                    {new Date(notificatie.datumTijd).toLocaleString()}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p role="alert" className="geen-notificaties">Geen notificaties beschikbaar.</p>
+                )}
             </div>
-        </div>
+        </main>
     );
-
 };
 
 export default Notificaties;

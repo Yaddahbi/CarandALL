@@ -55,9 +55,9 @@ color: #222222;
 }
 
 
-.container {
-   margin-bottom: 50px;
-}
+    .wagenparkbeheer-pagina .container {
+        margin-bottom: 50px;
+    }
 
 .page-header {
     color: #f7f7f7;
