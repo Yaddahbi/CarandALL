@@ -35,11 +35,12 @@ namespace WebApplication1.Models
         [Column(TypeName = "decimal(18, 2)")] 
         [Range(0, double.MaxValue, ErrorMessage = "Ongeldige prijs")]
         public decimal Prijs { get; set; }
+        public string Kilometerstand  { get; set; }
 
         [JsonIgnore]
         public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
         [JsonIgnore]
-        public List<Schade> Schades { get; set; }
+        public List<Schade> Schades { get; set; } = new List<Schade>();
         [JsonIgnore]
         public List<Uitgifte> Uitgiftes { get; set; } = new List<Uitgifte>(); 
         [JsonIgnore]
@@ -50,6 +51,7 @@ namespace WebApplication1.Models
             Uitgiftes = new List<Uitgifte>();
             Innames = new List<Inname>();
             Huurverzoeken = new List<Huurverzoek>();
+            Schades = new List<Schade>();
         }
 
         [StringLength(500, ErrorMessage = "Opmerkingen mogen maximaal 500 tekens bevatten")]
