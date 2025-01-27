@@ -85,7 +85,7 @@ const InnameVoertuig = ({ geselecteerdeUitgifte }) => {
             {/* Als 'Ja' wordt gekozen, toon een knop om schademelding te maken */}
             {schadeOptie === 'Ja' && (
                 <div>
-                    <button onClick={() => navigate('/schade/toevoegen')}>Schademelding</button>
+                    <button onClick={() => navigate('/schades/toevoegen')}>Schademelding</button>
                 </div>
             )}
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
