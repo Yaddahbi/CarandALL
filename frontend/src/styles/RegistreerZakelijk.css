@@ -1,90 +1,81 @@
 .regz {
-    background-color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
 }
+
 .regz-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 25px;
-    background: #ffffff;
-    border: 2px solid #007bff;
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    overflow: visible; 
-    height: auto;
-}
-.form-display {
-   
-}
-.regz-container h2 {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
     text-align: center;
-    color: #007bff;
-    font-size: 24px;
-    margin-bottom: 25px;
 }
 
-.regz-container label {
+.regz-title {
+    font-size: 2rem;
+    color: #6f42c1; /* Paars thema */
+    margin-bottom: 1.5rem;
+}
+
+.regz-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group label {
     display: block;
-    font-weight: bold;
-    margin: 10px 0 5px;
-    color: #212529;
-}
-
-.regz-container input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
- button {
-    width: 100%;
-    padding: 12px;
-    background: #007bff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.regz-container button:hover {
-    background: #0056b3;
-    transform: scale(1.02);
-}
-.info-icon {
-    cursor: pointer;
-    margin-left: 8px;
-    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
     color: #555;
 }
 
-    .info-icon:hover {
-        color: #007bff;
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #6f42c1; /* Paars thema */
     }
 
-.tooltip {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    z-index: 1000;
-    margin-top: 8px;
-    font-size: 14px;
+.privacy-consent label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
     color: #333;
 }
 
-    .tooltip p {
-        margin: 4px 0;
-    }
-.regz-container .privacy-consent {
-    display: flex;
-    align-items: center;
-    gap: 8px !important; /* Ruimte tussen de checkbox en de tekst */
+.privacy-link {
+    color: #6f42c1;
+    cursor: pointer;
+    text-decoration: underline;
 }
+
+.regz-button {
+    background-color: #6f42c1;
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .regz-button:hover {
+        background-color: #5a349a;
+    }

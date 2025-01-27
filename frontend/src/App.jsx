@@ -7,9 +7,8 @@ import BeheerAanvragen from './components/BeheerAanvragen';
 import VoertuigenPagina from './components/VoertuigenPagina';
 import Abonnementen from './components/Abonnementen';
 import Wagenparkbeheer from './components/Wagenparkbeheer';
-import SchadeLijst from './components/SchadeLijst';
-import SchadeToevoegen from './components/SchadeToevoegen';
-import SchadePagina from './components/SchadePagina';
+import SchadeToevoegen from './components/SchadeToevoegen'; 
+import SchadePagina from './components/SchadePagina'; 
 import Huurgeschiedenis from './components/Huurgeschiedenis';
 import UitgifteVoertuig from './components/UitgifteVoertuig';
 import InnameVoertuig from './components/InnameVoertuig';
@@ -29,6 +28,9 @@ import { useAuth } from './AuthContext';
 import { Toaster } from 'sonner';
 import ProtectedRoute from './ProtectedRoute';
 import Unauthorized from './UnauthorizedPage';
+import SchadeDetails from "./components/SchadeDetails.jsx";
+import UitgifteInnameBeheren from "./components/UitgifteInnameBeheren.jsx";
+  
 
 const Reserveringen = () => <h1>Mijn reserveringen Page</h1>;
 
@@ -102,7 +104,8 @@ const routesConfig = [
     { path: '/wagenparkbeheer', component: Wagenparkbeheer, roles: ['BackofficeMedewerker'] },
     { path: '/uitgifte', component: UitgifteVoertuig, roles: ['FrontofficeMedewerker'] },
     { path: '/inname', component: InnameVoertuig, roles: ['FrontofficeMedewerker'] },
-    { path: '/schades/lijst', component: SchadeLijst, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
+    { path: '/uitgifteinnamebeheren', component: UitgifteInnameBeheren, roles: ['FrontofficeMedewerker'] },
+    { path: '/schades/Details', component: SchadeDetails, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/schades/toevoegen', component: SchadeToevoegen, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/overzicht-verhuurde-voertuigen', component: VerhuurdeVoertuigen, roles: ['Wagenparkbeheerder'] },
     { path: '/voertuigstatus', component: VoertuigStatusOverzicht, roles: ['Wagenparkbeheerder'] },

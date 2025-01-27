@@ -1,0 +1,280 @@
+/* Algemene stijlen */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Formulierstijl */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-form label {
+    font-size: 16px;
+    color: #444;
+}
+
+.user-form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.user-form input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.update-button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.status-message {
+    text-align: center;
+    color: #28a745;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+/* Privacy link */
+.privacy-link-container {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.privacy-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.privacy-link:hover {
+    color: #0056b3;
+}
+
+/* Responsief ontwerp */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .user-form {
+        gap: 10px;
+    }
+
+    .user-form input {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .update-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 18px;
+    }
+
+    .user-form input {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .update-button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .privacy-link-container {
+        font-size: 12px;
+    }
+}
+/* Algemene stijlen */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Formulierstijl */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-form label {
+    font-size: 16px;
+    color: #444;
+}
+
+.user-form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.user-form input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.update-button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.status-message {
+    text-align: center;
+    color: #28a745;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+/* Privacy link */
+.privacy-link-container {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.privacy-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.privacy-link:hover {
+    color: #0056b3;
+}
+
+/* Responsief ontwerp */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .user-form {
+        gap: 10px;
+    }
+
+    .user-form input {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .update-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 18px;
+    }
+
+    .user-form input {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .update-button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .privacy-link-container {
+        font-size: 12px;
+    }
+}

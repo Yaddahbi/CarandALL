@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "FrontOffice")]
     [Route("api/[controller]")]
     [ApiController]
     public class UitgiftesController : ControllerBase
@@ -38,83 +39,63 @@ namespace WebApplication1.Controllers
 
             if (uitgifte == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Uitgifte niet gevonden" });
             }
-
-            return uitgifte;
+            return Ok(new
+            {
+                uitgifte.UitgifteID,
+                uitgifte.VoertuigID,
+                Voertuig = uitgifte.Voertuig.Soort,
+                uitgifte.User.Naam,
+                uitgifte.User.Email,
+                uitgifte.User.Telefoonnummer,
+                uitgifte.Status,
+                uitgifte.DatumUitgifte,
+                uitgifte.BeginKilometerstand,
+                uitgifte.Opmerkingen
+            });
         }
 
-      
-        [HttpPost]
-        public async Task<ActionResult<Uitgifte>> PostUitgifte(Uitgifte uitgifte)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var voertuig = await _context.Voertuigen.FindAsync(uitgifte.VoertuigID);
-            if (voertuig == null)
-            {
-                return NotFound("Voertuig niet gevonden.");
-            }
-            
-            var huurder = await _context.Users.FindAsync(uitgifte.HuurderID);
-            if (huurder == null)
-            {
-                return NotFound("Huurder niet gevonden.");
-            }
-            
-            uitgifte.Status = "Uitgegeven"; 
-            uitgifte.DatumUitgifte = DateTime.Now; 
-
-            _context.Uitgiftes.Add(uitgifte);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUitgifte", new { id = uitgifte.UitgifteID }, uitgifte);
-        }
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUitgifte(int id, Uitgifte uitgifte)
-        {
-            if (id != uitgifte.UitgifteID)
-            {
-                return BadRequest("IDs komen niet overeen.");
-            }
-
-            _context.Entry(uitgifte).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UitgifteExists(id))
-                {
-                    return NotFound("Uitgifte niet gevonden.");
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-        
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUitgifte(int id)
+        // Bevestig uitgifte
+        [HttpPut("bevestigen/{id}")]
+        public async Task<IActionResult> BevestigUitgifte(int id, [FromBody] Uitgifte uitgifteDetails)
         {
             var uitgifte = await _context.Uitgiftes.FindAsync(id);
             if (uitgifte == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Uitgifte niet gevonden" });
+            }
+
+            // Werk de uitgifte details bij
+            uitgifte.BeginKilometerstand = uitgifteDetails.BeginKilometerstand;
+            uitgifte.Opmerkingen = uitgifteDetails.Opmerkingen;
+            uitgifte.Status = "Uitgegeven";
+            uitgifte.DatumUitgifte = DateTime.Now;
+
+            var voertuig = await _context.Voertuigen.FindAsync(uitgifte.VoertuigID);
+            if (voertuig != null)
+            {
+                voertuig.Status = "Uitgegeven"; // Verander de status van het voertuig
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Uitgifte succesvol bevestigd" });
+        }
+        
+        // Verwijder uitgifte
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> VerwijderUitgifte(int id)
+        {
+            var uitgifte = await _context.Uitgiftes.FindAsync(id);
+            if (uitgifte == null)
+            {
+                return NotFound(new { message = "Uitgifte niet gevonden" });
             }
 
             _context.Uitgiftes.Remove(uitgifte);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { message = "Uitgifte succesvol verwijderd" });
         }
 
         private bool UitgifteExists(int id)

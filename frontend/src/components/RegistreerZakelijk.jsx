@@ -32,9 +32,7 @@ function RegistreerZakelijk() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isChecked) {
-            toast('U moet akkoord gaan met de privacyverklaring om verder te gaan.', {
-                type: 'error',
-            });
+            toast.error("U moet akkoord gaan met de privacyverklaring om verder te gaan.");
             return;
         }
 
@@ -45,50 +43,53 @@ function RegistreerZakelijk() {
         });
 
         if (response.ok) {
-            toast(`Bedrijfsaccount succesvol aangemaakt!`, {
-                description: "U kunt nu inloggen.",
-                type: "success",
-            });
+            toast.success("Bedrijfsaccount succesvol aangemaakt! U kunt nu inloggen.");
             navigate("/login");
         } else {
             const data = await response.json();
-            if (data.errors) {
-                toast(`Fouten: ${data.errors.join(", ")}`, {
-                    type: "error",
-                });
-            } else {
-                toast("Er is iets fout gegaan", {
-                    type: "error",
-                });
-            }
+            toast.error(data.errors ? `Fouten: ${data.errors.join(", ")}` : "Er is iets fout gegaan.");
         }
     };
 
     return (
         <div className="regz">
             <div className="regz-container">
-                <h2>Registreer Zakelijk</h2>
-                <form className="form-display" onSubmit={handleSubmit}>
-                    <label>E-mail:</label>
-                    <input type="email" name="email" onChange={handleChange} required />
+                <h2 className="regz-title">Registreer Zakelijk</h2>
+                <form className="regz-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email">E-mail:</label>
+                        <input id="email" type="email" name="email" onChange={handleChange} required />
+                    </div>
 
-                    <label>Wachtwoord:</label>
-                    <input type="password" name="wachtwoord" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="password">Wachtwoord:</label>
+                        <input id="password" type="password" name="wachtwoord" onChange={handleChange} required />
+                    </div>
 
-                    <label>Volledige Naam:</label>
-                    <input type="text" name="naam" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="naam">Volledige Naam:</label>
+                        <input id="naam" type="text" name="naam" onChange={handleChange} required />
+                    </div>
 
-                    <label>Adres:</label>
-                    <input type="text" name="adres" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="adres">Adres:</label>
+                        <input id="adres" type="text" name="adres" onChange={handleChange} required />
+                    </div>
 
-                    <label>Telefoonnummer:</label>
-                    <input type="text" name="telefoonnummer" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="telefoonnummer">Telefoonnummer:</label>
+                        <input id="telefoonnummer" type="text" name="telefoonnummer" onChange={handleChange} required />
+                    </div>
 
-                    <label>Bedrijfsnaam:</label>
-                    <input type="text" name="bedrijfsNaam" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="bedrijfsNaam">Bedrijfsnaam:</label>
+                        <input id="bedrijfsNaam" type="text" name="bedrijfsNaam" onChange={handleChange} required />
+                    </div>
 
-                    <label>KVK-nummer:</label>
-                    <input type="text" name="kvkNummer" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="kvkNummer">KVK-nummer:</label>
+                        <input id="kvkNummer" type="text" name="kvkNummer" onChange={handleChange} required />
+                    </div>
 
                     <label>
                         Abonnementstype:
@@ -129,10 +130,12 @@ function RegistreerZakelijk() {
                             >
                                 privacyverklaring
                             </span>.
-                        </span>
-                    </label>
+                        </label>
+                    </div>
 
-                    <button type="submit">Account aanmaken</button>
+                    <button type="submit" className="regz-button">
+                        Account aanmaken
+                    </button>
                 </form>
             </div>
         </div>

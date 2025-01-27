@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { CSVLink } from "react-csv";
-import { saveAs } from 'file-saver';
+//import { CSVLink } from "react-csv";
+//import { saveAs } from 'file-saver';
 
 const VerhuurdeVoertuigen = () => {
     const [vehicles, setVehicles] = useState([]);

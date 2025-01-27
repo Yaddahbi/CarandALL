@@ -256,7 +256,38 @@ namespace WebApplication1.Controllers
 
                 return Ok(user);
             }
+[Authorize]
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
 
+            if (user == null)
+            {
+                return NotFound(new { message = "Gebruiker niet gevonden." });
+            }
+
+            // Verplaats de gebruiker naar de "verwijderde gebruikers" tabel
+            var deletedUser = new DeletedUser
+            {
+                Id = user.Id,
+                Naam = user.Naam,
+                Email = user.Email,
+                Adres = user.Adres,
+                Rol = user.Rol,
+                BedrijfsNaam = user.BedrijfsNaam,
+                KvkNummer = user.KvkNummer,
+                BedrijfsAbonnementId = user.BedrijfsAbonnementId,
+                DeletedAt = DateTime.UtcNow
+            };
+
+            _context.DeletedUsers.Add(deletedUser);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Account succesvol verwijderd." });
+        }
 
         }
     }
