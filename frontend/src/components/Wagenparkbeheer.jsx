@@ -3,7 +3,7 @@ import "../style/Wagenparkbeheer.css";
 
 const Wagenparkbeheer = () => {
     const [voertuigen, setVoertuigen] = useState([]);
-    const [voertuig, setVoertuig] = useState({ merk: '', type: '', kleur: '', aanschafjaar: '', kenteken: '', opmerkingen: '' });
+    const [voertuig, setVoertuig] = useState({ soort: '', merk: '', type: '', kleur: '', aanschafjaar: '', kenteken: '', prijs: '', opmerkingen: '' });
     const [bewerken, setBewerken] = useState(false);
     const [bewerkVoertuigId, setBewerkVoertuigId] = useState(null);
 
@@ -20,7 +20,7 @@ const Wagenparkbeheer = () => {
     }, []);
 
     const handleOpslaan = () => {
-        if (!voertuig.merk || !voertuig.type || !voertuig.kleur || !voertuig.aanschafjaar || !voertuig.kenteken) {
+        if (!voertuig.soort || !voertuig.merk || !voertuig.type || !voertuig.kleur || !voertuig.aanschafjaar || !voertuig.kenteken || !voertuig.prijs) {
             alert("Alle velden (behalve opmerkingen) zijn verplicht!");
             return;
         }
@@ -50,7 +50,7 @@ const Wagenparkbeheer = () => {
                     setVoertuigen([...voertuigen, opgeslagenVoertuig]);
                 }
 
-                setVoertuig({ merk: '', type: '', kleur: '', aanschafjaar: '', kenteken: '', opmerkingen: '' });
+                setVoertuig({ soort: '', merk: '', type: '', kleur: '', aanschafjaar: '', kenteken: '', prijs: '', opmerkingen: '' });
                 setBewerken(false);
                 setBewerkVoertuigId(null);
             })
@@ -85,70 +85,91 @@ const Wagenparkbeheer = () => {
             <div className="container-wagenparkbeheer">
                 <div className="wagenparkbeheer">
                     <div className="form-row">
-                    <div>
-                        <label htmlFor="merk">Merk</label>
-                        <input
-                            id="merk"
-                            placeholder="Merk"
-                            value={voertuig.merk}
-                            onChange={(e) => setVoertuig({ ...voertuig, merk: e.target.value })}
-                            aria-required="true"
+                        <div>
+                            <label htmlFor="soort">Soort</label>
+                            <input
+                                id="soort"
+                                placeholder="Soort"
+                                value={voertuig.soort}
+                                onChange={(e) => setVoertuig({ ...voertuig, soort: e.target.value })}
+                                aria-required="true"
                             />
                         </div>
                         <div>
-                        <label htmlFor="type">Type</label>
-                        <input
-                            id="type"
-                            placeholder="Type"
-                            value={voertuig.type}
-                            onChange={(e) => setVoertuig({ ...voertuig, type: e.target.value })}
-                            aria-required="true"
+                            <label htmlFor="merk">Merk</label>
+                            <input
+                                id="merk"
+                                placeholder="Merk"
+                                value={voertuig.merk}
+                                onChange={(e) => setVoertuig({ ...voertuig, merk: e.target.value })}
+                                aria-required="true"
                             />
                         </div>
                         <div>
-                        <label htmlFor="kleur">Kleur</label>
-                        <input
-                            id="kleur"
-                            placeholder="Kleur"
-                            value={voertuig.kleur}
-                            onChange={(e) => setVoertuig({ ...voertuig, kleur: e.target.value })}
-                            aria-required="true"
+                            <label htmlFor="type">Type</label>
+                            <input
+                                id="type"
+                                placeholder="Type"
+                                value={voertuig.type}
+                                onChange={(e) => setVoertuig({ ...voertuig, type: e.target.value })}
+                                aria-required="true"
                             />
                         </div>
                     </div>
 
                     <div className="form-row-2">
-                    <div>
-                        <label htmlFor="aanschafjaar">Bouwjaar</label>
-                        <input
-                            id="aanschafjaar"
-                            placeholder="Bouwjaar"
-                            value={voertuig.aanschafjaar}
-                            onChange={(e) => setVoertuig({ ...voertuig, aanschafjaar: e.target.value })}
-                            aria-required="true"
+                        <div>
+                            <label htmlFor="kleur">Kleur</label>
+                            <input
+                                id="kleur"
+                                placeholder="Kleur"
+                                value={voertuig.kleur}
+                                onChange={(e) => setVoertuig({ ...voertuig, kleur: e.target.value })}
+                                aria-required="true"
                             />
                         </div>
                         <div>
-                        <label htmlFor="kenteken">Kenteken</label>
-                        <input
-                            id="kenteken"
-                            placeholder="Kenteken"
-                            value={voertuig.kenteken}
-                            onChange={(e) => setVoertuig({ ...voertuig, kenteken: e.target.value })}
-                            aria-required="true"
+                            <label htmlFor="aanschafjaar">Aanschafjaar</label>
+                            <input
+                                id="aanschafjaar"
+                                placeholder="Aanschafjaar"
+                                value={voertuig.aanschafjaar}
+                                onChange={(e) => setVoertuig({ ...voertuig, aanschafjaar: e.target.value })}
+                                aria-required="true"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="kenteken">Kenteken</label>
+                            <input
+                                id="kenteken"
+                                placeholder="Kenteken"
+                                value={voertuig.kenteken}
+                                onChange={(e) => setVoertuig({ ...voertuig, kenteken: e.target.value })}
+                                aria-required="true"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="prijs">Prijs</label>
+                            <input
+                                id="prijs"
+                                placeholder="Prijs"
+                                type="number"
+                                value={voertuig.prijs}
+                                onChange={(e) => setVoertuig({ ...voertuig, prijs: e.target.value })}
+                                aria-required="true"
                             />
                         </div>
                     </div>
                     <div className="form-row-1">
-                    <div>
-                        <label htmlFor="opmerkingen">Opmerkingen</label>
-                        <textarea
-                            id="opmerkingen"
-                            placeholder="Opmerkingen"
-                            value={voertuig.opmerkingen}
-                            onChange={(e) => setVoertuig({ ...voertuig, opmerkingen: e.target.value })}
-                            rows="5"
-                            style={{ resize: 'vertical' }}
+                        <div>
+                            <label htmlFor="opmerkingen">Opmerkingen</label>
+                            <textarea
+                                id="opmerkingen"
+                                placeholder="Opmerkingen"
+                                value={voertuig.opmerkingen}
+                                onChange={(e) => setVoertuig({ ...voertuig, opmerkingen: e.target.value })}
+                                rows="5"
+                                style={{ resize: 'vertical' }}
                             ></textarea>
                         </div>
                     </div>
@@ -162,22 +183,26 @@ const Wagenparkbeheer = () => {
                 <table>
                     <thead>
                         <tr>
+                            <th scope="col">Soort</th>
                             <th scope="col">Merk</th>
                             <th scope="col">Type</th>
                             <th scope="col">Kleur</th>
-                            <th scope="col">Bouwjaar</th>
+                            <th scope="col">Aanschafjaar</th>
                             <th scope="col">Kenteken</th>
+                            <th scope="col">Prijs</th>
                             <th scope="col">Acties</th>
                         </tr>
                     </thead>
                     <tbody>
                         {voertuigen.map((v) => (
                             <tr key={v.voertuigId}>
+                                <td>{v.soort}</td>
                                 <td>{v.merk}</td>
                                 <td>{v.type}</td>
                                 <td>{v.kleur}</td>
                                 <td>{v.aanschafjaar}</td>
                                 <td>{v.kenteken}</td>
+                                <td>{v.prijs}</td>
                                 <td>
                                     <button onClick={() => handleBewerk(v)} aria-label={`Wijzigen voertuig ${v.merk}`}>
                                         Wijzigen

@@ -54,35 +54,40 @@ function RegistreerParticulier() {
                     <div className="form-group">
                         <label htmlFor="email">E-mail:</label>
                         <input id="email" type="email" name="email" onChange={handleChange} required />
+                        <small>Vul een geldig e-mailadres in.</small>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Wachtwoord:</label>
                         <input id="password" type="password" name="wachtwoord" onChange={handleChange} required />
+                        <small>Minimaal 6 tekens, 1 hoofdletter en 1 speciaal teken.</small>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="naam">Volledige Naam:</label>
                         <input id="naam" type="text" name="naam" onChange={handleChange} required />
+                        <small>Gebruik uw voor- en achternaam.</small>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="adres">Adres:</label>
                         <input id="adres" type="text" name="adres" onChange={handleChange} required />
+                        <small>Vul uw volledige adres in, inclusief huisnummer en postcode.</small>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="telefoonnummer">Telefoonnummer:</label>
                         <input id="telefoonnummer" type="text" name="telefoonnummer" onChange={handleChange} required />
+                        <small>Voer een geldig telefoonnummer in.</small>
                     </div>
 
-                    <div className="form-group privacy-consent">
+                    <div className="privacy-consent">
                         <label>
                             <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
                             Ik ga akkoord met de{" "}
                             <span className="privacy-link" onClick={() => navigate("/privacy")}>
-                                privacyverklaring
-                            </span>.
+                                privacyverklaring.
+                            </span>
                         </label>
                     </div>
 

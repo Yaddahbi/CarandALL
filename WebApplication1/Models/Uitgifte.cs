@@ -4,7 +4,7 @@ public class Uitgifte
 {
     public int UitgifteID { get; set; }
     public int VoertuigID { get; set; }
-    public int UserID { get; set; }
+    public string HuurderId { get; set; }
     public string UserNaam { get; set; }
     public string UserEmail { get; set; }
     public string UserTelefoonnummer { get; set; }
@@ -15,7 +15,6 @@ public class Uitgifte
 
     public Voertuig Voertuig { get; set; }
     public  User User { get; set; }
-    public Huurverzoek Huurverzoek { get; set; }
     
     public Uitgifte()
     {
@@ -57,11 +56,10 @@ public class Uitgifte
     {
         if (user != null)
         {
-            user = user;
-            UserID = User.ID; 
+            user = user; 
             UserNaam = User.Naam;
             UserEmail = User.Email;
-            UserTelefoonnummer = User.Telefoonnummer;
+            UserTelefoonnummer = User.PhoneNumber;
         }
     }
 }

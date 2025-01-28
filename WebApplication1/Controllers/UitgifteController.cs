@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
                 Voertuig = uitgifte.Voertuig.Soort,
                 uitgifte.User.Naam,
                 uitgifte.User.Email,
-                uitgifte.User.Telefoonnummer,
+                uitgifte.User.PhoneNumber,
                 uitgifte.Status,
                 uitgifte.DatumUitgifte,
                 uitgifte.BeginKilometerstand,

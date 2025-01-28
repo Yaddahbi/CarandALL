@@ -199,58 +199,29 @@ namespace WebApplication1.Migrations
                     b.ToTable("Abonnementen");
                 });
 
-            /*modelBuilder.Entity("WebApplication1.Models.Bedrijf", b =>
+            modelBuilder.Entity("WebApplication1.Models.DeletedUser", b =>
                 {
-                    b.Property<int>("BedrijfId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BedrijfId"));
-
-                    b.Property<int>("AbonnementId")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Adres")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("KvkNummer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Naam")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BedrijfId");
-
-                    b.HasIndex("AbonnementId");
-
-                    b.ToTable("Bedrijven");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Gebruiker", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("BedrijfsAbonnementId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Adres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BedrijfsNaam")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KvkNummer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Naam")
@@ -261,18 +232,10 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Telefoonnummer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Wachtwoord")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Gebruikers");
-                });*/
+                    b.ToTable("DeletedUsers");
+                });
 
             modelBuilder.Entity("WebApplication1.Models.Huurverzoek", b =>
                 {
@@ -288,8 +251,8 @@ namespace WebApplication1.Migrations
                     b.Property<DateTime>("EindDatum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HuurderId")
-                        .HasColumnType("int");
+                    b.Property<string>("Opmerkingen")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDatum")
                         .HasColumnType("datetime2");
@@ -306,8 +269,6 @@ namespace WebApplication1.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("HuurverzoekId");
-
-                    b.HasIndex("HuurderId");
 
                     b.HasIndex("UserId");
 
@@ -327,11 +288,28 @@ namespace WebApplication1.Migrations
                     b.Property<DateTime>("DatumInname")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EindKilometerstand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("HeeftSchade")
                         .HasColumnType("bit");
 
-                    b.Property<int>("HuurderID")
-                        .HasColumnType("int");
+                    b.Property<string>("HuuderTelefoonnummer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HuurderEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HuurderID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("HuurderNaam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MedewerkerId")
                         .HasColumnType("int");
@@ -358,42 +336,33 @@ namespace WebApplication1.Migrations
                     b.ToTable("Innames");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Inname", b =>
+            modelBuilder.Entity("WebApplication1.Models.Medewerker", b =>
                 {
-                    b.Property<int>("InnameID")
+                    b.Property<int>("MedewerkerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InnameID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MedewerkerId"));
 
-                    b.Property<DateTime>("DatumInname")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("HeeftSchade")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("HuurderID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SchadeOpmerkingen")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("Naam")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VoertuigID")
-                        .HasColumnType("int");
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("InnameID");
+                    b.Property<string>("Wachtwoord")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("HuurderID");
+                    b.HasKey("MedewerkerId");
 
-                    b.HasIndex("VoertuigID");
-
-                    b.ToTable("Innames");
+                    b.ToTable("Medewerkers");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Notificatie", b =>
@@ -443,6 +412,9 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("InnameID")
+                        .HasColumnType("int");
+
                     b.Property<double>("Kosten")
                         .HasColumnType("float");
 
@@ -462,6 +434,8 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("SchadeId");
 
+                    b.HasIndex("InnameID");
+
                     b.HasIndex("MedewerkerId");
 
                     b.HasIndex("VoertuigId");
@@ -477,11 +451,16 @@ namespace WebApplication1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UitgifteID"));
 
+                    b.Property<string>("BeginKilometerstand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DatumUitgifte")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HuurderID")
-                        .HasColumnType("int");
+                    b.Property<string>("HuurderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("MedewerkerId")
                         .HasColumnType("int");
@@ -494,12 +473,24 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserNaam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserTelefoonnummer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("VoertuigID")
                         .HasColumnType("int");
 
                     b.HasKey("UitgifteID");
 
-                    b.HasIndex("HuurderID");
+                    b.HasIndex("HuurderId");
 
                     b.HasIndex("MedewerkerId");
 
@@ -611,6 +602,9 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Kilometerstand")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Kleur")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -694,23 +688,8 @@ namespace WebApplication1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Huurder", b =>
-                {
-                    b.HasOne("WebApplication1.Models.Bedrijf", "Bedrijf")
-                        .WithMany("Werknemers")
-                        .HasForeignKey("BedrijfId");
-
-                    b.Navigation("Bedrijf");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.Huurverzoek", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Huurder", "Huurder")
-                        .WithMany("Huurverzoeken")
-                        .HasForeignKey("HuurderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApplication1.Models.User", "User")
                         .WithMany("Huurverzoeken")
                         .HasForeignKey("UserId")
@@ -723,8 +702,6 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Huurder");
-
                     b.Navigation("User");
 
                     b.Navigation("Voertuig");
@@ -732,7 +709,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Inname", b =>
                 {
-                    b.HasOne("WebApplication1.Models.User", "Huurder")
+                    b.HasOne("WebApplication1.Models.User", "User")
                         .WithMany("Innames")
                         .HasForeignKey("HuurderID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -755,6 +732,10 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Schade", b =>
                 {
+                    b.HasOne("WebApplication1.Models.Inname", null)
+                        .WithMany("Schades")
+                        .HasForeignKey("InnameID");
+
                     b.HasOne("WebApplication1.Models.Medewerker", null)
                         .WithMany("Schademeldingen")
                         .HasForeignKey("MedewerkerId");
@@ -770,9 +751,9 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Uitgifte", b =>
                 {
-                    b.HasOne("WebApplication1.Models.User", "Huurder")
+                    b.HasOne("WebApplication1.Models.User", "User")
                         .WithMany("Uitgiftes")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("HuurderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -804,6 +785,21 @@ namespace WebApplication1.Migrations
                 {
                     b.Navigation("Medewerkers");
                 });
+
+            modelBuilder.Entity("WebApplication1.Models.Inname", b =>
+                {
+                    b.Navigation("Schades");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Medewerker", b =>
+                {
+                    b.Navigation("Innames");
+
+                    b.Navigation("Schademeldingen");
+
+                    b.Navigation("Uitgiftes");
+                });
+
             modelBuilder.Entity("WebApplication1.Models.User", b =>
                 {
                     b.Navigation("Huurverzoeken");
@@ -812,14 +808,6 @@ namespace WebApplication1.Migrations
 
                     b.Navigation("Uitgiftes");
                 });
-            modelBuilder.Entity("WebApplication1.Models.Medewerker", b =>
-            {
-                b.Navigation("Innames");
-
-                b.Navigation("Schademeldingen");
-
-                b.Navigation("Uitgiftes");
-            });
 
             modelBuilder.Entity("WebApplication1.Models.Voertuig", b =>
                 {

@@ -113,6 +113,7 @@ const KlantGegevens = () => {
     };
 
     return (
+        <div className="kgpage">
         <div className="user-form-container">
             <h2>Mijn Gegevens</h2>
             {error && <p className="error-message">{error}</p>} {/* Foutmeldingen */}
@@ -180,6 +181,7 @@ const KlantGegevens = () => {
             <button className="delete-button" onClick={handleDeleteAccount}>
                 Verwijder Account
             </button>
+            </div>
         </div>
     );
 };

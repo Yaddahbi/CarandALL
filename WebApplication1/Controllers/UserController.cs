@@ -271,7 +271,7 @@ namespace WebApplication1.Controllers
             // Verplaats de gebruiker naar de "verwijderde gebruikers" tabel
             var deletedUser = new DeletedUser
             {
-                Id = user.Id,
+                Id = userId,
                 Naam = user.Naam,
                 Email = user.Email,
                 Adres = user.Adres,

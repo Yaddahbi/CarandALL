@@ -78,13 +78,12 @@ const FooterWrapper = () => {
     const location = useLocation();
 
     const noFooterRoutes = [
-        '/login',
-        '/registreer-particulier',
-        '/registreer-zakelijk',
         '/registreer-medewerker',
         '/kies-account-type',
         '/unauthorized',
-        '/privacy'
+        '/privacy',
+        '/uitgifte',
+        '/inname',
     ];
    
     return !noFooterRoutes.includes(location.pathname) && <Footer />;
@@ -102,9 +101,11 @@ const routesConfig = [
     { path: '/notificaties', component: Notificaties, roles: ['Particulier', 'Zakelijk', 'ZakelijkeKlant'] },
     { path: '/schades', component: SchadePagina, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/wagenparkbeheer', component: Wagenparkbeheer, roles: ['BackofficeMedewerker'] },
+
     { path: '/uitgifte', component: UitgifteVoertuig, roles: ['FrontofficeMedewerker'] },
     { path: '/inname', component: InnameVoertuig, roles: ['FrontofficeMedewerker'] },
     { path: '/uitgifteinnamebeheren', component: UitgifteInnameBeheren, roles: ['FrontofficeMedewerker'] },
+
     { path: '/schades/Details', component: SchadeDetails, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/schades/toevoegen', component: SchadeToevoegen, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/overzicht-verhuurde-voertuigen', component: VerhuurdeVoertuigen, roles: ['Wagenparkbeheerder'] },

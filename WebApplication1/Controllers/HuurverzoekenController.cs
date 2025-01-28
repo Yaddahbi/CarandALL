@@ -331,7 +331,7 @@ namespace WebApplication1.Controllers
 public class HuurverzoekUpdateDto
     {
         public string Status { get; set; }
-        public string Reden  { get; set; }
+        public string? Reden  { get; set; }
     }
 
 }

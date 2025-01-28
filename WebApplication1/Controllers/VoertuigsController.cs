@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using WebApplication1;
 using WebApplication1.Models;
+using WebApplication1.Dto_s;
 
 namespace WebApplication1.Controllers
 {
@@ -121,12 +122,22 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        // POST: api/Voertuigs
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Voertuig>> PostVoertuig(Voertuig voertuig)
+        public async Task<ActionResult<Voertuig>> PostVoertuig(VoertuigDto voertuigDto)
         {
-            voertuig.Status = "Beschikbaar";
+            var voertuig = new Voertuig
+            {
+                Soort = voertuigDto.Soort,
+                Merk = voertuigDto.Merk,
+                Type = voertuigDto.Type,
+                Kenteken = voertuigDto.Kenteken,
+                Kleur = voertuigDto.Kleur,
+                Aanschafjaar = voertuigDto.Aanschafjaar,
+                Prijs = voertuigDto.Prijs,
+                Opmerkingen = voertuigDto.Opmerkingen,
+                Status = "Beschikbaar" 
+            };
+
             _context.Voertuigen.Add(voertuig);
             await _context.SaveChangesAsync();
 

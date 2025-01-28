@@ -161,7 +161,7 @@ const Huurgeschiedenis = () => {
                             huurgeschiedenis[status] && huurgeschiedenis[status].length > 0 ? (
                                 renderVerzoeken(status, huurgeschiedenis[status])
                             ) : (
-                                <p key={status}>Er zijn geen huurverzoeken met status "{status}".</p>
+                                <p key={status}>Er zijn geen huurverzoeken "{status}".</p>
                             )
                         )}
                     </div>

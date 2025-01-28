@@ -194,32 +194,6 @@ export const createHuurverzoek = async (huurverzoek) => {
     return data.url;
 };*/
 
-    /** HUURVERZOEK FUNCTIONS **/
-    export const createHuurverzoek = async (huurverzoek) => {
-        const token = sessionStorage.getItem('jwtToken');
-        if (!token) {
-            throw new Error("Token niet gevonden. Zorg ervoor dat je ingelogd bent.");
-        }
-        try {
-            const response = await fetch(HUURVERZOEK_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify(huurverzoek),
-            });
-
-            if (!response.ok) {
-
-                throw new Error("Fout bij het maken van huurverzoek");
-            }
-            return awaitresponse.json();
-        } catch (error) {
-            console.error("Fout bij het maken van huurverzoek:", error);
-            throw error;
-        }
-    };
     export const fetchHuurgeschiedenis = async (filters) => {
         try {
             const token = sessionStorage.getItem('jwtToken');

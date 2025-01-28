@@ -29,9 +29,10 @@ function Login() {
 
             if (response.ok) {
                 const data = await response.json();
-                login({ email: formData.email, role: data.role });
-                localStorage.setItem("jwtToken", data.token);
-                localStorage.setItem("userEmail", formData.email);
+                login({ email: formData.email, role: data.role, name: data.name,});
+                sessionStorage.setItem("jwtToken", data.token);
+                sessionStorage.setItem("userEmail", formData.email);
+                sessionStorage.setItem("userName", data.name); 
                 toast.success("Inloggen succesvol!");
                 navigate("/");
             } else {
@@ -46,44 +47,33 @@ function Login() {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-card">
-                <h2 className="login-title">Inloggen</h2>
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="email">E-mail:</label>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="Voer je e-mailadres in"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Wachtwoord:</label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Voer je wachtwoord in"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="login-button">
-                        Inloggen
-                    </button>
+        <div className="login-pagina">
+            <div className="loginform-container">
+                <h2>Inloggen</h2>
+                <form onSubmit={handleSubmit}>
+                    <label>E-mail:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <label>Wachtwoord:</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <button className="loginbtn" type="submit">Inloggen</button>
                 </form>
-                {error && <p className="error-message">{error}</p>}
-                <p className="signup-link">
-                    Nog geen account?{" "}
-                    <span onClick={() => navigate("/kies-account-type")} className="link-text">
-                        Account aanmaken
-                    </span>
+                { /*} {error && <p className="error">{error}</p>} { */}
+                <p>
+                    Nog geen account? <a onClick={() => navigate("/kies-account-type")}>Account aanmaken</a>
                 </p>
             </div>
         </div>

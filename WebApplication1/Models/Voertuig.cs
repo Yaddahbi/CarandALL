@@ -7,6 +7,7 @@ namespace WebApplication1.Models
 {
     public class Voertuig
     {
+        [Key]
         public int VoertuigId { get; set; }
 
         [Required]
@@ -35,7 +36,7 @@ namespace WebApplication1.Models
         [Column(TypeName = "decimal(18, 2)")] 
         [Range(0, double.MaxValue, ErrorMessage = "Ongeldige prijs")]
         public decimal Prijs { get; set; }
-        public string Kilometerstand  { get; set; }
+        public string? Kilometerstand  { get; set; }
 
         [JsonIgnore]
         public List<Huurverzoek> Huurverzoeken { get; set; } = new List<Huurverzoek>();
