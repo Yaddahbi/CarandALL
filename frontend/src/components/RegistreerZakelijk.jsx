@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RegistreerZakelijk.css";
 import { toast } from "sonner";
@@ -129,16 +129,16 @@ function RegistreerZakelijk() {
                                 }}
                             >
                                 privacyverklaring
-                            </span>.
-                        </label>
-                    </div>
-
+                            </span>
+                        </span>
+                    </label>
+                   
                     <button type="submit" className="regz-button">
                         Account aanmaken
                     </button>
                 </form>
             </div>
-        </div>
+     </div > 
     );
 }
 
