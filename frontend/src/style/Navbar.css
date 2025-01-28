@@ -90,10 +90,7 @@
     position: relative;
 }
 
-    /* Onderstreping bij hover */
-    .menu a:hover, .navbar-right a:hover {
-        text-decoration: underline; /* Voeg onderstreping toe bij hover */
-    }
+
 
     /* Smooth hover effect met ::after */
     .navbar-right a::after {

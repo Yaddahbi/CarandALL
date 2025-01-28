@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../style/Footer.css";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+
 
 const Footer = () => {
     const navigate = useNavigate();
@@ -25,11 +27,28 @@ const Footer = () => {
                     <p>
                         Lees meer over hoe we uw gegevens verwerken en beveiligen. Klik hieronder voor de volledige privacyverklaring.
                     </p>
-                    <button onClick={handlePrivacyClick} className="privacy-button">
+                    <p onClick={handlePrivacyClick} className="privacy-button">
                         Privacyverklaring
-                    </button>
+                    </p>
                 </div>
-            </div>
+             <div className="footer-section social-media">
+                    <h4>Volg ons</h4>
+                    <div className="social-icons">
+                        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                            <FaFacebook className="social-icon" />
+                        </a>
+                        <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+                            <FaTwitter className="social-icon" />
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                            <FaInstagram className="social-icon" />
+                        </a>
+                        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+                            <FaLinkedin className="social-icon" />
+                        </a>
+                    </div>
+                </div>
+                </div>
             <div className="footer-bottom">
                 <p>&copy; 2025 CarAndAll. Alle rechten voorbehouden.</p>
             </div>
