@@ -16,7 +16,6 @@ const HuurgeschiedenisBedrijf = () => {
 
     const voertuigTypen = ['Auto'];
 
-    // Functie om de huurgeschiedenis op te halen
     const loadHuurgeschiedenis = async () => {
         setLoading(true);
         setError(null);
@@ -25,7 +24,6 @@ const HuurgeschiedenisBedrijf = () => {
             const data = await fetchHuurgeschiedenisBedrijf(filters);
             setHuurgeschiedenis(data);
 
-            // Extract unieke medewerkersnamen
             const uniekeMedewerkers = Object.keys(data).map((medewerkerNaam) => ({
                 id: medewerkerNaam,
                 naam: medewerkerNaam,
@@ -82,7 +80,6 @@ const HuurgeschiedenisBedrijf = () => {
                         name="voertuigType"
                         value={filters.voertuigType}
                         onChange={handleFilterChange}
-                       
                     >
                         {voertuigTypen.map((type) => (
                             <option key={type} value={type}>
@@ -126,17 +123,17 @@ const HuurgeschiedenisBedrijf = () => {
                                 return (
                                     <div key={medewerkerNaam}>
                                         <h3>Huurverzoeken voor {medewerkerNaam}</h3>
-                                        <table className="tabel">
+                                        <table className="tabelh" role="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Huurperiode</th>
-                                                    <th>Voertuig</th>
-                                                    <th>Status</th>
+                                                    <th scope="col">Huurperiode</th>
+                                                    <th scope="col">Voertuig</th>
+                                                    <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {verzoeken.map((item) => (
-                                                    <tr key={item.huurverzoekId}>
+                                                    <tr key={item.huurverzoekId} tabIndex="0">
                                                         <td>{formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</td>
                                                         <td>{item.voertuigMerk} ({item.voertuigType})</td>
                                                         <td>{item.status}</td>
@@ -148,7 +145,7 @@ const HuurgeschiedenisBedrijf = () => {
                                 );
                             })
                         ) : (
-                            <p className= "pgeenhv">Geen huurverzoeken gevonden.</p>
+                            <p className="pgeenhv">Geen huurverzoeken gevonden.</p>
                         )}
                     </div>
                 )}

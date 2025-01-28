@@ -138,6 +138,41 @@ export const deleteSchade = async (id) => {
         throw error;
     }
 };
+
+
+/** HUURVERZOEK FUNCTIONS **/
+export const createHuurverzoek = async (huurverzoek) => {
+    const token = sessionStorage.getItem('jwtToken');
+    const role = sessionStorage.getItem('role');
+    if (!token) {
+        throw new Error("U bent niet ingelogd. Log in om een auto te kunnen huren.");
+    }
+
+    // Controleer of de gebruiker een geldige rol heeft
+    if (!role || (role !== "Particulier" && role !== "Zakelijk")) {
+        throw new Error("Geen toestemming om een huurverzoek te maken. Alleen 'Particulier' en 'Zakelijk' rollen zijn toegestaan.");
+    }
+
+
+    try {
+        const response = await fetch(HUURVERZOEK_API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(huurverzoek),
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het maken van huurverzoek");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het maken van huurverzoek:", error);
+        throw error;
+    }
+};
     /* export const uploadSchadeFoto = async (file) => {
         if (!file) {
             throw new Error("Geen bestand geselecteerd");

@@ -88,14 +88,15 @@ body {
     max-width: 1000px;
     margin: 20px auto;
     padding: 20px;
+    margin-bottom: 100px;
 }
 
-.status-kaarten {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-}
+    .status-kaarten {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
 
 .status-kaart {
     width: 800px; /* Zelfde breedte als de filters */

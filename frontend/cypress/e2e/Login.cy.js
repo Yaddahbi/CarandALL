@@ -43,4 +43,13 @@ describe('Inloggen Pagina', () => {
         // Controleer de API-aanroep en foutmelding
         cy.wait('@loginUser').its('response.statusCode').should('eq', 401);
     });
+
+    it('moet een foutmelding weergeven bij ontbrekende gegevens', () => {
+        // Vul het formulier in zonder wachtwoord
+        cy.get('input[name="email"]').type('test@example.com');
+
+        // Verstuur het formulier
+        cy.get('button[type="submit"]').click();
+
+    });
 });

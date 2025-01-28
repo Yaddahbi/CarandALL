@@ -45,7 +45,7 @@ const Huurgeschiedenis = () => {
     const toggleSection = (status) => {
         setOpenSections({
             ...openSections,
-            [status]: !openSections[status]
+            [status]: !openSections[status],
         });
     };
 
@@ -62,15 +62,25 @@ const Huurgeschiedenis = () => {
 
         return (
             <div key={status} className="status-kaart">
-                <div className={`status-label ${statusClass}`} onClick={() => toggleSection(status)}>
+                <button
+                    className={`status-label ${statusClass}`}
+                    onClick={() => toggleSection(status)}
+                    aria-expanded={openSections[status]}
+                    aria-controls={`section-${status}`}
+                >
                     <span className="status-icon">{statusIcon}</span>
                     <span className="status-text">{status}</span>
                     <span className="toggle-arrow">{openSections[status] ? '▲' : '▼'}</span>
-                </div>
+                </button>
                 {openSections[status] && (
-                    <div className="verzoeken-lijst">
+                    <div className="verzoeken-lijst" id={`section-${status}`}>
                         {items.map((item) => (
-                            <div key={item.huurverzoekId} className="verzoek-item">
+                            <div
+                                key={item.huurverzoekId}
+                                className="verzoek-item"
+                                tabIndex="0"
+                                aria-label={`Huurverzoek: ${item.voertuigMerk} (${item.voertuigType}), Huurperiode ${formatDate(item.startDatum)} tot ${formatDate(item.eindDatum)}, Kosten €${item.kosten?.toFixed(2) || 'N/A'}`}
+                            >
                                 <h4>{item.voertuigMerk} ({item.voertuigType})</h4>
                                 <p><strong>Huurperiode:</strong> {formatDate(item.startDatum)} - {formatDate(item.eindDatum)}</p>
                                 <p><strong>Kosten:</strong> €{item.kosten?.toFixed(2) || 'N/A'}</p>
@@ -80,12 +90,15 @@ const Huurgeschiedenis = () => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="factuur-link"
+                                        aria-label={`Download factuur voor ${item.voertuigMerk}`}
                                     >
                                         Download Factuur
                                     </a>
                                 )}
                                 {status === 'Afgewezen' && item.afwijzingsreden && (
-                                    <p className="afwijzing">Reden: {item.afwijzingsreden}</p>
+                                    <p className="afwijzing" aria-label={`Afwijzingsreden: ${item.afwijzingsreden}`}>
+                                        Reden: {item.afwijzingsreden}
+                                    </p>
                                 )}
                             </div>
                         ))}
@@ -143,23 +156,15 @@ const Huurgeschiedenis = () => {
                 ) : error ? (
                     <p className="error-message">{error}</p>
                 ) : (
-                    <>
-                        <div className="status-kaarten">
-                            {/* Specifieke controle voor "In afwachting" */}
-                            {'In afwachting' in huurgeschiedenis && huurgeschiedenis['In afwachting'].length > 0 ? (
-                                renderVerzoeken('In afwachting', huurgeschiedenis['In afwachting'])
+                    <div className="status-kaarten">
+                        {['In afwachting', 'Goedgekeurd', 'Afgewezen'].map((status) =>
+                            huurgeschiedenis[status] && huurgeschiedenis[status].length > 0 ? (
+                                renderVerzoeken(status, huurgeschiedenis[status])
                             ) : (
-                                <p>Er zijn geen huurverzoeken in afwachting.</p>
-                            )}
-
-                            {/* Andere statussen */}
-                            {['Goedgekeurd', 'Afgewezen'].map((status) =>
-                                huurgeschiedenis[status] && huurgeschiedenis[status].length > 0 ? (
-                                    renderVerzoeken(status, huurgeschiedenis[status])
-                                ) : null
-                            )}
-                        </div>
-                    </>
+                                <p key={status}>Er zijn geen huurverzoeken met status "{status}".</p>
+                            )
+                        )}
+                    </div>
                 )}
             </div>
         </>

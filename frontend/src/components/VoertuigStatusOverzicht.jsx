@@ -7,7 +7,7 @@ const VoertuigStatusOverzicht = () => {
     useEffect(() => {
         const fetchVehicles = async () => {
             try {
-                const response = await fetch(`/api/Voertuigs/status?status=${statusFilter}`);
+                const response = await fetch(`https://localhost:7040/api/Voertuigs/status?status=${statusFilter}`);
                 const data = await response.json();
                 setVehicles(data);
             } catch (error) {

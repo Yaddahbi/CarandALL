@@ -31,6 +31,7 @@ namespace WebApplication1.Controllers
             _signInManager = signInManager;
             _context = context;
         }
+        //Een API-endpoint POST om user te laten registreren.
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
@@ -110,6 +111,7 @@ namespace WebApplication1.Controllers
             return BadRequest(new { errors = identityErrors });
         }
 
+        //Een API-endpoint POST om user te laten inloggen.
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
@@ -125,6 +127,7 @@ namespace WebApplication1.Controllers
             {
                 return Unauthorized(new { error = "Ongeldige inloggegevens." });
             }
+
             var abonnementId = user.BedrijfsAbonnementId;
 
             // Claims voor JWT-token
@@ -153,18 +156,26 @@ namespace WebApplication1.Controllers
             // Genereer de token als string
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            // Return de token naar de frontend
-            return Ok(new { message = "Inloggen succesvol.", token = tokenString, role = user.Rol, name = user.Naam });
+            // Bouw de response op met een expliciete DTO
+            var response = new LoginResponseDto
+            {
+                Message = "Inloggen succesvol.",
+                Token = tokenString,
+                Role = user.Rol,
+                Name = user.Naam
+            };
+
+            return Ok(response);
         }
 
-
+        //Een API-endpoint POST om user uit te loggen.
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return Ok(new { message = "Uitloggen succesvol." });
         }
-
+        //Een API-endpoint GET om alle notificaties van de gebruiker op te halen.
         [Authorize]
         [HttpGet("notificaties")]
         public async Task<IActionResult> GetNotificaties()
@@ -183,7 +194,8 @@ namespace WebApplication1.Controllers
 
             return Ok(notificaties);
         }
-            [Authorize]
+        //Een API-endpoint PUT om een user zijn gegevens te laten updaten.
+        [Authorize]
             [HttpPut("update")]
             public async Task<IActionResult> UpdateUser([FromBody] Updateuserdto userDto)
             {
@@ -210,6 +222,7 @@ namespace WebApplication1.Controllers
                 var errors = result.Errors.Select(e => e.Description);
                 return BadRequest(new { errors });
             }
+            //Een API-endpoint GET om de details van de gebruiker op te halen.
             [Authorize]
             [HttpGet("details")]
             public async Task<IActionResult> GetUserDetails()

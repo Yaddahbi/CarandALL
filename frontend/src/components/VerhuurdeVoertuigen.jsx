@@ -9,7 +9,7 @@ const VerhuurdeVoertuigen = () => {
     useEffect(() => {
         const fetchVehicles = async () => {
             try {
-                const response = await fetch(`/api/Voertuig/rented?period=${filters.period}&type=${filters.type}&renter=${filters.renter}`);
+                const response = await fetch(`https://localhost:7040/api/Voertuig/rented?period=${filters.period}&type=${filters.type}&renter=${filters.renter}`);
                 const data = await response.json();
                 setVehicles(data);
             } catch (error) {
