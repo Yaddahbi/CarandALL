@@ -8,22 +8,27 @@ const InnameVoertuig = ({ geselecteerdeUitgifte }) => {
     const [opmerkingen, setOpmerkingen] = useState('');
     const [schadeOptie, setSchadeOptie] = useState('Nee');
     const [status, setStatus] = useState('Teruggebracht');
+    const [uitgifteDetails, setUitgifteDetails] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchHuurgeschiedenis = async () => {
+        const fetchUitgifteDetails = async () => {
             try {
-                const response = await fetch(`https://localhost:7040/api/huurverzoeken/${geselecteerdeUitgifte.huurverzoekId}`);
+                const response = await fetch(`https://localhost:7040/api/uitgiftes/${geselecteerdeUitgifte.uitgifteId}`);
                 if (!response.ok) {
                     throw new Error('Er is iets misgegaan bij het ophalen van de huurgeschiedenis');
                 }
+                const data = await response.json();
+                setUitgifteDetails(data);  
+                setKilometerstand(data.beginkilometerstand || '');  
+                setOpmerkingen(data.opmerkingen || '');  
             } catch (error) {
                 toast.error(error.message);
             }
         };
 
-        if (geselecteerdeUitgifte?.huurverzoekId) {
-            fetchHuurgeschiedenis();
+        if (geselecteerdeUitgifte?.uitgifteId) {
+            fetchUitgifteDetails(); 
         }
     }, [geselecteerdeUitgifte]);
     
@@ -77,6 +82,8 @@ const InnameVoertuig = ({ geselecteerdeUitgifte }) => {
                     <div className="form-row">
                         <p>Begindatum Huurverzoek: {geselecteerdeUitgifte?.startDatum}</p>
                         <p>Einddatum Huurverzoek: {geselecteerdeUitgifte?.eindDatum}</p>
+                        <p>Beginkilometerstand: {geselecteerdeUitgifte?.beginkilometerstand}</p>
+                        <p>Opmerkingen uitgifte: {geselecteerdeUitgifte?.opmerkingen}</p>
                     </div>
                 </div>
 
@@ -107,6 +114,7 @@ const InnameVoertuig = ({ geselecteerdeUitgifte }) => {
 
                     <div className="form-row">
                         <div>
+        
                 <label>Is er schade aan het voertuig?</label>
                             <select id="schadeOptie" value={schadeOptie} onChange={(e) => setSchadeOptie(e.target.value)}>
                                 <option value="Nee">Nee</option>
