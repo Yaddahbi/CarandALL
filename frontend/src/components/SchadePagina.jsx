@@ -76,6 +76,7 @@ const SchadePagina = () => {
 
         return (
             <div className="SchadeBeheer">
+                <h2>Schadebeheer Pagina</h2>
                 {/* Button voor schade toevoegen */}
                 <div className="add-schade-button">
                     <button onClick={handleAddSchade}>Voeg Schade Toe</button>

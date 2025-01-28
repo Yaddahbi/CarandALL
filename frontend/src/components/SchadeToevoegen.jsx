@@ -79,7 +79,7 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
 
     return (
         <div className="Schade Toevoegen">
-            <h1>Schade Toevoegen</h1>
+            <h2>Schade Toevoegen</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Beschrijving: </label>
