@@ -50,8 +50,7 @@ const Navbar = () => {
                     )}
                     {user?.role === 'FrontofficeMedewerker' && (
                         <>
-                        <Link to="/uitgifte">Uitgifte Voertuig</Link>
-                        <Link to="/inname">Inname Voertuig</Link>
+                            <Link to="/uitgifteinnamebeheren">Uitgifte & Inname Voertuig</Link>
                         </>
                     )}
 
@@ -79,7 +78,7 @@ const Navbar = () => {
                 ) : (
                         <>
                             <div className="user-info">
-                            <span className="gebruikersnaam">{user.name}</span>
+                                <span className="gebruikersnaam">{user?.name}</span>
                             <button className="button-logout" onClick={handleLogout}>Logout -></button> 
                             </div>
                         </>

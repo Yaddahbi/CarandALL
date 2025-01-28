@@ -55,7 +55,7 @@ namespace WebApplication1
             modelBuilder.Entity<Uitgifte>()
                 .HasOne(u => u.User)
                 .WithMany(h => h.Uitgiftes)
-                .HasForeignKey(u => u.UserID);
+                .HasForeignKey(u => u.HuurderId);
 
             modelBuilder.Entity<Inname>()
                 .HasOne(i => i.Voertuig)

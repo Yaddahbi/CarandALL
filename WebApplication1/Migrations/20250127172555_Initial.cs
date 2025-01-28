@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApplication1.Migrations
 {
     /// <inheritdoc />
-    public partial class IntitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,6 +47,41 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeletedUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BedrijfsNaam = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KvkNummer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BedrijfsAbonnementId = table.Column<int>(type: "int", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeletedUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medewerkers",
+                columns: table => new
+                {
+                    MedewerkerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Naam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Wachtwoord = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medewerkers", x => x.MedewerkerId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notificaties",
                 columns: table => new
                 {
@@ -76,6 +111,7 @@ namespace WebApplication1.Migrations
                     Aanschafjaar = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prijs = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Kilometerstand = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Opmerkingen = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
@@ -137,31 +173,6 @@ namespace WebApplication1.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Schades",
-                columns: table => new
-                {
-                    SchadeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    VoertuigId = table.Column<int>(type: "int", nullable: false),
-                    Beschrijving = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Kosten = table.Column<double>(type: "float", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FotoUrls = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Opmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schades", x => x.SchadeId);
-                    table.ForeignKey(
-                        name: "FK_Schades_Voertuigen_VoertuigId",
-                        column: x => x.VoertuigId,
-                        principalTable: "Voertuigen",
-                        principalColumn: "VoertuigId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -261,7 +272,8 @@ namespace WebApplication1.Migrations
                     StartDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EindDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Afwijzingsreden = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Afwijzingsreden = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Opmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -288,10 +300,15 @@ namespace WebApplication1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VoertuigID = table.Column<int>(type: "int", nullable: false),
                     HuurderID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HuurderNaam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HuurderEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HuuderTelefoonnummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DatumInname = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SchadeOpmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EindKilometerstand = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HeeftSchade = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedewerkerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -302,6 +319,11 @@ namespace WebApplication1.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Innames_Medewerkers_MedewerkerId",
+                        column: x => x.MedewerkerId,
+                        principalTable: "Medewerkers",
+                        principalColumn: "MedewerkerId");
                     table.ForeignKey(
                         name: "FK_Innames_Voertuigen_VoertuigID",
                         column: x => x.VoertuigID,
@@ -317,20 +339,30 @@ namespace WebApplication1.Migrations
                     UitgifteID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VoertuigID = table.Column<int>(type: "int", nullable: false),
-                    HuurderID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HuurderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserNaam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserTelefoonnummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DatumUitgifte = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BeginKilometerstand = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Opmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedewerkerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Uitgiftes", x => x.UitgifteID);
                     table.ForeignKey(
-                        name: "FK_Uitgiftes_AspNetUsers_HuurderID",
-                        column: x => x.HuurderID,
+                        name: "FK_Uitgiftes_AspNetUsers_HuurderId",
+                        column: x => x.HuurderId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Uitgiftes_Medewerkers_MedewerkerId",
+                        column: x => x.MedewerkerId,
+                        principalTable: "Medewerkers",
+                        principalColumn: "MedewerkerId");
                     table.ForeignKey(
                         name: "FK_Uitgiftes_Voertuigen_VoertuigID",
                         column: x => x.VoertuigID,
@@ -340,26 +372,39 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schadeclaims",
+                name: "Schades",
                 columns: table => new
                 {
-                    SchadeclaimId = table.Column<int>(type: "int", nullable: false)
+                    SchadeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SchadeId = table.Column<int>(type: "int", nullable: false),
-                    ClaimDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VoertuigId = table.Column<int>(type: "int", nullable: false),
                     Beschrijving = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Kosten = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FotoUrls = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReparatieDetails = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Opmerkingen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InnameID = table.Column<int>(type: "int", nullable: true),
+                    MedewerkerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schadeclaims", x => x.SchadeclaimId);
+                    table.PrimaryKey("PK_Schades", x => x.SchadeId);
                     table.ForeignKey(
-                        name: "FK_Schadeclaims_Schades_SchadeId",
-                        column: x => x.SchadeId,
-                        principalTable: "Schades",
-                        principalColumn: "SchadeId",
+                        name: "FK_Schades_Innames_InnameID",
+                        column: x => x.InnameID,
+                        principalTable: "Innames",
+                        principalColumn: "InnameID");
+                    table.ForeignKey(
+                        name: "FK_Schades_Medewerkers_MedewerkerId",
+                        column: x => x.MedewerkerId,
+                        principalTable: "Medewerkers",
+                        principalColumn: "MedewerkerId");
+                    table.ForeignKey(
+                        name: "FK_Schades_Voertuigen_VoertuigId",
+                        column: x => x.VoertuigId,
+                        principalTable: "Voertuigen",
+                        principalColumn: "VoertuigId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -423,14 +468,24 @@ namespace WebApplication1.Migrations
                 column: "HuurderID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Innames_MedewerkerId",
+                table: "Innames",
+                column: "MedewerkerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Innames_VoertuigID",
                 table: "Innames",
                 column: "VoertuigID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schadeclaims_SchadeId",
-                table: "Schadeclaims",
-                column: "SchadeId");
+                name: "IX_Schades_InnameID",
+                table: "Schades",
+                column: "InnameID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schades_MedewerkerId",
+                table: "Schades",
+                column: "MedewerkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schades_VoertuigId",
@@ -438,9 +493,14 @@ namespace WebApplication1.Migrations
                 column: "VoertuigId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Uitgiftes_HuurderID",
+                name: "IX_Uitgiftes_HuurderId",
                 table: "Uitgiftes",
-                column: "HuurderID");
+                column: "HuurderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Uitgiftes_MedewerkerId",
+                table: "Uitgiftes",
+                column: "MedewerkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Uitgiftes_VoertuigID",
@@ -467,16 +527,16 @@ namespace WebApplication1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Huurverzoeken");
+                name: "DeletedUsers");
 
             migrationBuilder.DropTable(
-                name: "Innames");
+                name: "Huurverzoeken");
 
             migrationBuilder.DropTable(
                 name: "Notificaties");
 
             migrationBuilder.DropTable(
-                name: "Schadeclaims");
+                name: "Schades");
 
             migrationBuilder.DropTable(
                 name: "Uitgiftes");
@@ -485,10 +545,13 @@ namespace WebApplication1.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Schades");
+                name: "Innames");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Medewerkers");
 
             migrationBuilder.DropTable(
                 name: "Voertuigen");

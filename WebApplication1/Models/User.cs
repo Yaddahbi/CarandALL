@@ -7,10 +7,8 @@ namespace WebApplication1.Models
     public class User : IdentityUser
     {
         public string Naam { get; set; }
-        public int ID { get; set; }
         public string Adres { get; set; }
         public string Rol { get; set; }
-        public string Telefoonnummer { get; set; }
         public string? BedrijfsNaam { get; set; }
         public string? KvkNummer { get; set; }
 

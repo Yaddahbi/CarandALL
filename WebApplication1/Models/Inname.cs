@@ -4,7 +4,7 @@ public class Inname
 {
     public int InnameID { get; set; }
     public int VoertuigID { get; set; }
-    public int HuurderID { get; set; }
+    public string HuurderID { get; set; }
     public string HuurderNaam { get; set; }
     public string HuurderEmail { get; set; }
     public string HuuderTelefoonnummer { get; set; }
