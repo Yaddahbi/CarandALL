@@ -52,10 +52,11 @@ body {
     margin-bottom: 30px;
 }
 
-.uitgifteinname-container {
+.uitgifte-inname-container {
     padding: 20px;
     font-family: Arial, sans-serif;
     margin-top: 60px;
+    margin-bottom: 200px;
 }
 
 .page-title {

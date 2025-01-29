@@ -45,7 +45,8 @@ function RegistreerZakelijk() {
 
             if (response.ok) {
                 toast.success("Bedrijfsaccount succesvol aangemaakt! U kunt nu inloggen.");
-                navigate("/login");
+                window.scrollTo(0, 0); 
+                navigate("/login");   
             } else {
                 const data = await response.json();
                 toast.error(data.errors ? `Fouten: ${data.errors.join(", ")}` : "Er is iets fout gegaan.");
@@ -81,7 +82,7 @@ function RegistreerZakelijk() {
                     <div className="form-group">
                         <label htmlFor="adres">Adres:</label>
                         <input id="adres" type="text" name="adres" onChange={handleChange} required />
-                        <small>Vul uw volledige adres in, inclusief huisnummer en postcode.</small>
+                        <small> Vul uw volledige adres in (straatnaam en huisnummer).</small>
                     </div>
 
                     <div className="form-group">

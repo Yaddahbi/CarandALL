@@ -5,7 +5,7 @@ import { useAuth } from "../AuthContext";
 import "../styles/KlantGegevens.css";
 
 const KlantGegevens = () => {
-    const { user, logout } = useAuth() || {}; // Fallback voor user en logout functie
+    const { user, logout } = useAuth() || {}; 
     const [formData, setFormData] = useState({
         Naam: "",
         Email: "",
@@ -13,7 +13,7 @@ const KlantGegevens = () => {
         Telefoonnummer: "",
     });
     const [statusMessage, setStatusMessage] = useState("");
-    const [error, setError] = useState(null); // Foutbeheer
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -83,7 +83,7 @@ const KlantGegevens = () => {
     const handleDeleteAccount = async () => {
         if (window.confirm("Weet je zeker dat je je account wilt verwijderen? Dit kan niet ongedaan worden gemaakt.")) {
             try {
-                const token = localStorage.getItem("jwtToken");
+                const token = sessionStorage.getItem("jwtToken");
                 const response = await fetch(`https://localhost:7040/api/User/delete`, {
                     method: "DELETE",
                     headers: {

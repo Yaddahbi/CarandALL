@@ -80,9 +80,8 @@
     display: flex;
     align-items: center;
 }
-
 /* Styling voor links in de menu */
-.menu a, .navbar-right a {
+.menu a {
     color: white;
     text-decoration: none;
     margin-left: 20px;
@@ -90,6 +89,30 @@
     position: relative;
 }
 
+    /* Hover effect met ::after */
+    .menu a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: white;
+        left: 0;
+        bottom: -4px;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .menu a:hover::after {
+        width: 100%;
+    }
+
+/* Styling voor rechts in de menu */
+.menu a, .navbar-right a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    position: relative;
+}
 
 
     /* Smooth hover effect met ::after */
