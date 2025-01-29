@@ -32,63 +32,76 @@ function RegistreerZakelijk() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isChecked) {
-            toast('U moet akkoord gaan met de privacyverklaring om verder te gaan.', {
-                type: 'error',
-            });
+            toast.error("U moet akkoord gaan met de privacyverklaring om verder te gaan.");
             return;
         }
 
-        const response = await fetch("https://localhost:7040/api/User/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-            toast(`Bedrijfsaccount succesvol aangemaakt!`, {
-                description: "U kunt nu inloggen.",
-                type: "success",
+        try {
+            const response = await fetch("https://localhost:7040/api/User/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
             });
-            navigate("/login");
-        } else {
-            const data = await response.json();
-            if (data.errors) {
-                toast(`Fouten: ${data.errors.join(", ")}`, {
-                    type: "error",
-                });
+
+            if (response.ok) {
+                toast.success("Bedrijfsaccount succesvol aangemaakt! U kunt nu inloggen.");
+                window.scrollTo(0, 0); 
+                navigate("/login");   
             } else {
-                toast("Er is iets fout gegaan", {
-                    type: "error",
-                });
+                const data = await response.json();
+                toast.error(data.errors ? `Fouten: ${data.errors.join(", ")}` : "Er is iets fout gegaan.");
             }
+        } catch (error) {
+            toast.error("Er is een netwerkfout opgetreden. Controleer uw verbinding.");
         }
     };
 
     return (
         <div className="regz">
             <div className="regz-container">
-                <h2>Registreer Zakelijk</h2>
-                <form className="form-display" onSubmit={handleSubmit}>
-                    <label>E-mail:</label>
-                    <input type="email" name="email" onChange={handleChange} required />
+                <h2 className="regz-title">Registreer Zakelijk</h2>
+                <form className="regz-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email">E-mail:</label>
+                        <input id="email" type="email" name="email" onChange={handleChange} required />
+                        <small>Vul een geldig e-mailadres in.</small>
+                    </div>
 
-                    <label>Wachtwoord:</label>
-                    <input type="password" name="wachtwoord" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="password">Wachtwoord:</label>
+                        <input id="password" type="password" name="wachtwoord" onChange={handleChange} required />
+                        <small>Minimaal 6 tekens, 1 hoofdletter en 1 speciaal teken.</small>
+                    </div>
 
-                    <label>Volledige Naam:</label>
-                    <input type="text" name="naam" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="naam">Volledige Naam:</label>
+                        <input id="naam" type="text" name="naam" onChange={handleChange} required />
+                        <small>Gebruik uw voor- en achternaam.</small>
+                    </div>
 
-                    <label>Adres:</label>
-                    <input type="text" name="adres" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="adres">Adres:</label>
+                        <input id="adres" type="text" name="adres" onChange={handleChange} required />
+                        <small> Vul uw volledige adres in (straatnaam en huisnummer).</small>
+                    </div>
 
-                    <label>Telefoonnummer:</label>
-                    <input type="text" name="telefoonnummer" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="telefoonnummer">Telefoonnummer:</label>
+                        <input id="telefoonnummer" type="text" name="telefoonnummer" onChange={handleChange} required />
+                        <small>Voer een geldig telefoonnummer in.</small>
+                    </div>
 
-                    <label>Bedrijfsnaam:</label>
-                    <input type="text" name="bedrijfsNaam" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="bedrijfsNaam">Bedrijfsnaam:</label>
+                        <input id="bedrijfsNaam" type="text" name="bedrijfsNaam" onChange={handleChange} required />
+                        <small>Vul de naam van uw bedrijf in.</small>
+                    </div>
 
-                    <label>KVK-nummer:</label>
-                    <input type="text" name="kvkNummer" onChange={handleChange} required />
+                    <div className="form-group">
+                        <label htmlFor="kvkNummer">KVK-nummer:</label>
+                        <input id="kvkNummer" type="text" name="kvkNummer" onChange={handleChange} required />
+                        <small>Voer het KVK-nummer van het bedrijf in (8 cijfers).</small>
+                    </div>
 
                     <label>
                         Abonnementstype:
@@ -108,11 +121,12 @@ function RegistreerZakelijk() {
                         )}
                     </label>
                     <select name="abonnementType" onChange={handleChange} required>
-                        <option value="PayAsYouGo">Pay-as-you-go</option>
+                        <option value="Pay-as-you-go">Pay-as-you-go</option>
                         <option value="Prepaid">Prepaid</option>
                     </select>
 
-                    <label className="privacy-consent">
+                    <div className="privacy-consent">
+                        <label>
                         <input
                             type="checkbox"
                             checked={isChecked}
@@ -124,14 +138,18 @@ function RegistreerZakelijk() {
                                 className="privacy-link"
                                 onClick={() => {
                                     navigate('/privacy');
-                                    window.scrollTo(0, 0);
+                                    setTimeout(() => window.scrollTo(0, 0), 100);
                                 }}
                             >
                                 privacyverklaring
-                            </span>
+                            </span>.
                         </span>
                     </label>
-                    <button type="submit">Account aanmaken</button>
+                    </div>
+
+                    <button type="submit" className="regz-button">
+                        Account aanmaken
+                    </button>
                 </form>
             </div>
         </div>

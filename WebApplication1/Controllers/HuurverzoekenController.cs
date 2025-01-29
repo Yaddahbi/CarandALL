@@ -47,14 +47,37 @@ namespace WebApplication1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Huurverzoek>> GetHuurverzoek(int id)
         {
-            var huurverzoek = await _context.Huurverzoeken.FindAsync(id);
+            var huurverzoek = await _context.Huurverzoeken
+                .Include(h => h.User)
+                .Include(h => h.Voertuig)
+                .FirstOrDefaultAsync(h => h.HuurverzoekId == id);
 
             if (huurverzoek == null)
             {
                 return NotFound("Huurverzoek niet gevonden.");
             }
 
-            return huurverzoek;
+            return Ok(new
+            {
+                huurverzoek.HuurverzoekId,
+                huurverzoek.StartDatum,
+                huurverzoek.EindDatum,
+                huurverzoek.Status,
+                Huurder = new
+                {
+                    huurverzoek.User.Naam,
+                    huurverzoek.User.Email,
+                    huurverzoek.User.PhoneNumber
+                },
+                Voertuig = new
+                {
+                    huurverzoek.Voertuig.VoertuigId,
+                    huurverzoek.Voertuig.Soort,
+                    huurverzoek.Voertuig.Merk,
+                    huurverzoek.Voertuig.Type,
+                    huurverzoek.Voertuig.Kenteken
+                }
+            });
         }
         // Een API-endpoint PUT om de status van een huurverzoek te goed of af te keuren.
         [HttpPut("{id}")]
@@ -130,6 +153,22 @@ namespace WebApplication1.Controllers
                 huurverzoek.Opmerkingen = uitgifteInnameDto.Opmerkingen;
             }
 
+            var nieuweUitgifte = new Uitgifte
+            {
+                VoertuigID = huurverzoek.Voertuig.VoertuigId,
+                HuurderId = huurverzoek.User.Id,
+                UserNaam = huurverzoek.User.Naam,
+                UserEmail = huurverzoek.User.Email,
+                UserTelefoonnummer = huurverzoek.User.PhoneNumber,
+                DatumUitgifte = DateTime.Now,
+                BeginKilometerstand = huurverzoek.Voertuig.Kilometerstand,
+                Opmerkingen = huurverzoek.Opmerkingen,
+                Status = "Uitgegeven",
+                Voertuig = huurverzoek.Voertuig,
+                User = huurverzoek.User
+            };
+
+            _context.Uitgiftes.Add(nieuweUitgifte);
             _context.Huurverzoeken.Update(huurverzoek);
             _context.Voertuigen.Update(huurverzoek.Voertuig);
             await _context.SaveChangesAsync();
@@ -174,6 +213,7 @@ namespace WebApplication1.Controllers
         {
             var goedgekeurdeHuurverzoeken = await _context.Huurverzoeken
                 .Include(h => h.Voertuig)
+                .Include(h => h.User)
                 .Where(h => h.Status == "Goedgekeurd")
                 .Select(h => new
                 {
@@ -181,6 +221,7 @@ namespace WebApplication1.Controllers
                     h.StartDatum,
                     h.EindDatum,
                     h.VoertuigId,
+                    huurderNaam = h.User.Naam,
                     VoertuigMerk = h.Voertuig.Merk,
                     VoertuigType = h.Voertuig.Type,
                 })

@@ -99,7 +99,9 @@ const routesConfig = [
     { path: '/notificaties', component: Notificaties, roles: ['Particulier', 'Zakelijk', 'ZakelijkeKlant'] },
     { path: '/schades', component: SchadePagina, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/wagenparkbeheer', component: Wagenparkbeheer, roles: ['BackofficeMedewerker'] },
+
     { path: '/uitgifte/:id', component: UitgifteVoertuig, roles: ['FrontofficeMedewerker'] },
+
     { path: '/inname/:id', component: InnameVoertuig, roles: ['FrontofficeMedewerker'] },
     { path: '/uitgifteinnamebeheren', component: UitgifteInnameBeheren, roles: ['FrontofficeMedewerker'] },
     { path: '/schades/details/:schadeId', component: SchadeDetails, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },

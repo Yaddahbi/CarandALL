@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize(Roles = "FrontOffice")]
+    //[Authorize(Roles = "FrontOffice")]
     [Route("api/[controller]")]
     [ApiController]
     public class UitgiftesController : ControllerBase

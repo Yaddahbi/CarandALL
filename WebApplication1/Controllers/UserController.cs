@@ -256,7 +256,7 @@ namespace WebApplication1.Controllers
 
                 return Ok(user);
             }
-[Authorize]
+        [Authorize]
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteAccount()
         {
