@@ -4,8 +4,17 @@ import SchadeDetails from "./SchadeDetails";
 import { useNavigate} from "react-router-dom";
 import '../style/SchadePagina.css';
 
+const fetchSchades = async (filters = {}) => {
+    const queryParams = new URLSearchParams(filters).toString();
+    const response = await fetch(`/api/schade?${queryParams}`);
+    if (!response.ok) {
+        throw new Error("Fout bij het ophalen van schades");
+    }
+    return await response.json();
+};
+
 const SchadePagina = () => {
-    const [schademeldingen, setSchademeldingen] = useState([]);
+    const [schades, setSchades] = useState([]);
     const [filters, setFilters] = useState({
         status: '',
         datumVan: '',
@@ -20,58 +29,39 @@ const SchadePagina = () => {
             datumVan: filters.datumVan,
             datumTot: filters.datumTot,
         };
-        fetchSchademeldingen(queryFilters)
+        fetchSchades(queryFilters)
             .then(response => {
-                setSchademeldingen(response.data);
+                setSchades(response);
             })
             .catch(error => {
-                setError("Er is een fout opgetreden bij het ophalen van de schademeldingen.");
+                setError("Er is een fout opgetreden bij het ophalen van de schades.");
             });
     };
     
-        useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    const schademeldingen = await fetchSchademeldingen(filters);
-                    setSchademeldingen(schademeldingen);
-                } catch (error) {
-                    setError("Er is een fout opgetreden bij het ophalen van de schademeldingen.");
-                }
-            };
-            fetchData();
-            }, [filters]);
-
-        const handleFilterChange = (e) => {
-            setFilters({
-                ...filters,
-                [e.target.name]: e.target.value,
-            });
-        };
-    const loadSchades = async () => {
-
-        setLoading(true);
-        setError(null);
-
-        try {
-            const data = await fetchSchades();
-            if (data && data.length === 0) {
-                setError("Er zijn momenteel geen schades beschikbaar.");
-            } else {
-                setSchades(data);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const schades = await fetchSchades(filters);
+                setSchades(schades);
+            } catch (error) {
+                setError("Er is een fout opgetreden bij het ophalen van de schades.");
             }
-        } catch (error) {
-            setError("Fout bij het ophalen van schades: " + error.message);
-            console.error("Fout bij het ophalen van schades:", error);
-        } finally {
-            setLoading(false);
-        }
+        };
+        fetchData();
+        }, [filters]);
+    
+    const handleFilterChange = (e) => {
+        setFilters({
+            ...filters, 
+            [e.target.name]: e.target.value,
+        });
     };
 
     const handleAddSchade = () => {
-        navigate('/toevoegen');
+        navigate('/schades/toevoegen');
     };
     const handleClick = (id) => {
-        navigate(`/schade/${id}`);
+        navigate(`/schade/details/${id}`);
     };
 
         return (
@@ -93,6 +83,7 @@ const SchadePagina = () => {
                                 <option value="">Alle statussen</option>
                                 <option value="open">Open</option>
                                 <option value="afgesloten">Afgesloten</option>
+                                <option value="in behandeling">In Behandeling</option>
                             </select>
                             <br/>
                             <label>Van Datum:</label>
@@ -126,27 +117,19 @@ const SchadePagina = () => {
                             <th>Voertuig</th>
                             <th>Beschrijving</th>
                             <th>Datum</th>
-                            <th>Foto</th>
                             <th>Status</th>
                             <th>Acties</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {schademeldingen.map((melding) => (
-                            <tr key={melding.id}>
-                                <td>{melding.voertuig}</td>
-                                <td>{melding.beschrijving}</td>
-                                <td>{melding.datum}</td>
+                        {schades.map((schade) => (
+                            <tr key={schade.id}>
+                                <td>{schade.voertuig}</td>
+                                <td>{schade.beschrijving}</td>
+                                <td>{schade.datum}</td>
+                                <td>{schade.status}</td>
                                 <td>
-                                    {melding.foto && (
-                                        <a href={melding.foto} target="_blank" rel="noopener noreferrer">
-                                            Bekijk Foto
-                                        </a>
-                                    )}
-                                </td>
-                                <td>{melding.status}</td>
-                                <td>
-                                    <button onClick={() => handleClick(melding.id)}>
+                                    <button onClick={() => handleClick(schade.id)}>
                                         Bekijk Details
                                     </button>
                                 </td>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize(Roles = "Backofficemedewerker")]
+    [Authorize(Roles = "Backofficemedewerker, Frontofficemedewerker")]
     [ApiController]
     [Route("api/[controller]")]
     public class SchadeController : ControllerBase
@@ -20,20 +20,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schade>>> GetSchades([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<Schade>>> GetSchades()
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                return BadRequest(new { Message = "Page and PageSize must be greater than zero." });
-            }
-
             var schades = await _context.Schades
                 .Include(s => s.Voertuig)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+                .Where(s => s.Voertuig != null) // Voorkom dat we schades zonder voertuig ophalen
                 .ToListAsync();
 
-            _logger.LogInformation("Fetched {Count} schademeldingen on page {Page}.", schades.Count, page);
+            _logger.LogInformation("Fetched {Count} schademeldingen.", schades.Count);
             return Ok(schades);
         }
         
@@ -61,6 +55,16 @@ namespace WebApplication1.Controllers
                 return BadRequest(ModelState);
             }
 
+            var voertuig = await _context.Voertuigen.FindAsync(schade.VoertuigId);
+            if (voertuig == null)
+            {
+                return BadRequest(new { Message = "Voertuig not found." });
+            }
+
+            // Status voertuig direct op "In Reparatie" zetten
+            voertuig.Status = "In Reparatie";
+            _context.Entry(voertuig).State = EntityState.Modified;
+
             _context.Schades.Add(schade);
             await _context.SaveChangesAsync();
 
@@ -75,6 +79,13 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest("Geen bestand geselecteerd.");
             }
+
+            var schade = await _context.Schades.FindAsync(schadeId);
+            if (schade == null)
+            {
+                return NotFound(new { Message = $"Schade with ID {schadeId} not found." });
+            }
+
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "SchadeFoto's");
             Directory.CreateDirectory(folderPath);
             var filePath = Path.Combine(folderPath, $"{schadeId}_{foto.FileName}");
@@ -83,13 +94,24 @@ namespace WebApplication1.Controllers
             {
                 await foto.CopyToAsync(fileStream);
             }
+
+            _logger.LogInformation("File path: {FilePath}", filePath); // Debug-log
+
+            if (schade.FotoUrls == null)
+            {
+                schade.FotoUrls = new List<string>();
+            }
+
+            schade.FotoUrls.Add(filePath);
+            await _context.SaveChangesAsync();
+
             return Ok(new { message = "Foto succesvol geüpload", filePath });
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSchademelding(int id, [FromBody] Schade updatedSchade)
+        public async Task<IActionResult> UpdateSchademelding(int id, [FromBody] Schade updateSchade)
         {
-            if (id != updatedSchade.SchadeId)
+            if (id != updateSchade.SchadeId)
             {
                 return BadRequest(new { Message = "Schade ID does not match." });
             }
@@ -106,8 +128,14 @@ namespace WebApplication1.Controllers
                 return NotFound(new { Message = $"Schade with ID {id} not found." });
             }
 
-            schade.Status = updatedSchade.Status;
-            schade.Opmerkingen = updatedSchade.Opmerkingen;
+            schade.Status = updateSchade.Status;
+            schade.Opmerkingen = updateSchade.Opmerkingen;
+            
+            if (updateSchade.Status == "Afgesloten" && schade.Voertuig != null)
+            {
+                schade.Voertuig.Status = "Beschikbaar";
+                _context.Entry(schade.Voertuig).State = EntityState.Modified;
+            }
 
             await _context.SaveChangesAsync();
 

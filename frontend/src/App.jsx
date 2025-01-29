@@ -104,12 +104,12 @@ const routesConfig = [
     { path: '/uitgifte/:id', component: UitgifteVoertuig, roles: ['FrontofficeMedewerker'] },
     { path: '/inname/:id', component: InnameVoertuig, roles: ['FrontofficeMedewerker'] },
     { path: '/uitgifteinnamebeheren', component: UitgifteInnameBeheren, roles: ['FrontofficeMedewerker'] },
-    { path: '/schades/Details', component: SchadeDetails, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
+    { path: '/schades/details/:schadeId', component: SchadeDetails, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/schades/toevoegen', component: SchadeToevoegen, roles: ['FrontofficeMedewerker', 'BackofficeMedewerker'] },
     { path: '/overzicht-verhuurde-voertuigen', component: VerhuurdeVoertuigen, roles: ['Wagenparkbeheerder'] },
     { path: '/voertuigstatus', component: VoertuigStatusOverzicht, roles: ['Wagenparkbeheerder'] },
     { path: '/blokkeren-voertuigen', component: BlokkerenVoertuigen, roles: ['Wagenparkbeheerder', 'BackofficeMedewerker'] },
-
+     
     { path: '/login', component: Login },
     { path: '/kies-account-type', component: KiesAccountType },
     { path: '/registreer-particulier', component: RegistreerParticulier },

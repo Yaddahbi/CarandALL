@@ -103,24 +103,14 @@ export const voegSchadetoe = async (schadeData) => {
         throw error;
     }
 };
-
-export const updateSchade = async (id, schadeData) => {
+export const zoekVoertuigOpKenteken = async (kenteken) => {
     try {
-        const response = await fetch(`${SCHADE_API_URL}/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(schadeData),
-        });
-
-        if (!response.ok) {
-            throw new Error("Fout bij het bijwerken van schade");
-        }
-        return await response.json();
+        const response = await fetch(`${API_URL}/voertuigen/${kenteken}`);
+        if (!response.ok) throw new Error("Voertuig niet gevonden");
+        const data = await response.json();
+        return data; 
     } catch (error) {
-        console.error("Fout bij het bijwerken van schade:", error);
-        throw error;
+        throw new Error("Er is een fout opgetreden: " + error.message);
     }
 };
 
@@ -138,7 +128,31 @@ export const deleteSchade = async (id) => {
         throw error;
     }
 };
+export const uploadSchadeFoto = async (file, schadeId) => {
+    if (!file) {
+        throw new Error("Geen bestand geselecteerd");
+    }
 
+    const formData = new FormData();
+    formData.append("file", file); 
+
+    try {
+        const response = await fetch(`${SCHADE_API_URL}/upload/${schadeId}`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Fout bij het uploaden van foto");
+        }
+
+        const data = await response.json();
+        return data.url; 
+    } catch (error) {
+        console.error("Fout bij het uploaden van foto:", error);
+        throw error;
+    }
+};
 
 /** HUURVERZOEK FUNCTIONS **/
 export const createHuurverzoek = async (huurverzoek) => {
@@ -173,26 +187,6 @@ export const createHuurverzoek = async (huurverzoek) => {
         throw error;
     }
 };
-    /* export const uploadSchadeFoto = async (file) => {
-        if (!file) {
-            throw new Error("Geen bestand geselecteerd");
-        }
-    }
-    const formData = new FormData();
-    formData.append("file", file); 
-
-    const response = await fetch("/api/schade/upload", {
-        method: "POST",
-        body: formData,
-    });
-
-    if (!response.ok) {
-        throw new Error("Fout bij het uploaden van foto");
-    }
-
-    const data = await response.json();
-    return data.url;
-};*/
 
     export const fetchHuurgeschiedenis = async (filters) => {
         try {
