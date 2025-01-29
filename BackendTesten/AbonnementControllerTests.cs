@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,7 +11,6 @@ using WebApplication1.Controllers;
 using WebApplication1.Models;
 using Moq;
 using WebApplication1;
-using static WebApplication1.Controllers.AbonnementController;
 
 namespace BackendTesten
 {
@@ -261,7 +260,10 @@ namespace BackendTesten
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal("Medewerker succesvol verwijderd van het abonnement.", okResult.Value.GetType().GetProperty("message")?.GetValue(okResult.Value));
         }
+        public class AddMedewerkerDto
+        {
+            public string Email { get; set; }
+        }
 
     }
-
 }

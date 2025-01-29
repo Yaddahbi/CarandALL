@@ -5,12 +5,34 @@
     <projectFile profileName="https">WebApplication1/WebApplication1.csproj</projectFile>
     <projectFile kind="EcmaScript">frontend/frontend.esproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="0771fd4b-99b0-46b7-a942-67a2120174bc" name="Changes" comment="" />
+    <list default="true" id="0771fd4b-99b0-46b7-a942-67a2120174bc" name="Changes" comment="Bug gefixed">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApplication1/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApplication1/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApplication1/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackendTesten/UitgifteControllerTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WebApplication1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebApplication1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendTesten/AbonnementControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BackendTesten/AbonnementControllerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/ProtectedRoute.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/ProtectedRoute.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/InnameVoertuig.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InnameVoertuig.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/RegistreerZakelijk.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RegistreerZakelijk.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SchadePagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SchadePagina.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SchadeToevoegen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SchadeToevoegen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/UitgifteInnameBeheren.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/UitgifteInnameBeheren.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/UitgifteVoertuig.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/UitgifteVoertuig.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="autoShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -32,6 +54,16 @@
     &quot;accountId&quot;: &quot;bdb6e412-8707-472a-a69b-c962ea4ef32d&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/priscilaq/Documents/GitHub/CarandALL/BackendTesten/AbonnementControllerTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/package-lock.json" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/package-lock.json" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/283f1ac699feafcc961c75e7f82d54f59737a0ae442079f46a3577167ba680/IdentityUserContext.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -40,15 +72,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Uitgifte-Inname-Voertuig&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.WebApplication1: http.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Voertuig-management",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "HotReloadSettingsPage",
+    "ts.external.directory.path": "/Applications/Rider.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.WebApplication1: http">
     <configuration name="WebApplication1: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApplication1/WebApplication1.csproj" />
@@ -102,12 +140,31 @@
       <workItem from="1736133925507" duration="126000" />
       <workItem from="1736134271264" duration="189000" />
       <workItem from="1736134537184" duration="15000" />
+      <workItem from="1737907294922" duration="20356000" />
     </task>
+    <task id="LOCAL-00001" summary="Merge gefixed">
+      <option name="closed" value="true" />
+      <created>1737925795096</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737925795096</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Bug gefixed">
+      <option name="closed" value="true" />
+      <created>1737981465150</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1737981465150</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -122,5 +179,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Merge gefixed" />
+    <MESSAGE value="Bug gefixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug gefixed" />
   </component>
 </project>

@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
             });
         }
 
-        // Bevestig uitgifte
+        
         [HttpPut("bevestigen/{id}")]
         public async Task<IActionResult> BevestigUitgifte(int id, [FromBody] Uitgifte uitgifteDetails)
         {
@@ -66,7 +66,7 @@ namespace WebApplication1.Controllers
                 return NotFound(new { message = "Uitgifte niet gevonden" });
             }
 
-            // Werk de uitgifte details bij
+            
             uitgifte.BeginKilometerstand = uitgifteDetails.BeginKilometerstand;
             uitgifte.Opmerkingen = uitgifteDetails.Opmerkingen;
             uitgifte.Status = "Uitgegeven";
@@ -82,7 +82,6 @@ namespace WebApplication1.Controllers
             return Ok(new { message = "Uitgifte succesvol bevestigd" });
         }
         
-        // Verwijder uitgifte
         [HttpDelete("{id}")]
         public async Task<IActionResult> VerwijderUitgifte(int id)
         {

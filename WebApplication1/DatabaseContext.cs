@@ -46,7 +46,13 @@ namespace WebApplication1
                 .HasOne(s => s.Voertuig)
                 .WithMany(v => v.Schades)
                 .HasForeignKey(s => s.VoertuigId);
-
+            
+            modelBuilder.Entity<Schade>()
+                .Property(s => s.FotoUrls)
+                .HasConversion(
+                    v => string.Join(";", v), 
+                    v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList() 
+                );
             modelBuilder.Entity<Uitgifte>()
                 .HasOne(u => u.Voertuig)
                 .WithMany(v => v.Uitgiftes)
@@ -73,37 +79,9 @@ namespace WebApplication1
         }
 
         public Voertuig GetVoertuigById(int id) => Voertuigen.FirstOrDefault(v => v.VoertuigId == id);
-
-        public List<Schade> GetAllSchades() 
-        {
-            return Schades
-                .Include(s => s.Voertuig) 
-                .ToList();
-        }
-
+        
         public Schade GetSchadeById(int id) => Schades.FirstOrDefault(s => s.SchadeId == id);
-
-        public void CreateSchade(Schade schade)
-        {
-            Schades.Add(schade);
-            SaveChanges();
-        }
-
-        public void UpdateSchade(Schade schade)
-        {
-            Schades.Update(schade);
-            SaveChanges();
-        }
-
-        public void DeleteSchade(int id)
-        {
-            var schade = GetSchadeById(id);
-            if (schade != null)
-            {
-                Schades.Remove(schade);
-                SaveChanges();
-            }
-        }
+        
         public List<Inname> ListInnames()
         {
             return Innames.Include(i => i.Voertuig).Include(i => i.User).ToList();

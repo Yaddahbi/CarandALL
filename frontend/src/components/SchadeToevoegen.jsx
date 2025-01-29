@@ -1,77 +1,76 @@
 import { useState } from "react";
 import '../style/SchadePagina.css';
-import { voegSchadetoe } from "../api";
+import { voegSchadetoe, uploadSchadeFoto, zoekVoertuigOpKenteken } from "../api";
 import { useNavigate } from "react-router-dom";
 
 const SchadeToevoegen = ({ onSchadeToevoegen }) => {
     const [beschrijving, setBeschrijving] = useState("");
     const [datum, setDatum] = useState("");
-    const [kosten, setKosten] = useState(0);
     const [status, setStatus] = useState("Open");
+    const [foto, setFoto] = useState(null);
+    const [kenteken, setKenteken] = useState(""); 
+    const [voertuigId, setVoertuigId] = useState(null);
+    const [voertuigGegevens, setVoertuigGegevens] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-
+    
+    
     const handleFotoChange = (e) => {
-        const selectedFiles = e.target.files;
-        const validFiles = [];
-        let errorMessage = "";
-
-        for (let i = 0; i < selectedFiles.length; i++) {
-            const file = selectedFiles[i];
-            if (file.size > 5000000) {
-                errorMessage = "Een of meer foto's zijn te groot (max. 5MB).";
-                break;
-            } else if (!file.type.startsWith("image/")) {
-                errorMessage = "Alle bestanden moeten afbeeldingen zijn.";
-                break;
-            } else {
-                validFiles.push(file);
-            }
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFoto(selectedFile);
         }
-
-        if (errorMessage) {
-            setError(errorMessage);
-        } else {
-            setError(null);
+    };
+    const handleKentekenZoeken = async () => {
+        try {
+            const voertuig = await zoekVoertuigOpKenteken(kenteken);
+            if (voertuig) {
+                setVoertuigId(voertuig.id);
+                setVoertuigGegevens(voertuig);
+            } else {
+                setError("Voertuig met dit kenteken niet gevonden.");
+            }
+        } catch (error) {
+            setError("Fout bij het zoeken van het voertuig: " + error.message);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!Array.isArray(foto) || foto.length === 0) {
+        if (!foto) {
             setError("Je moet minstens één foto toevoegen.");
             return;
         }
 
+        if (!voertuigId) {
+            setError("Je moet eerst een voertuig selecteren.");
+            return;
+        }
         try {
-           
-            const fotoUrls = await Promise.all(foto.map((file) => uploadSchadeFoto(file)));
-
-            console.log("Geüploade foto's:", fotoUrls);
-
             
             const schadeData = {
                 beschrijving,
                 datum,
-                kosten,
                 status,
+                voertuigId 
             };
 
-            console.log("Gegevens die worden verzonden:", schadeData);
+            const newSchade = await voegSchadetoe(schadeData); 
 
             
-            const newSchade = await voegSchadetoe(schadeData);
-            console.log("Nieuwe schade toegevoegd:", newSchade);
-
+            const fotoResponse = await uploadSchadeFoto(newSchade.SchadeId, foto); 
+            console.log("Foto upload succesvol:", fotoResponse);
             
             onSchadeToevoegen(newSchade);
-
             
             setBeschrijving("");
             setDatum("");
-            setKosten(0);
             setStatus("Open");
+            setFoto(null);
+            setKenteken("");
+            setVoertuigId(null);
+            setVoertuigGegevens(null);
         } catch (error) {
             setError("Fout bij toevoegen van schade: " + error.message);
         }
@@ -79,8 +78,31 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
 
     return (
         <div className="Schade Toevoegen">
-            <h1>Schade Toevoegen</h1>
+            <h2>Schade Formulier</h2>
             <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Voer kenteken in: </label>
+                    <input
+                        type="text"
+                        value={kenteken}
+                        onChange={(e) => setKenteken(e.target.value)}
+                        placeholder="Kenteken"
+                    />
+                    <button type="button" onClick={handleKentekenZoeken}>
+                        Zoek Voertuig
+                    </button>
+                </div>
+                {/* Toont de voertuiggegevens als het voertuig is gevonden */}
+                {voertuigGegevens && (
+                    <div>
+                        <h3>Voertuig Gegevens:</h3>
+                        <p><strong>Merk:</strong> {voertuigGegevens.merk}</p>
+                        <p><strong>Soort:</strong> {voertuigGegevens.soort}</p>
+                        <p><strong>Type:</strong> {voertuigGegevens.type}</p>
+                        <p><strong>Kleur:</strong> {voertuigGegevens.kleur}</p>
+                        <p><strong>Aanschafjaar:</strong> {voertuigGegevens.aanschafjaar}</p>
+                    </div>
+                )}
                 <div>
                     <label>Beschrijving: </label>
                     <input
@@ -90,24 +112,13 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
                         required
                     />
                 </div>
-                <div>
-                    <label>Datum: </label>
-                    <input
-                        type="date"
-                        value={datum}
-                        onChange={(e) => setDatum(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Kosten: </label>
-                    <input
-                        type="number"
-                        value={kosten}
-                        onChange={(e) => setKosten(e.target.value)}
-                        required
-                    />
-                </div>
+                <label>Datum: </label>
+                <input
+                    type="date"
+                    value={datum}
+                    onChange={(e) => setDatum(e.target.value)}
+                    required
+                />
                 <div>
                     <label>Status: </label>
                     <select
@@ -119,9 +130,16 @@ const SchadeToevoegen = ({ onSchadeToevoegen }) => {
                         <option value="Afgehandeld">Afgehandeld</option>
                     </select>
                 </div>
+                <div>
+                    <label>Foto toevoegen: </label>
+                    <input
+                        type="file"
+                        onChange={handleFotoChange}
+                    />
+                </div>
                 <button type="submit">Voeg Schade Toe</button>
             </form>
-            {error && <p style={{ color: "red" }}>{error}</p>} {/* Foutmelding als er een probleem is */}
+            {error && <p style={{color: "red"}}>{error}</p>} {/* Foutmelding als er een probleem is */}
         </div>
     );
 };
