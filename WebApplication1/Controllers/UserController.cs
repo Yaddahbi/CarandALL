@@ -31,7 +31,7 @@ namespace WebApplication1.Controllers
             _signInManager = signInManager;
             _context = context;
         }
-        //Een API-endpoint POST om user te laten registreren.
+      
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
@@ -42,7 +42,7 @@ namespace WebApplication1.Controllers
                 return BadRequest(new { errors });
             }
 
-            // Valideer op basis van de rol
+          
             switch (userDto.Rol)
             {
                 case "ZakelijkeKlant":
@@ -61,7 +61,7 @@ namespace WebApplication1.Controllers
                     return BadRequest(new { errors = new[] { "Ongeldige rol opgegeven." } });
             }
 
-            // Maak een nieuwe gebruiker aan
+            
             var user = new User
             {
                 UserName = userDto.Email,
@@ -78,7 +78,7 @@ namespace WebApplication1.Controllers
 
             if (result.Succeeded)
             {
-                // Indien Zakelijk, maak een abonnement aan en koppel het
+                
                 if (userDto.Rol == "ZakelijkeKlant")
                 {
                     var abonnement = new Abonnement
@@ -95,7 +95,7 @@ namespace WebApplication1.Controllers
                     _context.Abonnementen.Add(abonnement);
                     await _context.SaveChangesAsync();
 
-                    // Koppel het abonnement aan de gebruiker
+                    
                     user.BedrijfsAbonnementId = abonnement.Id;
                     await _userManager.UpdateAsync(user);
 
@@ -111,7 +111,7 @@ namespace WebApplication1.Controllers
             return BadRequest(new { errors = identityErrors });
         }
 
-        //Een API-endpoint POST om user te laten inloggen.
+       
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
@@ -130,33 +130,33 @@ namespace WebApplication1.Controllers
 
             var abonnementId = user.BedrijfsAbonnementId;
 
-            // Claims voor JWT-token
+            
             var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.NameIdentifier, user.Id), // Gebruikers ID
-        new Claim(ClaimTypes.Role, user.Rol), // Rol van de gebruiker
+        new Claim(ClaimTypes.NameIdentifier, user.Id), 
+        new Claim(ClaimTypes.Role, user.Rol), 
         new Claim(ClaimTypes.Email, user.Email),
         new Claim(ClaimTypes.Name, user.Naam),
         new Claim("AbonnementId", abonnementId.ToString())
     };
 
-            // Secret key en JWT-instellingen
+            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JouwGeheimeSleutelVoorDeWebsiteProject123"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // Maak een JWT-token aan
+            
             var token = new JwtSecurityToken(
-                issuer: "your_issuer", // Zet een geldige issuer in
-                audience: "your_audience", // Zet een geldige audience in
+                issuer: "your_issuer", 
+                audience: "your_audience", 
                 claims: claims,
-                expires: DateTime.Now.AddHours(1), // Geldigheidstijd
+                expires: DateTime.Now.AddHours(1), 
                 signingCredentials: creds
             );
 
-            // Genereer de token als string
+            
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            // Bouw de response op met een expliciete DTO
+            
             var response = new LoginResponseDto
             {
                 Message = "Inloggen succesvol.",
@@ -168,15 +168,14 @@ namespace WebApplication1.Controllers
             return Ok(response);
         }
 
-        //Een API-endpoint POST om user uit te loggen.
+        
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return Ok(new { message = "Uitloggen succesvol." });
         }
-        //Een API-endpoint GET om alle notificaties van de gebruiker op te halen.
-        [Authorize]
+        
         [HttpGet("notificaties")]
         public async Task<IActionResult> GetNotificaties()
         {
@@ -194,7 +193,7 @@ namespace WebApplication1.Controllers
 
             return Ok(notificaties);
         }
-        //Een API-endpoint PUT om een user zijn gegevens te laten updaten.
+        
         [Authorize]
             [HttpPut("update")]
             public async Task<IActionResult> UpdateUser([FromBody] Updateuserdto userDto)
@@ -222,7 +221,7 @@ namespace WebApplication1.Controllers
                 var errors = result.Errors.Select(e => e.Description);
                 return BadRequest(new { errors });
             }
-            //Een API-endpoint GET om de details van de gebruiker op te halen.
+           
             [Authorize]
             [HttpGet("details")]
             public async Task<IActionResult> GetUserDetails()
@@ -268,7 +267,7 @@ namespace WebApplication1.Controllers
                 return NotFound(new { message = "Gebruiker niet gevonden." });
             }
 
-            // Verplaats de gebruiker naar de "verwijderde gebruikers" tabel
+            
             var deletedUser = new DeletedUser
             {
                 Id = userId,

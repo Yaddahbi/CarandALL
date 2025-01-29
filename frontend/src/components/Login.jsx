@@ -11,13 +11,13 @@ function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    // Handle input change
+   
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Handle form submission
+   
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -35,7 +35,7 @@ function Login() {
                 sessionStorage.setItem("userEmail", formData.email);
                 sessionStorage.setItem("userName", data.name); 
                 toast.success("Inloggen succesvol!", {
-                    duration: 1000, // Duur in milliseconden (2 seconden)
+                    duration: 1000, 
                 });
                 navigate("/");
             } else {
@@ -74,7 +74,6 @@ function Login() {
 
                     <button className="loginbtn" type="submit">Inloggen</button>
                 </form>
-                { /*} {error && <p className="error">{error}</p>} { */}
                 <p>
                     Nog geen account? <a onClick={() => navigate("/kies-account-type")}>Account aanmaken</a>
                 </p>
