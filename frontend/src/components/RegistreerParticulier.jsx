@@ -39,6 +39,7 @@ function RegistreerParticulier() {
 
         if (response.ok) {
             toast.success("Account succesvol aangemaakt! U kunt nu inloggen.");
+            window.scrollTo(0, 0);
             navigate("/login");
         } else {
             const data = await response.json();
@@ -72,7 +73,7 @@ function RegistreerParticulier() {
                     <div className="form-group">
                         <label htmlFor="adres">Adres:</label>
                         <input id="adres" type="text" name="adres" onChange={handleChange} required />
-                        <small>Vul uw volledige adres in, inclusief huisnummer en postcode.</small>
+                        <small> Vul uw volledige adres in (straatnaam en huisnummer).</small>
                     </div>
 
                     <div className="form-group">

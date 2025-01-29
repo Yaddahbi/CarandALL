@@ -34,7 +34,9 @@ function Login() {
                 sessionStorage.setItem("jwtToken", data.token);
                 sessionStorage.setItem("userEmail", formData.email);
                 sessionStorage.setItem("userName", data.name); 
-                toast.success("Inloggen succesvol!");
+                toast.success("Inloggen succesvol!", {
+                    duration: 1000, // Duur in milliseconden (2 seconden)
+                });
                 navigate("/");
             } else {
                 const errorData = await response.json();
