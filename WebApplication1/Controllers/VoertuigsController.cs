@@ -46,6 +46,20 @@ namespace WebApplication1.Controllers
 
             return voertuig;
         }
+        // GET: api/Voertuigs/kenteken/ABC123
+        [HttpGet("kenteken/{kenteken}")]
+        public async Task<ActionResult<Voertuig>> GetVoertuigOpKenteken(string kenteken)
+        {
+            var voertuig = await _context.Voertuigen.FirstOrDefaultAsync(v => v.Kenteken == kenteken);
+
+            if (voertuig == null)
+            {
+                return NotFound(new { message = "Voertuig met dit kenteken niet gevonden." });
+            }
+
+            return voertuig;
+        }
+
 
         // GET: api/Voertuigs/filter
         [HttpGet("filter")]

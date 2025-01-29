@@ -1,4 +1,4 @@
-/*import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -15,4 +15,4 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return children;
 };
 
-export default ProtectedRoute;*/
+export default ProtectedRoute;

@@ -105,7 +105,7 @@ export const voegSchadetoe = async (schadeData) => {
 };
 export const zoekVoertuigOpKenteken = async (kenteken) => {
     try {
-        const response = await fetch(`${API_URL}/voertuigen/${kenteken}`);
+        const response = await fetch(`https://localhost:7040/api/Voertuigs/kenteken/${encodeURIComponent(kenteken)}`);
         if (!response.ok) throw new Error("Voertuig niet gevonden");
         const data = await response.json();
         return data; 

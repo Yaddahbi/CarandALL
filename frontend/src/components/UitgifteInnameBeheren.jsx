@@ -39,7 +39,7 @@ const UitgifteInnameBeheren = () => {
                 <thead>
                 <tr>
                     <th>Huurverzoek ID</th>
-                    <th>Voertuig ID</th>
+                    <th>Voertuig</th>
                     <th>Huurder Naam</th>
                     <th>Datum</th>
                 </tr>
@@ -52,7 +52,8 @@ const UitgifteInnameBeheren = () => {
                 ) : (
                     huurverzoeken.map((verzoek) => (
                         <tr key={verzoek.huurverzoekId}>
-                            <td>{verzoek.voertuigId}</td>
+                            <td>{verzoek.huurverzoekId}</td>
+                            <td>{verzoek.voertuigMerk} {verzoek.voertuigType}</td>
                             <td>{verzoek.huurderNaam}</td>
                             <td>{verzoek.startDatum} - {verzoek.eindDatum}</td>
                             <td>

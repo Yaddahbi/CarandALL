@@ -10,7 +10,7 @@
         public double Kosten { get; set; }
         public string Status { get; set; }
         public List<string> FotoUrls { get; set; } 
-        public string Opmerkingen { get; set; }
+        public string? Opmerkingen { get; set; }
         
         private static readonly string[] ToegestaneStatussen = { "Open", "In behandeling", "Afgehandeld", "In reparatie" };
 

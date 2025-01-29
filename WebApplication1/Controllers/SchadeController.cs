@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize(Roles = "Backofficemedewerker, Frontofficemedewerker")]
+    //[Authorize(Roles = "Backofficemedewerker, Frontofficemedewerker")]
     [ApiController]
     [Route("api/[controller]")]
     public class SchadeController : ControllerBase

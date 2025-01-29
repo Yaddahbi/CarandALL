@@ -52,6 +52,7 @@ const Navbar = () => {
                     {user?.role === 'FrontofficeMedewerker' && (
                         <>
                             <Link to="/uitgifteinnamebeheren">Uitgifte & Inname Voertuig</Link>
+                            <Link to="/schades/toevoegen">Schades toevoegen</Link>
                         </>
                     )}
 
