@@ -20,7 +20,7 @@ namespace WebApplication1.Models
         public ICollection<Uitgifte> Uitgiftes { get; set; } = new List<Uitgifte>();
  
 
-        // Relatie met Abonnement
+       
         public int? BedrijfsAbonnementId { get; set; }
         [ForeignKey("BedrijfsAbonnementId")]
         public Abonnement? BedrijfsAbonnement { get; set; }

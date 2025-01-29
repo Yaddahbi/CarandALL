@@ -13,7 +13,7 @@ function RegistreerZakelijk() {
         telefoonnummer: "",
         bedrijfsNaam: "",
         kvkNummer: "",
-        abonnementType: "Pay-as-you-go", // default waarde
+        abonnementType: "Pay-as-you-go", 
     });
 
     const [isChecked, setIsChecked] = useState(false);
