@@ -187,6 +187,20 @@ export const createHuurverzoek = async (huurverzoek) => {
         throw error;
     }
 };
+export const fetchHuurverzoek = async (huurverzoekId) => {
+    if (!huurverzoekId) return null;
+
+    try {
+        const response = await fetch(`${HUURVERZOEK_API_URL}/${huurverzoekId}`);
+        if (!response.ok) {
+            throw new Error('Er is iets misgegaan bij het ophalen van het huurverzoek.');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Fout bij het ophalen van huurverzoek:", error);
+        throw error;
+    }
+};
 
     export const fetchHuurgeschiedenis = async (filters) => {
         try {
