@@ -4,8 +4,7 @@
 
 # Rent-IT! — Vehicle Rental Web Application for CarAndAll
 
-Rent-IT! is a web application developed for CarAndAll, a vehicle rental company serving both private individuals and businesses. The application automates the entire rental process — from submitting rental requests to managing subscriptions, vehicles, and damage reports — making it faster and easier for both customers and employees.
-
+Rent-IT! is a web application developed for CarAndAll, a vehicle rental company serving both private individuals and businesses. The application automates the entire rental process, from submitting rental requests to managing subscriptions, vehicles, and damage reports, making it faster and easier for both customers and employees.
 ---
 
 ## Features
