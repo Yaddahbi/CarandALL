@@ -93,9 +93,11 @@ The project followed a structured Git workflow:
 
 ## Screenshots
 
-![Home page](./images/screenshot1.png)
+![Home page](./images/screenshot3.png)
+
 ![Available vehicles](./images/screenshot2.png)
-![Rental history](./images/screenshot3.png)
+
+![Rental history](./images/screenshot1.png)
 
 ---
 
